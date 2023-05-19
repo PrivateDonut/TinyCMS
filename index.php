@@ -32,61 +32,29 @@ $config = $config_object->get_config();
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $config['website_title'] ?></title>
-    <link href="https://bootswatch.com/5/darkly/bootstrap.css" rel="stylesheet">
-    <link href="assets/css/prism-okaidia.css" rel="stylesheet">
-    <style>
-        .custom-card {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .banner {
-            background-image: url('assets/images/banner.jpg');
-            background-size: cover;
-            height: 175px;
-            width: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 48px;
-            text-shadow: 2px 2px #000;
-        }
-
-        .card-height {
-        height: 150px; /* Set a fixed height for the card bodies */
-    }
-    </style>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TinyCMS Theme</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/assets/css/custom.css" />
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
-        <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" aria-current="page" href="index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="?page=store">Store</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Information</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="pvpstats">PvP Statistics</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="banner">
-        <img src="banner.png" alt="<?php echo $config['website_title'] ?>">
-    </div>
+    <!-- Navbar Start -->
+    <ul class="navbar">
+        <li><a href="/?page=home">Home</a></li>
+        <li><a href="#">How To Connect</a></li>
+        <li><a href="#">Shop</a></li>
+        <li><a href="/?page=account">Account</a></li>
+    </ul>
+    <!-- Navbar End -->
+
+    <!-- Banner Starts -->
+    <img src="/assets/images/banner.jpg" alt="" style="height: 238px; width: 100%; object-fit: cover;" />
+    <!-- Banner Ends-->
+
+    <!-- Content Starts -->
     <?php
 
     if (file_exists('pages/' . $page . '.php')) {
@@ -95,18 +63,15 @@ $config = $config_object->get_config();
         include 'pages/404.php';
     }
     ?>
-
-</body>
-
-<footer class="footer mt-auto py-3">
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <p class="text-center">&copy; 2023 TinyCMS. All rights reserved.</p>
+    <footer class="footer mt-auto py-3">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <p class="text-center">&copy; 2023 TinyCMS. All rights reserved.</p>
+                </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
 </body>
 
 </html>

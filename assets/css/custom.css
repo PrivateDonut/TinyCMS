@@ -1,0 +1,153 @@
+body {
+    background-color: #212121;
+    margin: 0;
+  }
+  
+  footer {
+      color: white;
+  }
+  
+  custom-button{
+      background: #1c1c1c;
+      background: -moz-linear-gradient(top,  #1c1c1c 0%, #1a1a1a 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1c1c1c), color-stop(100%,#1a1a1a));
+      background: -webkit-linear-gradient(top,  #1c1c1c 0%,#1a1a1a 100%);
+      background: -o-linear-gradient(top,  #1c1c1c 0%,#1a1a1a 100%);
+      background: -ms-linear-gradient(top,  #1c1c1c 0%,#1a1a1a 100%);
+      background: linear-gradient(to bottom,  #1c1c1c 0%,#1a1a1a 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1c1c1c', endColorstr='#1a1a1a',GradientType=0 );
+      text-shadow: 2px 2px 2px #202020;
+      font-family:"FuturaEF-Book";
+      color:#999;
+      font-size:14px;
+      width:193px;
+      height:42px;
+      border-radius:4px;
+      line-height:42px;
+      text-align:center;
+      cursor:pointer;
+      border:none;
+      outline:none;
+  
+  }
+  
+  /* Login form custom css */
+  @media (min-width: 768px) {
+    .info-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: -1px;
+        width: 2px;
+        background: white;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .info-section::before {
+        content: '';
+        position: relative;
+        display: block;
+        height: 2px;
+        background: white;
+        margin: 20px 0;
+    }
+  }
+  
+  .info-section {
+    position: relative;
+  }
+  
+  .input-small {
+    width: 80%;  /* adjust this to your liking */
+  }
+  
+  .card-title-divider::after {
+      content: '';
+      display: block;
+      width: 90%; /* Adjust this to change the line width */
+      height: 2px;
+      background: white;
+      margin: 20px auto;
+  }
+  
+  /* Navbar */
+  ul.navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a1a;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  ul.navbar li {
+    float: left;
+  }
+  
+  ul.navbar li a {
+    display: block;
+    color: #ffd700;
+    text-align: center;
+    font-weight: bold;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  ul.navbar li a:hover {
+    background-color: #333333;
+  }
+  
+  .banner {
+    height: 100px;
+    width: auto;
+    overflow: hidden;
+    object-fit: cover;
+  }
+  
+  .custom-card-body {
+      background-color: #1a1a1a;
+  }
+  
+  .custom-card-title,
+  .custom-card-text {
+      color: gold;
+      font-weight: bolder;
+  }
+  .custom-card-text p {
+      color: white;
+      font-weight: normal;
+  }
+  
+  
+  .custom-card {
+      border: none;
+      box-shadow: none;
+  }
+  
+  
+    .read-more {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      color: gold;
+      text-decoration: none;
+    }
+  
+    .form-group {
+      width: 300px;
+  }
+  
+  .form-control {
+      background-color: white;
+      color: #424242;
+  }
+  
+  .btn-primary {
+      background-color: #424242;
+      border-color: #1a1a1a;
+  }
+  

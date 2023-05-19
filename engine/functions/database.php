@@ -24,11 +24,15 @@ class DatabaseConnection
 
     public function connect()
     {
-        $connection = mysqli_connect($this->host, $this->username, $this->password, $this->database);
-        if (!$connection) {
-            die("Connection failed: " . mysqli_connect_error());
+        try {
+            $connection = mysqli_connect($this->host, $this->username, $this->password, $this->database);
+            if (!$connection) {
+                throw new Exception("Connection failed: " . mysqli_connect_error());
+            }
+            return $connection;
+        } catch (Exception $e) {
+            die("Connection failed: " . $e->getMessage());
         }
-        return $connection;
     }
 }
 
