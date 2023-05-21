@@ -15,18 +15,18 @@ foreach (glob("engine/configs/*.php") as $filename) {
     require_once $filename;
 }
 
-if (!isset($_GET['page']))
+if (!isset($_GET['page'])) {
     $page = 'home';
-else {
-    if (preg_match('/[^a-zA-Z]/', $_GET['page']))
+} else {
+    if (preg_match('/[^a-zA-Z]/', $_GET['page'])) {
         $page = 'home';
-    else
+    } else {
         $page = $_GET['page'];
+    }
 }
 
 $config_object = new gen_config();
 $config = $config_object->get_config();
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,12 +42,30 @@ $config = $config_object->get_config();
 
 <body>
     <!-- Navbar Start -->
-    <ul class="navbar">
-        <li><a href="/?page=home">Home</a></li>
-        <li><a href="#">How To Connect</a></li>
-        <li><a href="#">Shop</a></li>
-        <li><a href="/?page=account">Account</a></li>
-    </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/?page=home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">How To Connect</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/?page=account">Account</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <!-- Navbar End -->
 
     <!-- Banner Starts -->
@@ -55,14 +73,11 @@ $config = $config_object->get_config();
     <!-- Banner Ends-->
 
     <!-- Content Starts -->
-    <?php
-
-    if (file_exists('pages/' . $page . '.php')) {
+    <?php if (file_exists('pages/' . $page . '.php')) {
         include 'pages/' . $page . '.php';
     } else {
         include 'pages/404.php';
-    }
-    ?>
+    } ?>
     <footer class="footer mt-auto py-3">
         <div class="container">
             <div class="row">
@@ -72,6 +87,11 @@ $config = $config_object->get_config();
             </div>
         </div>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-qr6s LL7alrTT0mso5C5PL09dww1cmGhyu/wVa+6h9hV6Z9ABnFsIa3C5V4PEmyxL"
+        crossorigin="anonymous"></script>
+	<script src="/assets/js/custom.js"></script>
 </body>
 
 </html>
