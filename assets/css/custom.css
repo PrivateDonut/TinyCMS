@@ -150,4 +150,18 @@ body {
       background-color: #424242;
       border-color: #1a1a1a;
   }
-  
+
+  @media (max-width: 991px) {
+    .navbar .navbar-nav {
+        flex-direction: column;
+   }
+    .navbar .nav-item {
+        margin-bottom: 10px;
+   }
+}
+
+.nav-link a {
+    color:gold;
+    font-weight:600;
+    font-size:18px;
+}
