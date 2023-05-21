@@ -1,8 +1,3 @@
-<!-- 
-Made By: PrivateDonut
-Project Name: TinyCMS
-Website: https://privatedonut.com
--->
 <?php
 if (!isset($_SESSION)) {
     session_start();
@@ -57,7 +52,7 @@ $config = $config_object->get_config();
                         <a class="nav-link" href="#">How To Connect</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Shop</a>
+                        <a class="nav-link" href="/?page=store">Store</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/?page=account">Account</a>

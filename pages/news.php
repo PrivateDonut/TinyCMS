@@ -1,15 +1,6 @@
-<!-- 
-Made By: PrivateDonut
-Project Name: TinyCMS
-Website: https://privatedonut.com
--->
-
 <?php
 if (isset($_GET['id'])) {
-    $newsId = $_GET['id'];
-
     $newsHome = new news_home();
-    $news = $newsHome->get_news_by_id($newsId);
 
     if ($news) {
         $title = $news[0]['title'];
