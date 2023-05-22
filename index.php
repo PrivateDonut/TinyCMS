@@ -87,6 +87,7 @@ $config = $config_object->get_config();
             </div>
         </div>
     </footer>
+    <script type="text/javascript" src="http://cdn.cavernoftime.com/api/tooltip.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-qr6s LL7alrTT0mso5C5PL09dww1cmGhyu/wVa+6h9hV6Z9ABnFsIa3C5V4PEmyxL"

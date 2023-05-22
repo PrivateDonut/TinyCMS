@@ -22,6 +22,7 @@ if (isset($_POST['add_to_cart'])) {
                 <div class="col-md-3">
                     <div class="list-group">
                         <h2 class="custom-card-text mb-2">Store</h2>
+                        <a href="?page=cart" class="list-group-item list-group-item-action">View Cart</a>
                         <?php while ($row = $categories->fetch_assoc()) : ?>
                             <a href="?page=store&category=<?= $row['id'] ?>" class="list-group-item list-group-item-action">
                                 <?= $row['title'] ?>
