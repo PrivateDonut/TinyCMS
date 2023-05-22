@@ -1,13 +1,8 @@
-<!-- 
-- Made By : PrivateDonut
-- Project Name : TinyCMS
-- Website : https://privatedonut.com
--->
 <?php
 
 class Registration
 {
-    private $name;
+    private $username;
     private $email;
     private $password;
     private $password_confirmation;
@@ -15,7 +10,7 @@ class Registration
 
     public function __construct($username, $email, $password, $password_confirmation)
     {
-        $this->name = $username;
+        $this->username = $username;
         $this->email = $email;
         $this->password = $password;
         $this->password_confirmation = $password_confirmation;
@@ -24,16 +19,16 @@ class Registration
 
     public function register_checks()
     {
-        $this->check_username($this->name);
+        $this->check_username($this->username);
         $this->check_email($this->email);
         $this->check_password($this->password);
-        $this->register($this->name, $this->email, $this->password);
+        $this->register($this->username, $this->email, $this->password);
     }
 
-    private function check_username($name)
+    private function check_username($username)
     {
         $stmt = $this->connection->prepare("SELECT username FROM account WHERE username = ?");
-        $stmt->bind_param("s", $name);
+        $stmt->bind_param("s", $username);
         $stmt->execute();
         $stmt->store_result();
         if ($stmt->num_rows > 0) {
@@ -41,15 +36,16 @@ class Registration
             header("Location: /?page=register");
             exit();
         }
-
-        if (strlen($name) < 3 || strlen($name) > 20) {
+    
+        if (strlen($username) > 3 || strlen($username) > 16) {
             $_SESSION['error'] = "Username must be between 3 and 16 characters long";
             header("Location: /?page=register");
             exit();
         }
         $stmt->close();
     }
-
+    
+ 
     private function check_password($password)
     {
         if (strlen($password) < 6 ||
@@ -87,7 +83,6 @@ class Registration
             exit();
         }
         $stmt->close();
-        $this->connection->close();
     }
 
 
@@ -95,7 +90,7 @@ class Registration
     {
         $stmt = $this->connection->prepare("INSERT INTO account (username, salt, verifier, expansion) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("ssss", $username, $salt, $verifier, $expansion);
-        $username = $this->name;
+        $username = $this->username;
         $email = $this->email;
         $password = $this->password;
         $password_confirmation = $this->password_confirmation;

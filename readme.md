@@ -1,8 +1,6 @@
 # TinyCMS
 **TinyCMS** is a versatile content management system designed specifically for World of Warcraft Emulation. It aims to simplify the management of WoW emulator servers and provide a rich set of features for both administrators and users. TinyCMS supports multiple emulators, making it a flexible choice for a variety of server configurations.
 
-**
-
 ## Front-End - Features
 
 **User Authentication**: Secure user registration and login to protect your server and data. 
