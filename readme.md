@@ -2,17 +2,15 @@
 **TinyCMS** is a small yet powerful content management system for World of Warcraft Emulation that will support multiple emulators.
 
 ------------
-# Features
-### Front-End 
-- Account Registration
-- News System
-- Server Stats
+# Features 
+-- User Authentication
+-- News System
+-- Account Panel
+-- Shop (work in progress)
+-- 
 
 ### Admin Panel
-- Account Management
-- Server Stats (more in dept)
-- More to come...
-
-------------
-# Credits
-- PrivateDonut
+- Admin panel is due to be revamped.
+-- Account Management
+-- Server Stats (more in dept)
+-- More to come...
