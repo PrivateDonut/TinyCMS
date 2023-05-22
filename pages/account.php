@@ -1,8 +1,3 @@
-<!-- 
-- Made By : PrivateDonut
-- Project Name : TinyCMS
-- Website : https://privatedonut.com
--->
 <?php
 if (isset($_SESSION['username'])) {
     $account = new Account($_SESSION['username']);
