@@ -1,4 +1,8 @@
 <?php
+if (file_exists('../engine/install.lock')) {
+    header('Location: /?page=home');
+    exit;
+}
 require_once("functions/install.php");
 $check = new InstallTinyCMS();
 ?>

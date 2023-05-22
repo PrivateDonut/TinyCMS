@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $config = new Configuration();
 $newsHome = new news_home();
 $latestNews = $newsHome->get_news();
+$server = new ServerInfo();
 ?>
 
 <div class="container">
@@ -76,7 +77,7 @@ $latestNews = $newsHome->get_news();
                     <!-- Logged In Form -->
                     <div class="card custom-card mb-4">
                         <div class="card-body custom-card-body">
-                            <h5 class="card-title custom-card-title" style="margin-bottom: 0;">Account Details</h5>
+                            <h5 class="card-title custom-card-title text-center" style="margin-bottom: 0;">Account Details</h5>
                             <hr style="border-color: white; margin: 10px 0;">
                             <p class="" style="color: white;">
                                 Username: <?= $_SESSION['username'] ?>
@@ -126,11 +127,10 @@ $latestNews = $newsHome->get_news();
             <!-- Information Box -->
             <div class="card custom-card">
                 <div class="card-body custom-card-body">
-                    <h5 class="card-title custom-card-title" style="margin-bottom: 0;">Blackrock</h5>
-                    <p class="card-text mb-0" style="color: white;">Server stats</p>
+                    <h5 class="card-title custom-card-title text-center" style="margin-bottom: 0;"><?= $server->get_realm_name(); ?></h5>
                     <hr style="border-color: white; margin: 10px 0;">
                     <p class="card-text custom-card-text text-center" style="color: white">
-                        <h7 style="color: #ffffff;">Total Online:</h7> 0<br />
+                        <h7 style="color: #ffffff;">Total Online:</h7> <?= $server->get_online_players(); ?><br />
                         Horde: 45% | Alliance: 65%<br />
                     </p>
                 </div>
