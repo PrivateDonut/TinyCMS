@@ -4,6 +4,11 @@ if (isset($_SESSION['username'])) {
 } else {
     header("Location: ?page=login");
 }
+
+if (isset($_POST['change_password'])) {
+    header("Location: ?page=changepassword");
+    exit();
+}
 ?>
        <div class="card custom-card mx-auto mt-4" style="background-color: #1a1a1a; max-width: 600px;">
             <div class="card-body">
@@ -28,20 +33,22 @@ if (isset($_SESSION['username'])) {
                             </div>
                             <div class="col-md-6">
                                 <label for="account-status" class="text-white">Account Status:</label>
-                                <p class="text-white">TO DO</p>
+                                <p class="text-white"><?= $account->is_banned(); ?></p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="donation-points" class="text-white">Donation Points:</label>
-                                <p class="text-white">TO DO</p>
+                                <p class="text-white"><?= $account->get_donor_points(); ?></p>
                             </div>
                             <div class="col-md-6">
                                 <label for="vote-points" class="text-white">Vote Points:</label>
-                                <p class="text-white">TO DO</p>
+                                <p class="text-white"><?= $account->get_vote_points(); ?></p>
                             </div>
                         </div>
-                        <button class="btn btn-primary btn-block d-block mx-auto mt-4" style="width: 80%;">Update Information</button>
+                        <form method="POST">
+                        <button class="btn btn-primary btn-block d-block mx-auto mt-4" style="width: 50%;" name="change_password">Change Password</button>
+                        </form>
                     </div>
                 </div>
             </div>

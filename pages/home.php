@@ -86,13 +86,16 @@ $server = new ServerInfo();
                                 <br />
                                 Rank: <?= $account->get_rank() ?>
                                 <br />
-                                Vote Points: TO DO
+                                Vote Points: <?= $account->get_vote_points() ?>
                                 <br />
-                                Donation Points: TO DO
+                                Donation Points: <?= $account->get_donor_points() ?>
                                 <br />
-                            <form action='/engine/logout.php' method='POST'>
-                                <button type='submit' class='btn btn-danger' name='logout'>Logout</button>
-                            </form>
+                            <div class="d-flex justify-content-start">
+                                <a href="?page=account" class="btn btn-primary mr-5" style="background-color: #ffd700; color: #36454F;">Account Panel</a>
+                                <form action='/engine/logout.php' method='POST'>
+                                    <button type='submit' class='btn btn-danger' name='logout'>Logout</button>
+                                </form>
+                            </div>
                             </p>
                         </div>
                     </div>
