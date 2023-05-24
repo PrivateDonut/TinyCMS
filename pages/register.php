@@ -28,6 +28,6 @@ if (isset($_SESSION['error'])) {
             </div>
             <button type="submit" name="submit" class="btn btn-primary mx-auto d-block mt-2">Register Account</button>
         </form>
-        <p class="text-center text-white">Already have an account? Login <a href="/page=login" />Here</a></p>
+        <p class="text-center text-white">Already have an account? Login <a href="?page=login" />Here</a></p>
     </div>
 </div>

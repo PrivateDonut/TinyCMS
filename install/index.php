@@ -41,7 +41,7 @@ $check = new InstallTinyCMS();
         <p class="text-white text-center">SOAP: <?= $check->checkExtension('soap'); ?></p>
         <p class="text-white text-center">CURL: <?= $check->checkExtension('curl'); ?></p>
         <div class="d-flex justify-content-center">
-            <button type="button" class="btn btn-success" onclick="window.location.href = '/install/final';">Proceed To Install</button>
+            <button type="button" class="btn btn-success" onclick="window.location.href = 'final';">Proceed To Install</button>
 
         </div>
     </div>
