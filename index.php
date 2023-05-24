@@ -1,7 +1,7 @@
 <?php
 // Redirect to install page if install.lock is not found.
 if (!file_exists('engine/install.lock')) {
-    header('Location: /install');
+    header('Location: install');
     exit;
 }
 if (!isset($_SESSION)) {
