@@ -37,7 +37,7 @@ $config = $config_object->get_config();
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TinyCMS Theme</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous" />
-    <link rel="stylesheet" href="/assets/css/custom.css" />
+    <link rel="stylesheet" href="assets/css/custom.css" />
 </head>
 
 <body>
@@ -51,16 +51,16 @@ $config = $config_object->get_config();
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/?page=home">Home</a>
+                        <a class="nav-link" href="?page=home">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">How To Connect</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/?page=store">Store</a>
+                        <a class="nav-link" href="?page=store">Store</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/?page=account">Account</a>
+                        <a class="nav-link" href="?page=account">Account</a>
                     </li>
                 </ul>
             </div>
@@ -69,7 +69,7 @@ $config = $config_object->get_config();
     <!-- Navbar End -->
 
     <!-- Banner Starts -->
-    <img src="/assets/images/banner.jpg" alt="" style="height: 238px; width: 100%; object-fit: cover;" />
+    <img src="assets/images/banner.jpg" alt="" style="height: 238px; width: 100%; object-fit: cover;" />
     <!-- Banner Ends-->
 
     <!-- Content Starts -->
@@ -92,7 +92,7 @@ $config = $config_object->get_config();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-qr6s LL7alrTT0mso5C5PL09dww1cmGhyu/wVa+6h9hV6Z9ABnFsIa3C5V4PEmyxL"
         crossorigin="anonymous"></script>
-	<script src="/assets/js/custom.js"></script>
+	<script src="assets/js/custom.js"></script>
 </body>
 
 </html>

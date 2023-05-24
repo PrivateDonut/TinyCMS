@@ -9,12 +9,12 @@ if (isset($_GET['id'])) {
         $date = $news[0]['date'];
     } else {
         // If the news article is not found, redirect to a 404 page or display an error message
-        header('Location: /404.php');
+        header('Location: 404.php');
         exit();
     }
 } else {
     // If no news ID is specified, redirect to a 404 page or display an error message
-    header('Location: /404.php');
+    header('Location: 404.php');
     exit();
 }
 ?>

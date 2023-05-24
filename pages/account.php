@@ -2,7 +2,7 @@
 if (isset($_SESSION['username'])) {
     $account = new Account($_SESSION['username']);
 } else {
-    header("Location: /?page=login");
+    header("Location: ?page=login");
 }
 ?>
        <div class="card custom-card mx-auto mt-4" style="background-color: #1a1a1a; max-width: 600px;">

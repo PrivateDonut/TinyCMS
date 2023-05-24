@@ -6,7 +6,7 @@ if (isset($_POST['submit'])) {
 
 
     if ($login->login()) {
-        header("Location: /?page=home");
+        header("Location: ?page=home");
         exit();
     }
 }
@@ -40,7 +40,7 @@ if (isset($_SESSION['error'])) {
             <div class="col-12 col-md-6 info-section">
                 <div class="row">
                     <div class="col">
-                        <p><a class="link-opacity-100" href="/?page=register">Create Account</a></p>
+                        <p><a class="link-opacity-100" href="?page=register">Create Account</a></p>
                         <p><a class="link-opacity-100" href="#">Forgot Password?</a></p>
                         <p><a class="link-opacity-100" href="#">Forgot Username?</a></p>
                     </div>
