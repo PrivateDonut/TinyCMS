@@ -37,7 +37,7 @@ class Registration
             exit();
         }
     
-        if (strlen($username) > 3 || strlen($username) > 16) {
+        if (strlen($username) < 3 || strlen($username) > 16) {
             $_SESSION['error'] = "Username must be between 3 and 16 characters long";
             header("Location: /?page=register");
             exit();
@@ -93,26 +93,13 @@ class Registration
         $username = $this->username;
         $email = $this->email;
         $password = $this->password;
-        $password_confirmation = $this->password_confirmation;
         $salt = random_bytes(32);
-        $verifier = $this->calculate_verifier($username, $password, $salt);
+        $global = new GlobalFunctions();
+        $verifier = $global->calculate_verifier($username, $password, $salt);
         $expansion = 2;
         $stmt->execute();
         header("Location: /?page=login");
         $stmt->close();
         $this->connection->close();
-    }
-
-    private function calculate_verifier($username, $password, $salt)
-    {
-        $g = gmp_init(7);
-        $N = gmp_init('894B645E89E1535BBDAD5B8B290650530801B18EBFBF5E8FAB3C82872A3E9BB7', 16);
-        $h1 = sha1(strtoupper($username . ':' . $password), TRUE);
-        $h2 = sha1($salt . $h1, TRUE);
-        $h2 = gmp_import($h2, 1, GMP_LSW_FIRST);
-        $verifier = gmp_powm($g, $h2, $N);
-        $verifier = gmp_export($verifier, 1, GMP_LSW_FIRST);
-        $verifier = str_pad($verifier, 32, chr(0), STR_PAD_RIGHT);
-        return $verifier;
     }
 }

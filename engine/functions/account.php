@@ -53,10 +53,10 @@ class Account
         }
     }
 
-    public function get_donor_points()
+    public function get_account_currency()
     {
         $account = $this->get_account();
-        $stmt = $this->website->prepare("SELECT donor_points FROM users WHERE account_id = ?");
+        $stmt = $this->website->prepare("SELECT vote_points, donor_points FROM users WHERE account_id = ?");
         $stmt->bind_param("i", $account['id']);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -64,24 +64,10 @@ class Account
         $stmt->close();
 
         if ($row) {
-            return $row['donor_points'];
-        } else {
-            return 0;
-        }
-    }
-
-    public function get_vote_points()
-    {
-        $account = $this->get_account();
-        $stmt = $this->website->prepare("SELECT vote_points FROM users WHERE account_id = ?");
-        $stmt->bind_param("i", $account['id']);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $stmt->close();
-
-        if ($row) {
-            return $row['vote_points'];
+            return [
+                'vote_points' => $row['vote_points'],
+                'donor_points' => $row['donor_points']
+            ];
         } else {
             return 0;
         }
@@ -104,51 +90,27 @@ class Account
         }
     }
 
-    private function calculate_verifier($username, $password, $salt)
-    {
-        $g = gmp_init(7);
-        $N = gmp_init('894B645E89E1535BBDAD5B8B290650530801B18EBFBF5E8FAB3C82872A3E9BB7', 16);
-        $h1 = sha1(strtoupper($username . ':' . $password), TRUE);
-        $h2 = sha1($salt . $h1, TRUE);
-        $h2 = gmp_import($h2, 1, GMP_LSW_FIRST);
-        $verifier = gmp_powm($g, $h2, $N);
-        $verifier = gmp_export($verifier, 1, GMP_LSW_FIRST);
-        $verifier = str_pad($verifier, 32, chr(0), STR_PAD_RIGHT);
-        return $verifier;
-    }
-
-    private function get_salt()
+    private function get_password_data()
     {
         $account = $this->get_account();
-        $stmt = $this->connection->prepare("SELECT `salt` FROM account WHERE id = ?");
+        $stmt = $this->connection->prepare("SELECT `salt`, `verifier` FROM account WHERE id = ?");
         $stmt->bind_param("i", $account['id']);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
         $stmt->close();
 
-        return $row['salt'];
-    }
-
-    private function get_verifier()
-    {
-        $account = $this->get_account();
-        $stmt = $this->connection->prepare("SELECT `verifier` FROM account WHERE id = ?");
-        $stmt->bind_param("i", $account['id']);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $stmt->close();
-
-        return $row['verifier'];
+        return $row;
     }
 
     public function change_password($old_password, $new_password)
     {
-        $salt = $this->get_salt();
-        $verifier = $this->get_verifier();
-        $old_verifier = $this->calculate_verifier($this->username, $old_password, $salt);
-        $new_verifier = $this->calculate_verifier($this->username, $new_password, $salt);
+        $salt = $this->get_password_data()['salt'];
+        $verifier = $this->get_password_data()['verifier'];
+        $global = new GlobalFunctions();
+
+        $old_verifier = $global->calculate_verifier($this->username, $old_password, $salt);
+        $new_verifier = $global->calculate_verifier($this->username, $new_password, $salt);
 
         if ($old_verifier == $verifier) {
             $stmt = $this->connection->prepare("UPDATE account SET verifier = ? WHERE id = ?");
@@ -197,4 +159,3 @@ class Account
         return $account['last_login'];
     }
 }
-?>

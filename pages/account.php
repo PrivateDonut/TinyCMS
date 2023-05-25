@@ -39,11 +39,11 @@ if (isset($_POST['change_password'])) {
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="donation-points" class="text-white">Donation Points:</label>
-                                <p class="text-white"><?= $account->get_donor_points(); ?></p>
+                                <p class="text-white"><?= $account->get_account_currency()['donor_points'] ?></p>
                             </div>
                             <div class="col-md-6">
                                 <label for="vote-points" class="text-white">Vote Points:</label>
-                                <p class="text-white"><?= $account->get_vote_points(); ?></p>
+                                <p class="text-white"><?= $account->get_account_currency()['vote_points'] ?></p>
                             </div>
                         </div>
                         <form method="POST">

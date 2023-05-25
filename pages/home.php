@@ -86,9 +86,9 @@ $server = new ServerInfo();
                                 <br />
                                 Rank: <?= $account->get_rank() ?>
                                 <br />
-                                Vote Points: <?= $account->get_vote_points() ?>
+                                Vote Points: <?= $account->get_account_currency()['vote_points'] ?>
                                 <br />
-                                Donation Points: <?= $account->get_donor_points() ?>
+                                Donation Points: <?= $account->get_account_currency()['donor_points'] ?>
                                 <br />
                             <div class="d-flex justify-content-start">
                                 <a href="?page=account" class="btn btn-primary mr-5" style="background-color: #ffd700; color: #36454F;">Account Panel</a>
