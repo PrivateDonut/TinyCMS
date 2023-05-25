@@ -36,6 +36,7 @@ class ServerInfo
 
         return $row['name'];
     }
+
     
 }
 

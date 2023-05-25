@@ -78,11 +78,15 @@ class Store{
         return $cartData;
     }
 
-    public function calculate_total_cost($cart)
+    public function get_item_price($id)
     {
-
+        $stmt = $this->website_connection->prepare("SELECT title, vote_points, donor_points FROM products WHERE item_id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->bind_result($title, $vote_points, $donor_points);
+        $stmt->fetch();
+        $stmt->close();
+        return array($title, $vote_points, $donor_points);
     }
-
-    
 
 }
