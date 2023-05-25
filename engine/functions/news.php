@@ -25,5 +25,6 @@ class news_home {
         $stmt->close();
         return $news;
     }
+    
 }
 ?>

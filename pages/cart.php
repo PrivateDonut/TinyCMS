@@ -3,6 +3,7 @@ $global->check_logged_in();
 $store = new Store();
 $account_id = $_SESSION['account_id'];
 $cart = $store->get_cart($account_id);
+$check = true; 
 
 if (isset($_POST['remove_from_cart'])) {
     $store->remove_from_cart($_POST['id']);
@@ -10,12 +11,23 @@ if (isset($_POST['remove_from_cart'])) {
     header("Location: ?page=cart");
     exit();
 }
+
+if (isset($_POST['check-out'])) {
+    $check = $store->check_cart($account_id);
+}
+
 ?>
 <div class="container">
     <div class="card mt-3 mx-auto" style="max-width: 700px;">
         <div class="card-body custom-card-body">
             <div class="row">
                 <h3 class="custom-card-text text-center">Cart</h3>
+                <!-- Check if account has enough donor points -->
+                <?php if ($check == false) : ?>
+                    <div class="col text-center text-white">
+                        <p>You don't have enough points!</p>
+                    </div>
+                <?php endif; ?>
             </div>
             <hr>
             <div class="row">
@@ -59,7 +71,9 @@ if (isset($_POST['remove_from_cart'])) {
             <div class="row">
                 <div class="col text-center text-white">
                     <p>Total: <?php echo $total; ?> Donor Points</p>
-                    <button class="btn btn-primary">Checkout</button>
+                    <form method="POST">
+                        <input type="submit" name="check-out" value="Check Out" class="btn btn-success">
+                    </form>
                 </div>
             </div>
         </div>

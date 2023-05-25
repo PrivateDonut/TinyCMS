@@ -1,7 +1,11 @@
 <?php
 
-class Store{
+class Store
+{
     private $website_connection;
+    private $soap_username = "test";
+    private $soap_password = "test";
+    private $soap_port = "7878";
 
     public function __construct()
     {
@@ -9,7 +13,7 @@ class Store{
         $this->website_connection = $config->getDatabaseConnection('website');
     }
 
-    
+
     public function get_categories()
     {
         $stmt = $this->website_connection->prepare("SELECT * FROM categories");
@@ -89,4 +93,75 @@ class Store{
         return array($title, $vote_points, $donor_points);
     }
 
+    public function check_cart($user_id)
+    {
+        require_once('engine/configs/db_config.php');
+        $cart = $this->get_cart($user_id);
+        $total = 0;
+        $account = new Account($_SESSION['username']);
+
+        foreach ($cart as $item) {
+            $item_price = $this->get_item_price($item['product_id']);
+            $total += $item_price[1] * $item['quantity'];
+        }
+
+        if ($account->get_account_currency()['donor_points'] <= $total) {
+            echo "You don't have enough points!";
+            return false;
+        }
+
+        $item_ids = array_column($cart, 'product_id');
+        $quantities = array_column($cart, 'quantity');
+        $this->soap($item_ids, $quantities);
+        return true;
+    }
+
+    public function remove_from_cart_all($user_id)
+    {
+        $stmt = $this->website_connection->prepare("DELETE FROM cart WHERE user_id = ?");
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+
+
+
+
+    public function soap($item_ids, $quantities)
+    {
+        // TO DO //
+        /*
+        Move errors into a log file instead of printing them on the screen
+        */
+        $db_host = "127.0.0.1";
+        $soapErrors = [];
+        foreach (array_combine($item_ids, $quantities) as $item_id => $quantity) {
+            $command = 'send items Testing "test" "Body" ' . $item_id . ':' . $quantity;
+            $client = new SoapClient(NULL, array(
+                'location' => "http://$db_host:$this->soap_port/",
+                'uri' => 'urn:TC',
+                'style' => SOAP_RPC,
+                'login' => $this->soap_username,
+                'password' => $this->soap_password,
+            ));
+
+            try {
+                $result = $client->executeCommand(new SoapParam($command, 'command'));
+                if ($result == 0) {
+                    $soapErrors[] = "Failed to execute SOAP command for item id $item_id";
+                }
+            } catch (SoapFault $fault) {
+                $soapErrors[] = "SOAP Fault: (faultcode: {$fault->faultcode}, faultstring: {$fault->faultstring})";
+            }
+        }
+
+        if (empty($soapErrors)) {
+            $this->remove_from_cart_all($_SESSION['account_id']);
+            $session['success_message'] = "Your purchase was successful! You can find your items in your mailbox in-game.";
+            header ("Location: ?page=store");
+        } else {
+            echo "Something went wrong! Errors: " . implode(", ", $soapErrors);
+        }
+    }
 }

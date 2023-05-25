@@ -13,6 +13,26 @@ $items = $store->get_items($category);
 if (isset($_POST['add_to_cart'])) {
     $store->add_to_cart($account->get_id(), $_POST['product_id'], $_POST['quantity']);
 }
+
+if (isset($_SESSION['success_message'])) {
+    echo '<div class="text-center">';
+    echo '<div class="alert alert-dismissible alert-success">';
+    echo '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
+    echo '<strong>Well done!</strong> ' . $_SESSION['success_message'] . '';
+    echo '</div>';
+    echo '</div>';
+    unset($_SESSION['success_message']);
+}
+
+if (isset($_SESSION['error'])) {
+    echo '<div class="text-center">';
+    echo '<div class="alert alert-dismissible alert-danger">';
+    echo '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
+    echo '<strong>Hey there!</strong> ' . $_SESSION['error'] . '';
+    echo '</div>';
+    echo '</div>';
+    unset($_SESSION['error']);
+}
 ?>
 
 <div class="container">
