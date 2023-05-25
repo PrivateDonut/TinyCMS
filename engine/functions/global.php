@@ -1,6 +1,7 @@
 <?php
 
-class GlobalFunctions {
+class GlobalFunctions
+{
 
     private $auth_connection;
     private $website_connection;
@@ -10,6 +11,21 @@ class GlobalFunctions {
         $config = new Configuration();
         $this->auth_connection = $config->getDatabaseConnection('auth');
         $this->website_connection = $config->getDatabaseConnection('website');
+    }
+
+    public function logout()
+    {
+        session_destroy();
+        header("Location: /?page=home");
+        exit();
+    }
+
+    public function check_logged_in()
+    {
+        if (!isset($_SESSION['account_id'])) {
+            header("Location: ?page=login");
+            exit();
+        }
     }
 
     public function calculate_verifier($username, $password, $salt)

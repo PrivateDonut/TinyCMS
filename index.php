@@ -25,6 +25,8 @@ if (!isset($_GET['page'])) {
     }
 }
 
+$global = new GlobalFunctions();
+
 $config_object = new gen_config();
 $config = $config_object->get_config();
 ?>

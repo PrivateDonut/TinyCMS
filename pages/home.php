@@ -33,6 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $login->login();
 }
 
+if(isset($_POST['logout'])) {
+    $global->logout();
+}
+
 $config = new Configuration();
 $newsHome = new news_home();
 $latestNews = $newsHome->get_news();
@@ -92,7 +96,7 @@ $server = new ServerInfo();
                                 <br />
                             <div class="d-flex justify-content-start">
                                 <a href="?page=account" class="btn btn-primary mr-5" style="background-color: #ffd700; color: #36454F;">Account Panel</a>
-                                <form action='/engine/logout.php' method='POST'>
+                                <form  method='POST'>
                                     <button type='submit' class='btn btn-danger' name='logout'>Logout</button>
                                 </form>
                             </div>

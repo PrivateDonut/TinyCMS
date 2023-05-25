@@ -1,9 +1,6 @@
 <?php
-if (isset($_SESSION['username'])) {
-    $account = new Account($_SESSION['username']);
-} else {
-    header("Location: ?page=login");
-}
+
+$global->check_logged_in();
 
 if (isset($_POST['change_password'])) {
     header("Location: ?page=changepassword");

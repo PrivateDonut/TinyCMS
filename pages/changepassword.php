@@ -1,4 +1,5 @@
 <?php
+$global->check_logged_in();
 $account = new Account($_SESSION['username']);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($_POST['new_password'] == $_POST['confirm_password']){  // check if new password matches confirmed password

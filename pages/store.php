@@ -1,4 +1,5 @@
 <?php
+$global->check_logged_in();
 $store = new Store();
 $account = new Account($_SESSION['username']);
 $category = 0;

@@ -1,4 +1,5 @@
 <?php
+$global->check_logged_in();
 $store = new Store();
 $account_id = $_SESSION['account_id'];
 $cart = $store->get_cart($account_id);
