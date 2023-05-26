@@ -61,6 +61,9 @@ $server = new ServerInfo();
                                     <h5 class="card-title custom-card-title" style="margin-bottom: 0;"><?= $news['title'] ?></h5>
                                     <p class="card-text mb-0" style="color: white;">Posted by: <?= $news['author'] ?></p>
                                     <hr style="border-color: white; margin: 10px 0;">
+                                    <?php if($news['thumbnail'] != null) : ?>
+                                        <img src="<?= $news['thumbnail'] ?>" class="card-img-top" alt="...">
+                                    <?php endif; ?>
                                     <div class="card-body custom-card-body">
                                         <p class="card-text" style="color: white;"><?= $news['content'] ?></p>
                                     </div>

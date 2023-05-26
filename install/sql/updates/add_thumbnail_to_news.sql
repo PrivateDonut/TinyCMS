@@ -1,0 +1,2 @@
+ALTER TABLE `news`
+	ADD COLUMN `thumbnail` VARCHAR(100) NULL DEFAULT NULL AFTER `created_at`;
