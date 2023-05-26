@@ -1,0 +1,134 @@
+ul.navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: var(--navbar-bg);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  ul.navbar li {
+    float: left;
+  }
+  
+  ul.navbar li a {
+    display: block;
+    color: #ffd700;
+    text-align: center;
+    font-weight: bold;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  ul.navbar li a:hover {
+    background-color: #333333;
+  }
+
+  .fa, .fas {
+    font-size: 17px;
+}
+
+  nav.navbar.navbar-expand-lg.navbar-dark {
+    background-color: var(--navbar-bg);
+    border-top:1px solid var(--navbar-border);
+    border-bottom:1px solid var(--navbar-border);
+    height:45px;
+  }
+
+  li.nav-item {
+    text-transform: uppercase;
+    display:flex;
+  }
+a.nav-link {
+    color:var(--navbar-text);
+    font-size:17px;
+    font-weight:500;
+    transition:.3s ease-in-out;
+}
+
+a.nav-link:hover {
+    color:white;
+    transition:.3s ease-in-out;
+}
+
+.userbar {
+    display: flex;
+    position: absolute;
+    right: 40px;
+    top: 9px;
+}
+
+.userbar .nav-item {
+    margin: 0rem 0.5rem;
+    list-style-type: none;
+}
+
+button.navbar-toggler {
+    top: -3px;
+    left: 15px;
+    position: relative;
+    border:none;
+}
+
+div#navbarNav {
+    background-color: var(--navbar-bg);
+}
+
+.logo {
+    position: absolute;
+    background-image: url(../images/logo.png);
+    background-size: auto 52px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 130px;
+    height: 33px;
+    transition:.3s ease-in-out;
+    top:5px;
+}
+
+.logo:hover {
+    transform:scale(1.05);
+    transition:.3s ease-in-out;
+}
+
+div#userDropdownMenu {
+    background-color: var(--navbar-bg);
+    color: var(--navbar-text);
+    border: 1px solid var(--navbar-border);
+    border-radius: 0;
+    right: -35px;
+    top: 34px;
+}
+
+a.dropdown-item,
+.nav-link:focus, .nav-link:hover {
+    color: var(--navbar-text) !important;
+    background-color:var(--navbar-bg) !important;
+}
+
+@media (max-width: 991px) {
+    div#navbarNav {
+        top: -5px;
+        position: relative;
+        border: 1px solid var(--navbar-border);
+        padding: 1rem;
+    }
+    .navbar .navbar-nav {
+        flex-direction: column;
+   }
+    .navbar .nav-item {
+        margin-bottom: 10px;
+   }
+   .logo {
+    display:none;
+   }
+   .container {
+    max-width:95%;
+    padding:0;
+   }
+   .button.navbar-toggler .nav-item {
+    padding:1rem;
+   }
+}

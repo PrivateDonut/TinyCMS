@@ -1,0 +1,29 @@
+.custom-card-body {
+    background-color: var(--news-bg);
+    border:1px solid var(--main-border);
+}
+
+.custom-card-title,
+.custom-card-text {
+    color: var(--title-text);
+    font-weight: 500;
+}
+.custom-card-text p {
+    color: white;
+    font-weight: normal;
+}
+
+
+.custom-card {
+    border: none;
+    box-shadow: none;
+}
+
+p.card-text.mb-0 {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-weight:500;
+    font-size:18px;
+    color: var(--title-text) !important;
+}

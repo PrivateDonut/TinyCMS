@@ -1,0 +1,27 @@
+:root {
+    --navbar-bg: #0b0d12;
+    --navbar-text: rgba(255,255,255,.8);
+    --title-text: #f8b706;
+    --page-text: #bbbaba;
+    --background-color: #131212;
+    --main-border: #504137;
+    --navbar-border: #2f3135;
+    --community-border: #454e67;
+    --news-bg: #171616;
+    
+}
+
+* {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.row {
+    overflow-x:hidden;
+}
+
+body {
+    background-color: var(--background-color);
+}
