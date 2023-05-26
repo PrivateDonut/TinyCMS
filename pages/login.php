@@ -25,16 +25,16 @@ if (isset($_SESSION['error'])) {
         <hr style="border-color: white;">
         <div class="row">
             <div class="col-12 col-md-6">
-                <form>
+                <form method="post">
                     <div class="form-group ">
                         <label for="username" class="text-white">Username</label>
-                        <input type="text" class="form-control input-small" id="username" placeholder="Enter username" required>
+                        <input type="text" class="form-control input-small" id="username" name="username" placeholder="Enter username" required>
                     </div>
                     <div class="form-group">
                         <label for="password" class="text-white">Password</label>
-                        <input type="password" class="form-control input-small" id="password" placeholder="Enter password" required>
+                        <input type="password" class="form-control input-small" id="password" name="password" placeholder="Enter password" required>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block d-block mt-2" style="width: 80%;">Login</button>
+                    <button type="submit" name="submit" class="btn btn-primary btn-block d-block mt-2" style="width: 80%;">Login</button>
                 </form>
             </div>
             <div class="col-12 col-md-6 info-section">
