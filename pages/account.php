@@ -8,46 +8,56 @@ if (isset($_POST['change_password'])) {
     exit();
 }
 ?>
-       <div class="card custom-card mx-auto mt-4" style="background-color: #1a1a1a; max-width: 600px;">
-            <div class="card-body">
-                <h2 class="card-title text-center text-white">Account Information</h2>
-                <hr style="border-color: white;">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label for="username" class="text-white">Username:</label>
-                                <p class="text-white"><?= $account->get_username(); ?></p>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="email" class="text-white">Email:</label>
-                                <p class="text-white"><?= $account->get_email(); ?></p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label for="last-login" class="text-white">Last Login:</label>
-                                <p class="text-white"><?= $account->get_last_login(); ?></p>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="account-status" class="text-white">Account Status:</label>
-                                <p class="text-white"><?= $account->is_banned(); ?></p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label for="donation-points" class="text-white">Donation Points:</label>
-                                <p class="text-white"><?= $account->get_account_currency()['donor_points'] ?></p>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="vote-points" class="text-white">Vote Points:</label>
-                                <p class="text-white"><?= $account->get_account_currency()['vote_points'] ?></p>
-                            </div>
-                        </div>
-                        <form method="POST">
-                        <button class="btn btn-primary btn-block d-block mx-auto mt-4" style="width: 50%;" name="change_password">Change Password</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+       
+<div class="custom-container">
+    <div class="custom-card">
+        <div class="title-container">
+            <div class="title">Account Information</div>
+            <div class="subtitle">In this section you'll find basic information about your account</div>
         </div>
+        <div class="info-container">
+            <div class="info-item">
+                <span class="info-label">Username:</span>
+                <span class="info-value"><?= $account->get_username(); ?></span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Email:</span>
+                <span class="info-value"><?= $account->get_email(); ?></span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Last Login:</span>
+                <span class="info-value"><?= $account->get_last_login(); ?></span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Account Status:</span>
+                <span class="info-value"><?= $account->is_banned(); ?></span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Donation Points:</span>
+                <span class="info-value"><?= $account->get_account_currency()['donor_points'] ?></span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Vote Points:</span>
+                <span class="info-value"><?= $account->get_account_currency()['vote_points'] ?></span>
+            </div>
+    
+        </div>
+    </div>
+    <form method="POST">
+    <button class="change-password-button" name="change_password">Change Password</button>
+    </form>
+    
+</div>
+<div class="custom-container">
+    <div class="custom-card">
+        <div class="title-container">
+            <div class="title">Characters</div>
+            <div class="subtitle">In this section you'll find a list of your characters</div>
+        </div>
+        <div class="info-container">
+            <p style="margin-left:40px;color:red;">Will populate this section when backend is finished</p>
+            <p style="margin-left:40px;color:red;">it will look insane, i promise :D </p>
+            <p style="margin-left:40px;color:red;">if it doesnt, i will not do anything kek </p>
+        </div>
+    </div>
+</div>
