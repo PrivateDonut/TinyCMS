@@ -14,14 +14,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
-<div class="card mx-auto mt-4" style="background-color: #1a1a1a; max-width: 600px;">
-    <div class="card-body mb-2">
-        <h2 class="card-title text-center text-white">Change Password</h2>
-        <hr style="border-color: white;">
+<div class="card mx-auto mt-4" style="background-color: var(--boxes-bg); max-width: 600px;">
+    <div class="card-body mb-2" style="border:1px solid var(--main-border);">
+        <h2 class="card-title text-center title" style="margin-top:unset!important;">Change Password</h2>
+        <hr style="border-color: var(--main-border);">
         <div class="row">
             <form method="post" action="/?page=changepassword">
                 <div class="form-group mx-auto">
-                    <label for="old_password" class="text-white">Old Password</label>
+                    <label for="old_password" style="color: var(--page-text);">Old Password</label>
                     <input type="text" class="form-control " id="old_password" name="old_password" placeholder="Enter old password" required>
                 </div>
 
@@ -34,10 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <label for="confirm_password" class="text-white">Confirm New Password</label>
                     <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm new password" required>
                 </div>
-
-
-                <button type="submit" class="btn btn-primary btn-block d-block mt-2 mx-auto" style="width: 30%;">Change Password</button>
             </form>
         </div>
     </div>
+    <button type="submit" class="change-password-button">Change Password</button>
 </div>

@@ -5,7 +5,7 @@
     padding: 20px;
 }
 
-.custom-card {
+.custom-card-acc {
     background-color: #1b1919;
     border: 1px solid #504137;
     padding: 20px;
@@ -65,7 +65,7 @@
 }
 
 @media (max-width:768px) {
-    .custom-card {
+    .custom-card-acc {
         flex-direction:column;
     }
     .title-container {

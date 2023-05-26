@@ -8,9 +8,9 @@ if (isset($_POST['change_password'])) {
     exit();
 }
 ?>
-       
+     
 <div class="custom-container">
-    <div class="custom-card">
+    <div class="custom-card-acc">
         <div class="title-container">
             <div class="title">Account Information</div>
             <div class="subtitle">In this section you'll find basic information about your account</div>
@@ -49,7 +49,7 @@ if (isset($_POST['change_password'])) {
     
 </div>
 <div class="custom-container">
-    <div class="custom-card">
+    <div class="custom-card-acc">
         <div class="title-container">
             <div class="title">Characters</div>
             <div class="subtitle">In this section you'll find a list of your characters</div>
