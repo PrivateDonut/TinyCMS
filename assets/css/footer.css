@@ -1,0 +1,35 @@
+.footer {
+    background-color: var(--background-color);
+    color: #ddd;
+    padding: 20px 0;
+    margin-top: 1.5rem;
+  }
+
+  .footer-title {
+    font-size: 2rem;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 5px #000;
+  }
+
+  .footer-social {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .footer-social a {
+    color: #ddd;
+    margin: 0 15px;
+    font-size: 1.5rem;
+    transition: color 0.3s ease-in-out;
+  }
+
+  .footer-social a:hover {
+    color: var(--title-text);
+  }
+
+  .footer-copy {
+    text-align: center;
+    font-size: 0.875rem;
+  }
