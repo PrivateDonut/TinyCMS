@@ -74,7 +74,6 @@
                   <!-- Dropdown items -->
                   <a class="dropdown-item" href="?page=account">Account</a>
                   <a class="dropdown-item" href="?page=logout">Logout</a>
-                  <a class="dropdown-item" href="#">Item 3</a>
                   <!-- Add more items as needed -->
                </div>
             </li>
