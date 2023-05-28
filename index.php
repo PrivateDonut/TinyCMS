@@ -46,8 +46,7 @@ $config = $config_object->get_config();
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -75,11 +74,26 @@ $config = $config_object->get_config();
     <!-- Banner Ends-->
 
     <!-- Content Starts -->
-    <?php if (file_exists('pages/' . $page . '.php')) {
-        include 'pages/' . $page . '.php';
+    <?php
+    $page = $_GET['page'] ?? 'home'; // Default to home if no page parameter is set
+    $page_parts = explode('/', $page);
+
+    foreach ($page_parts as &$part) {
+        $part = preg_replace('/[^a-z0-9]/i', '', $part);
+    }
+    unset($part);
+
+    $page_path = implode('/', $page_parts) . '.php';
+
+    if (file_exists('pages/' . $page_path)) {
+        include 'pages/' . $page_path;
     } else {
         include 'pages/404.php';
-    } ?>
+    }
+    ?>
+
+
+
     <footer class="footer mt-auto py-3">
         <div class="container">
             <div class="row">
@@ -91,10 +105,8 @@ $config = $config_object->get_config();
     </footer>
     <script type="text/javascript" src="http://cdn.cavernoftime.com/api/tooltip.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-qr6s LL7alrTT0mso5C5PL09dww1cmGhyu/wVa+6h9hV6Z9ABnFsIa3C5V4PEmyxL"
-        crossorigin="anonymous"></script>
-	<script src="assets/js/custom.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-qr6s LL7alrTT0mso5C5PL09dww1cmGhyu/wVa+6h9hV6Z9ABnFsIa3C5V4PEmyxL" crossorigin="anonymous"></script>
+    <script src="assets/js/custom.js"></script>
 </body>
 
 </html>
