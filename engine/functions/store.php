@@ -112,9 +112,18 @@ class Store
 
         $item_ids = array_column($cart, 'product_id');
         $quantities = array_column($cart, 'quantity');
-        $this->soap($item_ids, $quantities);
+
+        $character = isset($_POST['character']) ? $_POST['character'] : null;
+
+        if ($character === null) {
+            echo "Character is not set. Please select a character.";
+            return false;
+        }
+
+        $this->soap($character, $item_ids, $quantities);
         return true;
     }
+
 
     public function remove_from_cart_all($user_id)
     {
@@ -128,16 +137,19 @@ class Store
 
 
 
-    public function soap($item_ids, $quantities)
+    public function soap($character, $item_ids, $quantities)
     {
         // TO DO //
         /*
         Move errors into a log file instead of printing them on the screen
         */
+
+
         $db_host = "127.0.0.1";
         $soapErrors = [];
         foreach (array_combine($item_ids, $quantities) as $item_id => $quantity) {
-            $command = 'send items Testing "test" "Body" ' . $item_id . ':' . $quantity;
+            // $command = 'send items Testing "test" "Body" ' . $item_id . ':' . $quantity;
+            $command = 'send items ' . $character . ' "test" "Body" ' . $item_id . ':' . $quantity;
             $client = new SoapClient(NULL, array(
                 'location' => "http://$db_host:$this->soap_port/",
                 'uri' => 'urn:TC',
@@ -159,7 +171,7 @@ class Store
         if (empty($soapErrors)) {
             $this->remove_from_cart_all($_SESSION['account_id']);
             $session['success_message'] = "Your purchase was successful! You can find your items in your mailbox in-game.";
-            header ("Location: ?page=store");
+            header("Location: ?page=store");
         } else {
             echo "Something went wrong! Errors: " . implode(", ", $soapErrors);
         }
