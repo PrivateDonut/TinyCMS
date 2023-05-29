@@ -13,7 +13,7 @@
 -   **Server Stats**: Detailed server statistics to monitor your server's performance. - More features are being added regularly. Check back often to see what's new!
 
 ## Screenshots of TinyCMS
-![TinyCMS home page](https://i.ibb.co/BKX2LCw/Web-capture-21-5-2023-193641-127-0-0-1.jpg)
+![TinyCMS home page](https://cdn.discordapp.com/attachments/1090276506758025278/1112789142972137632/image.png)
 
 ## Getting Started
 Setting up TinyCMS is quick and easy. 
