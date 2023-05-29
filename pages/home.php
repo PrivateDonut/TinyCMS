@@ -1,151 +1,125 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 <?php
-
-if (isset($_SESSION['success_message'])) {
-    echo '<div class="text-center">';
-    echo '<div class="alert alert-dismissible alert-success">';
-    echo '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
-    echo '<strong>Well done!</strong> ' . $_SESSION['success_message'] . '';
-    echo '</div>';
-    echo '</div>';
-    unset($_SESSION['success_message']);
-}
-
-if (isset($_SESSION['error'])) {
-    echo '<div class="text-center">';
-    echo '<div class="alert alert-dismissible alert-danger">';
-    echo '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
-    echo '<strong>Hey there!</strong> ' . $_SESSION['error'] . '';
-    echo '</div>';
-    echo '</div>';
-    unset($_SESSION['error']);
-}
-
-if (isset($_SESSION['username'])) {
-    $account = new Account($_SESSION['username']);
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    $login = new Login($username, $password);
-    $login->login_checks();
-    $login->login();
-}
-
-if(isset($_POST['logout'])) {
-    $global->logout();
-}
-
-$config = new Configuration();
-$newsHome = new news_home();
-$latestNews = $newsHome->get_news();
-$server = new ServerInfo();
-?>
-
+   if (isset($_SESSION['success_message'])) {
+       echo '<div class="text-center">';
+       echo '<div class="alert alert-dismissible alert-success">';
+       echo '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
+       echo '<strong>Well done!</strong> ' . $_SESSION['success_message'] . '';
+       echo '</div>';
+       echo '</div>';
+       unset($_SESSION['success_message']);
+   }
+   
+   if (isset($_SESSION['error'])) {
+       echo '<div class="text-center">';
+       echo '<div class="alert alert-dismissible alert-danger">';
+       echo '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
+       echo '<strong>Hey there!</strong> ' . $_SESSION['error'] . '';
+       echo '</div>';
+       echo '</div>';
+       unset($_SESSION['error']);
+   }
+   
+   if (isset($_SESSION['username'])) {
+       $account = new Account($_SESSION['username']);
+   }
+   
+   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+       $username = $_POST['username'];
+       $password = $_POST['password'];
+   
+       $login = new Login($username, $password);
+       $login->login_checks();
+       $login->login();
+   }
+   
+   $config = new Configuration();
+   $newsHome = new news_home();
+   $latestNews = $newsHome->get_news();
+   $server = new ServerInfo();
+   ?>
 <div class="container">
-    <h2 class="" style="color: gold;">Latest News</h2>
-    <div class="row">
-        <div class="col-md-8">
-            <div class="row">
-                <?php
-                $newsHome = new news_home();
-                $newsList = $newsHome->get_news();
-
-                foreach ($newsList as $news) :
-                ?>
-                    <div class="col-md-12 mb-2">
-                        <div class="card custom-card">
-                            <div class="card-body custom-card-body d-flex justify-content-between">
-                                <div>
-                                    <h5 class="card-title custom-card-title" style="margin-bottom: 0;"><?= $news['title'] ?></h5>
-                                    <p class="card-text mb-0" style="color: white;">Posted by: <?= $news['author'] ?></p>
-                                    <hr style="border-color: white; margin: 10px 0;">
-                                    <?php if($news['thumbnail'] != null) : ?>
-                                        <img src="<?= $news['thumbnail'] ?>" class="card-img-top" alt="...">
-                                    <?php endif; ?>
-                                    <div class="card-body custom-card-body">
-                                        <p class="card-text" style="color: white;"><?= $news['content'] ?></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
+   <div class="row">
+      <div class="col-md-12 mx-auto">
+         <h2 class="title">
+            <i class="fas fa-newspaper" style="color: var(--title-tex);color: var(--title-tex); font-size: 25px; margin-right: 0.2rem;"></i>
+            Latest News
+         </h2>
+         <?php
+            $newsHome = new news_home();
+            $newsList = $newsHome->get_news();
+            
+            $count = 0;
+            
+            foreach ($newsList as $news) :
+               if ($count % 3 === 0) {
+                  echo '<div class="row">';
+               }
+            ?>
+         <div class="col-md-4 mb-2">
+            <div class="card custom-card">
+               <?php if($news['thumbnail'] != null) : ?>
+               <div class="card-thumbnail">
+                  <img src="<?= $news['thumbnail'] ?>" class="card-img-top" alt="...">
+               </div>
+               <?php endif; ?>
+               <div class="card-body custom-card-body d-flex justify-content-between">
+                  <div style="width:100%;">
+                     <h5 class="card-title custom-card-title text-center"><?= $news['title'] ?></h5>
+                     <hr style="border-color: white; margin: 10px 0;">
+                     <div class="card-body">
+                        <p class="card-text" style="color: white;"><?= $news['content'] ?></p>
+                     </div>
+                  </div>
+               </div>
             </div>
-        </div>
-        <!-- Add pagination support -->
-        <div class="col-md-4">
-            <?php // Check if the user is logged in
-            if (isset($_SESSION['username'])) {
-                // User is logged in, display the "Once logged in" box
-            ?>
-                <div class="col-md-12">
-                    <!-- Logged In Form -->
-                    <div class="card custom-card mb-4">
-                        <div class="card-body custom-card-body">
-                            <h5 class="card-title custom-card-title text-center" style="margin-bottom: 0;">Account Details</h5>
-                            <hr style="border-color: white; margin: 10px 0;">
-                            <p class="" style="color: white;">
-                                Username: <?= $_SESSION['username'] ?>
-                                <br />
-                                Email: <?= $account->get_email() ?>
-                                <br />
-                                Rank: <?= $account->get_rank() ?>
-                                <br />
-                                Vote Points: <?= $account->get_account_currency()['vote_points'] ?>
-                                <br />
-                                Donation Points: <?= $account->get_account_currency()['donor_points'] ?>
-                                <br />
-                            <div class="d-flex justify-content-start">
-                                <a href="?page=account" class="btn btn-primary mr-5" style="background-color: #ffd700; color: #36454F;">Account Panel</a>
-                                <form  method='POST'>
-                                    <button type='submit' class='btn btn-danger' name='logout'>Logout</button>
-                                </form>
-                            </div>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            <?php
-            } else {
-                // User is not logged in, display the "Login" box
-            ?>
-                <div class="col-md-12">
-                    <!-- Login Form -->
-                    <div class="card custom-card mb-4">
-                        <div class="card-body custom-card-body">
-                            <h5 class="card-title custom-card-title" style="margin-bottom: 0;">Login</h5>
-                            <p class="card-text mb-0" style="color: white;">Enter your credentials below</p>
-                            <hr style="border-color: white; margin: 10px 0;">
-                            <form action="" method="post">
-                                <div class="mb-3">
-                                    <input type="text" class="form-control" id="username" name="username" placeholder="Username" />
-                                </div>
-                                <div class="mb-3">
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" />
-                                </div>
-                                <button type="submit" class="btn btn-primary" style="background-color: #ffd700; color: #36454F;">Login</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            <?php
+         </div>
+         <?php
+            $count++;
+            if ($count % 3 === 0) {
+               echo '</div>';
+            }
+            endforeach;
+            
+            if ($count % 3 !== 0) {
+               echo '</div>';
             }
             ?>
-
-            <!-- Information Box -->
-            <div class="card custom-card">
-                <div class="card-body custom-card-body">
-                    <h5 class="card-title custom-card-title text-center" style="margin-bottom: 0;"><?= $server->get_realm_name(); ?></h5>
-                    <hr style="border-color: white; margin: 10px 0;">
-                    <p class="card-text custom-card-text text-center" style="color: white">
-                        <h7 style="color: #ffffff;">Total Online:</h7> <?= $server->get_online_players(); ?><br />
-                        Horde: 45% | Alliance: 65%<br />
-                    </p>
-                </div>
-            </div>
-
-        </div>
-    </div>
+      </div>
+      <!-- Add pagination support -->
+   </div>
+</div>
+<div class="howto-section">
+   <div class="text-center title-connect">HOW TO CONNECT</div>
+   <p class="text-center realmlist">set realmlist logon.tinycms.com</p>
+   <p class="text-center"> <a class="howto-links" href="#">Download Client</a> <span style="color:white;font-size:23px;">|</span> <a class="howto-links" href="#">Connection Guide</a> </p>
+   <p><?php $server->get_realm_name(); ?></p>
+</div>
+<div class="server-status" style="padding: 20px;">
+   <p class="title text-center" style="font-size: 22px;">
+      <i class="fas fa-server" style="top: -3px;position: relative;right: 5px; margin-right: 10px;"></i>Server Status
+   </p>
+</div>
+<div class="server-status-inner mx-auto" style="padding: 20px;">
+   <div class="card-title custom-card-title text-center" style="margin-bottom: 20px; font-size:22px;">
+      <img src="/tinycms/assets/images/wotlk.png" style="width:25px; margin-right: 10px;" alt="">
+      <span><?= $server->get_realm_name(); ?></span>
+   </div>
+   <p class="text-center" style="font-size: 18px;">
+      <i class="fas fa-exclamation-circle" style="font-size: 1.5em; margin-right: 10px;"></i>
+      Currently the realm is <span style="text-transform:uppercase; font-weight: bold;">Online</span>
+   </p>
+</div>
+<div class="community-section">
+   <div class="community-title text-center">become a part of the community</div>
+   <div class="discord-widget text-center">
+      <a href="#">
+      <img src="https://discordapp.com/api/guilds/938237660017872896/widget.png?style=banner2">
+      </a>
+   </div>
+   <div class="community-text text-center">
+      Join our <a href="#" style="color:var(--title-text);">Discord</a> or <a href="#" style="color:var(--title-text);">Community Forum.</a> <br />
+      Remember to familiarize yourself with our <a href="#" style="color:var(--title-text);">Rules & Regulations.</a> <br />
+      Thank you!
+   </div>
 </div>
