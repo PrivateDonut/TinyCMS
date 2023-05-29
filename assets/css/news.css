@@ -1,6 +1,5 @@
 .custom-card-body {
     background-color: var(--news-bg);
-    border:1px solid var(--main-border);
 }
 
 .custom-card-title,
@@ -15,7 +14,7 @@
 
 
 .custom-card {
-    border: none;
+    border:2px solid var(--main-border);
     box-shadow: none;
 }
 
