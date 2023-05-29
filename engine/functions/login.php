@@ -36,6 +36,24 @@ class Login
         return $gm_rank;
     }
 
+
+    // Insert account ID into the website->users table if the account ID isn't found to avoid possibly errors.
+    private function insert_account_id($id)
+    {
+        $stmt = $this->website_connection->prepare("SELECT account_id FROM users WHERE account_id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->bind_result($account_id);
+        $stmt->fetch();
+        $stmt->close();
+        if ($account_id == null) {
+            $stmt = $this->website_connection->prepare("INSERT INTO users (account_id) VALUES (?)");
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $stmt->close();
+        }
+    }
+
     public function login()
     {
         $stmt = $this->auth_connection->prepare("SELECT id, username, verifier, salt FROM account WHERE username = ?");
@@ -49,6 +67,7 @@ class Login
                 $_SESSION['account_id'] = $id;
                 $_SESSION['username'] = $username;
                 $_SESSION['isAdmin'] = $this->get_rank($id);
+                $this->insert_account_id($id); 
                 header("Location: ?page=home");
                 return true;
             } else {
@@ -58,5 +77,6 @@ class Login
             }
         }
     }
+    
 
 }

@@ -120,7 +120,7 @@ class Store
             return false;
         }
 
-        $this->soap($character, $item_ids, $quantities);
+        $this->soap($character, $item_ids, $quantities, $total);
         return true;
     }
 
@@ -133,11 +133,19 @@ class Store
         $stmt->close();
     }
 
+    public function remove_donor_points($user_id, $amount)
+    {
+        $stmt = $this->website_connection->prepare("UPDATE users SET donor_points = donor_points - ? WHERE account_id = ?");
+        $stmt->bind_param("ii", $amount, $user_id);
+        $stmt->execute();
+        $stmt->close();
+    }
 
 
 
 
-    public function soap($character, $item_ids, $quantities)
+
+    public function soap($character, $item_ids, $quantities, $total)
     {
         // TO DO //
         /*
@@ -148,7 +156,6 @@ class Store
         $db_host = "127.0.0.1";
         $soapErrors = [];
         foreach (array_combine($item_ids, $quantities) as $item_id => $quantity) {
-            // $command = 'send items Testing "test" "Body" ' . $item_id . ':' . $quantity;
             $command = 'send items ' . $character . ' "test" "Body" ' . $item_id . ':' . $quantity;
             $client = new SoapClient(NULL, array(
                 'location' => "http://$db_host:$this->soap_port/",
@@ -170,6 +177,7 @@ class Store
 
         if (empty($soapErrors)) {
             $this->remove_from_cart_all($_SESSION['account_id']);
+            $this->remove_donor_points($_SESSION['account_id'], $total);
             $session['success_message'] = "Your purchase was successful! You can find your items in your mailbox in-game.";
             header("Location: ?page=store");
         } else {

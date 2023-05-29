@@ -110,11 +110,23 @@
       <img src="assets/images/banner.jpg" alt="" class="banner" />
       <!-- Banner Ends-->
       <!-- Content Starts -->
-      <?php if (file_exists('pages/' . $page . '.php')) {
-         include 'pages/' . $page . '.php';
+      <?php
+         $page = $_GET['page'] ?? 'home'; // Default to home if no page parameter is set
+         $page_parts = explode('/', $page);
+         
+         foreach ($page_parts as &$part) {
+             $part = preg_replace('/[^a-z0-9]/i', '', $part);
+         }
+         unset($part);
+         
+         $page_path = implode('/', $page_parts) . '.php';
+         
+         if (file_exists('pages/' . $page_path)) {
+             include 'pages/' . $page_path;
          } else {
-         include 'pages/404.php';
-         } ?>
+             include 'pages/404.php';
+         }
+         ?>
       <footer class="footer">
          <div class="container">
             <div class="footer-title text-center">
