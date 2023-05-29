@@ -41,33 +41,50 @@
 <div class="container">
    <div class="row">
       <div class="col-md-12 mx-auto">
-         <h2 class="title"><i class="fas fa-newspaper" style="color: var(--title-tex);color: var(--title-tex); font-size: 25px; margin-right: 0.2rem;"></i>Latest News</h2>
-         <div class="row">
-            <?php
-               $newsHome = new news_home();
-               $newsList = $newsHome->get_news();
-               
-               foreach ($newsList as $news) :
-               ?>
-            <div class="col-md-12 mb-2">
-               <div class="card custom-card">
-                  <div class="card-body custom-card-body d-flex justify-content-between">
-                     <div style="width:100%;">
-                        <h5 class="card-title custom-card-title"><?= $news['title'] ?></h5>
-                        <p class="card-text mb-0" style="color: white;">Posted by: <?= $news['author'] ?></p>
-                        <hr style="border-color: white; margin: 10px 0;">
-                        <?php if($news['thumbnail'] != null) : ?>
-                                        <img src="<?= $news['thumbnail'] ?>" class="card-img-top" alt="...">
-                                    <?php endif; ?>
-                        <div class="card-body">
-                           <p class="card-text" style="color: white;"><?= $news['content'] ?></p>
-                        </div>
+         <h2 class="title">
+            <i class="fas fa-newspaper" style="color: var(--title-tex);color: var(--title-tex); font-size: 25px; margin-right: 0.2rem;"></i>
+            Latest News
+         </h2>
+         <?php
+            $newsHome = new news_home();
+            $newsList = $newsHome->get_news();
+            
+            $count = 0;
+            
+            foreach ($newsList as $news) :
+               if ($count % 3 === 0) {
+                  echo '<div class="row">';
+               }
+            ?>
+         <div class="col-md-4 mb-2">
+            <div class="card custom-card">
+               <?php if($news['thumbnail'] != null) : ?>
+               <div class="card-thumbnail">
+                  <img src="<?= $news['thumbnail'] ?>" class="card-img-top" alt="...">
+               </div>
+               <?php endif; ?>
+               <div class="card-body custom-card-body d-flex justify-content-between">
+                  <div style="width:100%;">
+                     <h5 class="card-title custom-card-title text-center"><?= $news['title'] ?></h5>
+                     <hr style="border-color: white; margin: 10px 0;">
+                     <div class="card-body">
+                        <p class="card-text" style="color: white;"><?= $news['content'] ?></p>
                      </div>
                   </div>
                </div>
             </div>
-            <?php endforeach; ?>
          </div>
+         <?php
+            $count++;
+            if ($count % 3 === 0) {
+               echo '</div>';
+            }
+            endforeach;
+            
+            if ($count % 3 !== 0) {
+               echo '</div>';
+            }
+            ?>
       </div>
       <!-- Add pagination support -->
    </div>
@@ -78,19 +95,19 @@
    <p class="text-center"> <a class="howto-links" href="#">Download Client</a> <span style="color:white;font-size:23px;">|</span> <a class="howto-links" href="#">Connection Guide</a> </p>
    <p><?php $server->get_realm_name(); ?></p>
 </div>
-<div class="server-status">
-   <p class="title text-center"><i class="fas fa-server" style="top: -3px;position: relative;right: 5px;"></i>Server Status</p>
+<div class="server-status" style="padding: 20px;">
+   <p class="title text-center" style="font-size: 22px;">
+      <i class="fas fa-server" style="top: -3px;position: relative;right: 5px; margin-right: 10px;"></i>Server Status
+   </p>
 </div>
-<div class="server-status-inner mx-auto">
-   <div class="card-title custom-card-title text-center" style="margin-bottom: 0; font-size:20px;">
-      <img src="/tinycms/assets/images/wotlk.png" style="width:25px;" alt="">
+<div class="server-status-inner mx-auto" style="padding: 20px;">
+   <div class="card-title custom-card-title text-center" style="margin-bottom: 20px; font-size:22px;">
+      <img src="/tinycms/assets/images/wotlk.png" style="width:25px; margin-right: 10px;" alt="">
       <span><?= $server->get_realm_name(); ?></span>
    </div>
-   <p class="text-center">
-      <svg style="top:4px;margin-top:1rem;" class="svg-inline--fa fa-exclamation-circle fa-w-16" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="exclamation-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
-         <path fill="currentColor" d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"></path>
-      </svg>
-      Currently the realm is <span style="text-transform:uppercase;">Online</span>
+   <p class="text-center" style="font-size: 18px;">
+      <i class="fas fa-exclamation-circle" style="font-size: 1.5em; margin-right: 10px;"></i>
+      Currently the realm is <span style="text-transform:uppercase; font-weight: bold;">Online</span>
    </p>
 </div>
 <div class="community-section">
