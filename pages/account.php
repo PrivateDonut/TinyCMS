@@ -1,12 +1,12 @@
 <?php
-   $global->check_logged_in();
-   $account = new Account($_SESSION['username']);
-   
-   if (isset($_POST['change_password'])) {
-       header("Location: ?page=changepassword");
-       exit();
-   }
-   ?>
+$global->check_logged_in();
+$account = new Account($_SESSION['username']);
+
+if (isset($_POST['change_password'])) {
+   header("Location: ?page=changepassword");
+   exit();
+}
+?>
 <div class="custom-container">
    <form method="POST">
       <button class="change-password-button" style="margin-bottom:20px;" name="change_password">Change Password</button>
@@ -51,9 +51,25 @@
          <div class="subtitle">In this section you'll find a list of your characters</div>
       </div>
       <div class="info-container">
-         <p style="margin-left:40px;color:red;">Will populate this section when backend is finished</p>
-         <p style="margin-left:40px;color:red;">it will look insane, i promise :D </p>
-         <p style="margin-left:40px;color:red;">if it doesnt, i will not do anything kek </p>
+         <?php
+         $character = new Character();
+         $characters = $character->get_characters($_SESSION['account_id']);
+
+         foreach ($characters as $character) {
+         ?>
+            <div class="character-item">
+               <div class="character-image">
+               <img src="assets/images/race/<?= $character['race']; ?>.png" alt="<?= $character['race']; ?>">
+                  <img src="assets/images/class/<?= $character['class']; ?>.png" alt="<?= $character['class']; ?>">
+               </div>
+               <div class="character-info">
+                  <div class="character-name"><?= $character['name']; ?></div>
+                  <div class="character-level"><?= $character['level']; ?></div>
+               </div>
+            </div>
+         <?php
+         }
+         ?>
       </div>
    </div>
 </div>
