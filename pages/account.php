@@ -48,28 +48,29 @@ if (isset($_POST['change_password'])) {
    <div class="custom-card-acc">
       <div class="title-container">
          <div class="title">Characters</div>
-         <div class="subtitle">In this section you'll find a list of your characters</div>
+         <div class="subtitle">In this section, you'll find a list of your characters</div>
       </div>
       <div class="info-container">
          <?php
-         $character = new Character();
-         $characters = $character->get_characters($_SESSION['account_id']);
-
-         foreach ($characters as $character) {
-         ?>
-            <div class="character-item">
-               <div class="character-image">
+            $character = new Character();
+            $characters = $character->get_characters($_SESSION['account_id']);
+            foreach ($characters as $character) {
+            ?>
+         <div class="character-item">
+            <div class="character-image">
                <img src="assets/images/race/<?= $character['race']; ?>.png" alt="<?= $character['race']; ?>">
-                  <img src="assets/images/class/<?= $character['class']; ?>.png" alt="<?= $character['class']; ?>">
-               </div>
-               <div class="character-info">
-                  <div class="character-name"><?= $character['name']; ?></div>
-                  <div class="character-level"><?= $character['level']; ?></div>
-               </div>
+               <img src="assets/images/class/<?= $character['class']; ?>.png" alt="<?= $character['class']; ?>">
             </div>
+            <div class="character-info">
+               <div class="character-name" data-class-id="<?= $character['class']; ?>">
+                  <?= $character['name']; ?>
+               </div>
+               <div class="character-level">Level <?= $character['level']; ?></div>
+            </div>
+         </div>
          <?php
-         }
-         ?>
+            }
+            ?>
       </div>
    </div>
 </div>

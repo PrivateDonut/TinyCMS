@@ -64,6 +64,97 @@
 
 }
 
+.character-item {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom:.5rem;
+ }
+ 
+ .character-item:nth-child(1) {
+    margin-top:1rem;
+ }
+ 
+ .character-image img {
+    width: 30px;
+    height: 30px;
+ }
+ 
+.character-image img:nth-child(1) {
+    margin-left:3rem;
+}
+
+ .character-name {
+    font-weight: bold;
+    color:white;
+    width:100px;
+    text-align:center;
+ }
+ 
+ .character-level {
+    color: white;
+    float:right;
+    text-align:right;
+    width:100px;
+ }
+ 
+ .character-info {
+    display:inherit;
+ }
+ .character-name[data-class-id="1"] {
+    color: #C79C6E; /* Warrior color */
+}
+
+.character-name[data-class-id="2"] {
+    color: #F58CBA; /* Paladin color */
+}
+
+.character-name[data-class-id="3"] {
+    color: #ABD473; /* Hunter color */
+}
+
+.character-name[data-class-id="4"] {
+    color: #FFF569; /* Rogue color */
+}
+
+.character-name[data-class-id="5"] {
+    color: #FFFFFF; /* Priest color */
+}
+
+.character-name[data-class-id="6"] {
+    color: #C41F3B; /* Death Knight color */
+}
+
+.character-name[data-class-id="7"] {
+    color: #0070DE; /* Shaman color */
+}
+
+.character-name[data-class-id="8"] {
+    color: #40C7EB; /* Mage color */
+}
+
+.character-name[data-class-id="9"] {
+    color: #8787ED; /* Warlock color */
+}
+
+.character-name[data-class-id="10"] {
+    color: #00FF96; /* Monk color */
+}
+
+.character-name[data-class-id="11"] {
+    color: #FF7D0A; /* Druid color */
+}
+
+.character-name[data-class-id="12"] {
+    color: #A330C9; /* Demon Hunter color */
+}
+
+/* Default color for classes not listed */
+.character-name {
+    color: #FFFFFF;
+}
+
+
 @media (max-width:768px) {
     .custom-card-acc {
         flex-direction:column;
@@ -82,5 +173,13 @@
     }
     .info-container {
         margin-top:20px;
+    }
+    .character-item {
+        gap:30px !important;
+        display: flex;
+        justify-content: center;
+    }
+    .character-image img:nth-child(1) {
+        margin-left:.5rem;
     }
 }
