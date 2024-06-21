@@ -2,15 +2,13 @@
 
 class GlobalFunctions
 {
-
     private $auth_connection;
     private $website_connection;
 
-    public function __construct()
-    {
-        $config = new Configuration();
-        $this->auth_connection = $config->getDatabaseConnection('auth');
-        $this->website_connection = $config->getDatabaseConnection('website');
+    public function __construct() {
+        $database = new Database();
+        $this->auth_connection = $database->getConnection('auth');
+        $this->website_connection = $database->getConnection('website');
     }
 
     public function logout()
@@ -41,3 +39,4 @@ class GlobalFunctions
         return $verifier;
     }
 }
+?>

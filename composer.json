@@ -1,0 +1,19 @@
+{
+    "name": "privatedonut/tinycms",
+    "description": "A World of Warcraft Content Management System",
+    "type": "project",
+    "require": {
+        "catfan/medoo": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Privatedonut\\Tinycms\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "PrivateDonut"
+        }
+    ],
+    "minimum-stability": "stable"
+}

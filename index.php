@@ -1,35 +1,41 @@
 <?php
-   // Redirect to install page if install.lock is not found.
-   if (!file_exists('engine/install.lock')) {
-       header('Location: install');
-       exit;
-   }
-   if (!isset($_SESSION)) {
-       session_start();
-   }
-   foreach (glob("engine/functions/*.php") as $filename) {
-       require_once $filename;
-   }
-   
-   foreach (glob("engine/configs/*.php") as $filename) {
-       require_once $filename;
-   }
-   
-   if (!isset($_GET['page'])) {
-       $page = 'home';
-   } else {
-       if (preg_match('/[^a-zA-Z]/', $_GET['page'])) {
-           $page = 'home';
-       } else {
-           $page = $_GET['page'];
-       }
-   }
-   
-   $global = new GlobalFunctions();
-   
-   $config_object = new gen_config();
-   $config = $config_object->get_config();
-   ?>
+// Define the base directory
+define('BASE_DIR', __DIR__);
+
+// Include configuration
+
+// Redirect to install page if install.lock is not found.
+if (!file_exists(BASE_DIR . '/engine/install.lock')) {
+    header('Location: install');
+    exit();
+}
+
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+// Include functions
+foreach (glob(BASE_DIR . "/engine/functions/*.php") as $filename) {
+    require_once $filename;
+}
+
+
+
+if (!isset($_GET['page'])) {
+    $page = 'home';
+} else {
+    if (preg_match('/[^a-zA-Z]/', $_GET['page'])) {
+        $page = 'home';
+    } else {
+        $page = $_GET['page'];
+    }
+}
+
+$global = new GlobalFunctions();
+
+$config_object = new gen_config();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
    <head>

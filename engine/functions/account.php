@@ -3,126 +3,90 @@
 class Account
 {
     private $username;
-    private $connection;
-    private $website;
+    private $auth_connection;
+    private $website_connection;
 
-    public function __construct($username)
-    {
-        $this->username = $username;
-        $config = new Configuration();
-        $this->connection = $config->getDatabaseConnection('auth');
-        $this->website = $config->getDatabaseConnection('website');
+    public function __construct() {
+        $database = new Database();
+        $this->auth_connection = $database->getConnection('auth');
+        $this->website_connection = $database->getConnection('website');
     }
 
     private function get_account()
     {
-        $stmt = $this->connection->prepare("SELECT id, username, email, joindate, last_ip, last_login  FROM account WHERE username = ?");
-        $stmt->bind_param("s", $this->username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        while ($row = $result->fetch_assoc()) {
-            $account = array(
-                "id" => $row['id'],
-                "username" => $row['username'],
-                "email" => $row['email'],
-                "joindate" => $row['joindate'],
-                "last_ip" => $row['last_ip'],
-                "last_login" => $row['last_login']
-            );
+        $account = $this->auth_connection->get('account', [
+            'id', 'username', 'email', 'joindate', 'last_ip', 'last_login'
+        ], [
+            'username' => $this->username
+        ]);
 
-            return $account;
-        }
-        $stmt->close();
+        return $account;
     }
 
     public function get_rank()
     {
         $account = $this->get_account();
-        $stmt = $this->website->prepare("SELECT access_level FROM access WHERE account_id = ?");
-        $stmt->bind_param("i", $account['id']);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $stmt->close();
+        $rank = $this->website_connection->get('access', 'access_level', [
+            'account_id' => $account['id']
+        ]);
 
-        if ($row) {
-            return $row['access_level'];
-        } else {
-            // return 0 if no rank is found
-            return 'Player';
-        }
+        return $rank ? $rank : 'Player';
     }
 
     public function get_account_currency()
     {
         $account = $this->get_account();
-        $stmt = $this->website->prepare("SELECT vote_points, donor_points FROM users WHERE account_id = ?");
-        $stmt->bind_param("i", $account['id']);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $stmt->close();
+        $currency = $this->website_connection->get('users', [
+            'vote_points', 'donor_points'
+        ], [
+            'account_id' => $account['id']
+        ]);
 
-        if ($row) {
-            return [
-                'vote_points' => $row['vote_points'],
-                'donor_points' => $row['donor_points']
-            ];
-        } else {
-            return 0;
-        }
+        return $currency ? $currency : 0;
     }
 
     public function is_banned()
     {
         $account = $this->get_account();
-        $stmt = $this->connection->prepare("SELECT `active` FROM account_banned WHERE id = ?");
-        $stmt->bind_param("i", $account['id']);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $stmt->close();
+        $banned = $this->auth_connection->get('account_banned', 'active', [
+            'id' => $account['id']
+        ]);
 
-        if ($row) {
-            return "Banned";
-        } else {
-            return "Good standing";
-        }
+        return $banned ? 'Banned' : 'Good standing';
     }
 
     private function get_password_data()
     {
         $account = $this->get_account();
-        $stmt = $this->connection->prepare("SELECT `salt`, `verifier` FROM account WHERE id = ?");
-        $stmt->bind_param("i", $account['id']);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $stmt->close();
-
-        return $row;
+        return $this->auth_connection->get('account', [
+            'salt', 'verifier'
+        ], [
+            'id' => $account['id']
+        ]);
     }
 
     public function change_password($old_password, $new_password)
     {
-        $salt = $this->get_password_data()['salt'];
-        $verifier = $this->get_password_data()['verifier'];
+        $password_data = $this->get_password_data();
+        $salt = $password_data['salt'];
+        $verifier = $password_data['verifier'];
+
         $global = new GlobalFunctions();
 
         $old_verifier = $global->calculate_verifier($this->username, $old_password, $salt);
         $new_verifier = $global->calculate_verifier($this->username, $new_password, $salt);
 
         if ($old_verifier == $verifier) {
-            $stmt = $this->connection->prepare("UPDATE account SET verifier = ? WHERE id = ?");
-            $stmt->bind_param("si", $new_verifier, $this->get_id());
-            $stmt->execute();
-            $stmt->close();
+            $this->auth_connection->update('account', [
+                'verifier' => $new_verifier
+            ], [
+                'id' => $this->get_id()
+            ]);
             return true;
         } else {
             return false;
         }
     }
-    
 
     public function get_id()
     {
@@ -159,3 +123,4 @@ class Account
         return $account['last_login'];
     }
 }
+?>

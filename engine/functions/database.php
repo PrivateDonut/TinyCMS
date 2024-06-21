@@ -1,61 +1,43 @@
 <!-- 
 - Made By : PrivateDonut
 - Project Name : TinyCMS
-- Website : https://privatedonut.com
+- Website : https://wowemulation.com
 -->
 
 <?php
-require_once __DIR__ . '/../configs/db_config.php';
+require_once BASE_DIR . '/vendor/autoload.php';
+require_once BASE_DIR . '/engine/configs/db_config.php';
 
-class DatabaseConnection
-{
-    private $host;
-    private $username;
-    private $password;
-    private $database;
+use Medoo\Medoo;
 
-    public function __construct($host, $username, $password, $database)
-    {
-        $this->host = $host;
-        $this->username = $username;
-        $this->password = $password;
-        $this->database = $database;
+class Database {
+    private $instances = [];
+    private $configuration;
+
+    public function __construct() {
+        $this->configuration = new Configuration();
     }
 
-    public function connect()
-    {
-        try {
-            $connection = mysqli_connect($this->host, $this->username, $this->password, $this->database);
-            if (!$connection) {
-                throw new Exception("Connection failed: " . mysqli_connect_error());
+    public function getConnection($name) {
+        $dbConfig = $this->configuration->get_config('db');
+        // echo "Config array keys: " . implode(", ", array_keys($dbConfig)) . "<br>"; // Debug statement
+
+        if (!isset($this->instances[$name])) {
+            if (!$dbConfig) {
+                throw new Exception("Configuration not loaded properly. Config is null.");
             }
-            return $connection;
-        } catch (Exception $e) {
-            die("Connection failed: " . $e->getMessage());
+            // echo "Loading configuration for '$name'...Config array keys: " . implode(", ", array_keys($dbConfig)) . "<br>"; // Debug statement
+            if (isset($dbConfig[$name])) {
+                $this->instances[$name] = new Medoo($dbConfig[$name]);
+            } else {
+                throw new Exception("Database configuration for '$name' not found.");
+            }
         }
-    }
-}
-
-class Configuration
-{
-    private $databases;
-
-    public function __construct()
-    {
-        global $db_host, $db_username, $db_password, $db_auth, $db_characters, $db_website;
-        $this->databases = array(
-            'auth' => new DatabaseConnection($db_host, $db_username, $db_password, $db_auth),
-            'website' => new DatabaseConnection($db_host, $db_username, $db_password, $db_website),
-            'characters' => new DatabaseConnection($db_host, $db_username, $db_password, $db_characters)
-        );
-    }
-
-    public function getDatabaseConnection($name)
-    {
-        if (isset($this->databases[$name])) {
-            return $this->databases[$name]->connect();
-        }
-        return null;
+        return $this->instances[$name];
     }
 }
 ?>
+
+
+
+

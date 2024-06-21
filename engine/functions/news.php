@@ -1,32 +1,27 @@
-<?php 
+<?php
 
 class news_home {
-    private $connection;
+    private $website_connection;
 
     public function __construct() {
-        $config = new Configuration();
-        $this->connection = $config->getDatabaseConnection('website');
+        $database = new Database();
+        $this->website_connection = $database->getConnection('website');
     }
 
     public function get_news() {
-        $stmt = $this->connection->prepare("SELECT id, title, content, author, created_at, thumbnail FROM news ORDER BY id DESC LIMIT 4");
-        $stmt->execute();
-        $stmt->bind_result($id, $title, $content, $author, $created_at, $thumbnail);
-        $news = array();
-        while ($stmt->fetch()) {
-            $news[] = array(
-                'id' => $id,
-                'title' => $title,
-                'content' => $content,
-                'author' => $author,
-                'date' => $created_at,
-                'thumbnail' => $thumbnail  // Include the thumbnail field in the news array
-            );
+        $news = $this->website_connection->select('news', [
+            'id', 'title', 'content', 'author', 'created_at', 'thumbnail'
+        ], [
+            'ORDER' => ['id' => 'DESC'],
+            'LIMIT' => 4
+        ]);
+
+        // Optionally format the date if needed
+        foreach ($news as &$item) {
+            $item['date'] = $item['created_at']; // If you need to format the date, you can do it here
         }
-        $stmt->close();
+
         return $news;
     }
-    
-    
 }
 ?>

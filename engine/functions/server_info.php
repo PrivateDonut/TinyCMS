@@ -8,36 +8,24 @@ class ServerInfo
 
     public function __construct()
     {
-        $config = new Configuration();
-        $this->website_connection = $config->getDatabaseConnection('website');
-        $this->characters_connection = $config->getDatabaseConnection('characters');
-        $this->auth_connection = $config->getDatabaseConnection('auth');
-
+        $database = new Database();
+        $this->auth_connection = $database->getConnection('auth');
+        $this->website_connection = $database->getConnection('website');
+        $this->characters_connection = $database->getConnection('characters');
     }
 
     public function get_online_players()
     {
-        $stmt = $this->characters_connection->prepare("SELECT COUNT(*) FROM characters WHERE online = 1");
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $stmt->close();
-
-        return $row['COUNT(*)'];
+        return $this->characters_connection->count('characters', [
+            'online' => 1
+        ]);
     }
-    
+
     public function get_realm_name()
     {
-        $stmt = $this->auth_connection->prepare("SELECT name FROM realmlist WHERE id = 1");
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $stmt->close();
-
-        return $row['name'];
+        return $this->auth_connection->get('realmlist', 'name', [
+            'id' => 1
+        ]);
     }
-
-    
 }
-
 ?>
