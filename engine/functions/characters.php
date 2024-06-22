@@ -6,34 +6,21 @@ class Character
 
     public function __construct()
     {
-        $config = new Configuration();
-        $this->character_connection = $config->getDatabaseConnection('characters');
+        $database = new Database();
+        $this->character_connection = $database->getConnection('characters');
     }
 
     public function get_characters($account_id)
     {
-        $stmt = $this->character_connection->prepare("SELECT `guid`, `name`, `race`, `class`, `gender`, `level` FROM characters WHERE ACCOUNT=?");
-        $stmt->bind_param("i", $account_id);
-        $stmt->execute();
-        $stmt->bind_result($guid, $name, $race, $class, $gender, $level);
-        
-        $characters = array();
-        
-        while ($stmt->fetch()) {
-            $character = array(
-                'guid' => $guid,
-                'name' => $name,
-                'race' => $race,
-                'class' => $class,
-                'gender' => $gender,
-                'level' => $level
-            );
-            
-            $characters[] = $character;
-        }
-        
+        $characters = $this->character_connection->select('characters', [
+            'guid', 'name', 'race', 'class', 'gender', 'level'
+        ], [
+            'ACCOUNT' => $account_id
+        ]);
+    
         return $characters;
     }
+    
     
 }
 

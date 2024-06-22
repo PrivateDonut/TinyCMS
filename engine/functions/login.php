@@ -9,11 +9,11 @@ class Login
 
     public function __construct($username, $password)
     {
+        $database = new Database();
         $this->username = $username;
         $this->password = $password;
-        $config = new Configuration();
-        $this->auth_connection = $config->getDatabaseConnection('auth');
-        $this->website_connection = $config->getDatabaseConnection('website');
+        $this->auth_connection = $database->getConnection('auth');
+        $this->website_connection = $database->getConnection('website');
     }
 
     public function login_checks()
@@ -24,50 +24,41 @@ class Login
             return false;
         }
     }
-
     private function get_rank($id)
     {
-        $stmt = $this->website_connection->prepare("SELECT access_level FROM access WHERE account_id = ?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $stmt->bind_result($gm_rank);
-        $stmt->fetch();
-        $stmt->close();
+        $gm_rank = $this->website_connection->get('access', 'access_level', ['account_id' => $id]);
         return $gm_rank;
     }
-
-
+    
     // Insert account ID into the website->users table if the account ID isn't found to avoid possibly errors.
     private function insert_account_id($id)
     {
-        $stmt = $this->website_connection->prepare("SELECT account_id FROM users WHERE account_id = ?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $stmt->bind_result($account_id);
-        $stmt->fetch();
-        $stmt->close();
-        if ($account_id == null) {
-            $stmt = $this->website_connection->prepare("INSERT INTO users (account_id) VALUES (?)");
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-            $stmt->close();
+        // Check if account_id exists
+        $account_id = $this->website_connection->get('users', 'account_id', ['account_id' => $id]);
+    
+        // If account_id doesn't exist, insert it
+        if ($account_id === null) {
+            $this->website_connection->insert('users', ['account_id' => $id]);
         }
     }
-
+    
     public function login()
     {
-        $stmt = $this->auth_connection->prepare("SELECT id, username, verifier, salt FROM account WHERE username = ?");
-        $stmt->bind_param("s", $this->username);
-        $stmt->execute();
-        $stmt->bind_result($id, $username, $verifier, $salt);
-        if ($stmt->fetch()) {
+        // Fetch account details
+        $account = $this->auth_connection->get('account', [
+            'id', 'username', 'verifier', 'salt'
+        ], [
+            'username' => $this->username
+        ]);
+    
+        if ($account) {
             $global = new GlobalFunctions();
-            $check_verifier = $global->calculate_verifier($username, $this->password, $salt);
-            if ($check_verifier == $verifier) {
-                $_SESSION['account_id'] = $id;
-                $_SESSION['username'] = $username;
-                $_SESSION['isAdmin'] = $this->get_rank($id);
-                $this->insert_account_id($id); 
+            $check_verifier = $global->calculate_verifier($account['username'], $this->password, $account['salt']);
+            if ($check_verifier == $account['verifier']) {
+                $_SESSION['account_id'] = $account['id'];
+                $_SESSION['username'] = $account['username'];
+                $_SESSION['isAdmin'] = $this->get_rank($account['id']);
+                $this->insert_account_id($account['id']); 
                 header("Location: ?page=home");
                 return true;
             } else {
@@ -75,8 +66,13 @@ class Login
                 header("Location: ?page=login");
                 return false;
             }
+        } else {
+            $_SESSION['error'] = "User not found.";
+            header("Location: ?page=login");
+            return false;
         }
     }
+    
     
 
 }

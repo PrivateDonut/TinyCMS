@@ -6,7 +6,8 @@ class Account
     private $auth_connection;
     private $website_connection;
 
-    public function __construct() {
+    public function __construct($username) {
+        $this->username = $username;
         $database = new Database();
         $this->auth_connection = $database->getConnection('auth');
         $this->website_connection = $database->getConnection('website');
@@ -14,13 +15,11 @@ class Account
 
     private function get_account()
     {
-        $account = $this->auth_connection->get('account', [
+        return $this->auth_connection->get('account', [
             'id', 'username', 'email', 'joindate', 'last_ip', 'last_login'
         ], [
             'username' => $this->username
         ]);
-
-        return $account;
     }
 
     public function get_rank()
@@ -70,12 +69,12 @@ class Account
         $password_data = $this->get_password_data();
         $salt = $password_data['salt'];
         $verifier = $password_data['verifier'];
-
+    
         $global = new GlobalFunctions();
-
+    
         $old_verifier = $global->calculate_verifier($this->username, $old_password, $salt);
         $new_verifier = $global->calculate_verifier($this->username, $new_password, $salt);
-
+    
         if ($old_verifier == $verifier) {
             $this->auth_connection->update('account', [
                 'verifier' => $new_verifier

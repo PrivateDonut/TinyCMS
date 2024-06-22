@@ -44,11 +44,11 @@ if (isset($_SESSION['error'])) {
                     <div class="list-group">
                         <h2 class="custom-card-text mb-2">Store</h2>
                         <a href="?page=cart" class="list-group-item list-group-item-action">View Cart</a>
-                        <?php while ($row = $categories->fetch_assoc()) : ?>
+                        <?php foreach ($categories as $row) : ?>
                             <a href="?page=store&category=<?= $row['id'] ?>" class="list-group-item list-group-item-action">
                                 <?= $row['title'] ?>
                             </a>
-                        <?php endwhile; ?>
+                        <?php endforeach; ?>
                     </div>
                 </div>
 
@@ -65,7 +65,7 @@ if (isset($_SESSION['error'])) {
                             </tr>
                         </thead>
                         <tbody class="text-white">
-                            <?php while ($row = $items->fetch_assoc()) : ?>
+                            <?php foreach ($items as $row) : ?>
                                 <tr>
                                     <td>
                                         <a href="http://wotlk.cavernoftime.com/item=<?= $row['item_id'] ?>" class="item">
@@ -82,7 +82,7 @@ if (isset($_SESSION['error'])) {
                                         </form>
                                     </td>
                                 </tr>
-                            <?php endwhile; ?>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
