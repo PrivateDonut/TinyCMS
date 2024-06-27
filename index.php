@@ -6,8 +6,9 @@ define('BASE_DIR', __DIR__);
 
 // Redirect to install page if install.lock is not found.
 if (!file_exists(BASE_DIR . '/engine/install.lock')) {
-    header('Location: install');
-    exit();
+   $installUrl = "install/";
+   header("Location: $installUrl");
+   exit();
 }
 
 if (!isset($_SESSION)) {
