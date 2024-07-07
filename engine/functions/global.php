@@ -5,7 +5,8 @@ class GlobalFunctions
     private $auth_connection;
     private $website_connection;
 
-    public function __construct() {
+    public function __construct()
+    {
         $database = new Database();
         $this->auth_connection = $database->getConnection('auth');
         $this->website_connection = $database->getConnection('website');
@@ -14,14 +15,14 @@ class GlobalFunctions
     public function logout()
     {
         session_destroy();
-        header("Location: /?page=home");
+        header("Location: /home");
         exit();
     }
 
     public function check_logged_in()
     {
         if (!isset($_SESSION['account_id'])) {
-            header("Location: ?page=login");
+            header("Location: login");
             exit();
         }
     }
@@ -39,4 +40,3 @@ class GlobalFunctions
         return $verifier;
     }
 }
-?>

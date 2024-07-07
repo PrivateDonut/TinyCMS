@@ -3,7 +3,8 @@
     "description": "A World of Warcraft Content Management System",
     "type": "project",
     "require": {
-        "catfan/medoo": "^2.1"
+        "catfan/medoo": "^2.1",
+        "twig/twig": "3.5"
     },
     "autoload": {
         "psr-4": {

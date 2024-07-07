@@ -1,14 +1,17 @@
 <?php
 
-class news_home {
+class news_home
+{
     private $website_connection;
 
-    public function __construct() {
+    public function __construct()
+    {
         $database = new Database();
         $this->website_connection = $database->getConnection('website');
     }
 
-    public function get_news() {
+    public function get_news()
+    {
         $news = $this->website_connection->select('news', [
             'id', 'title', 'content', 'author', 'created_at', 'thumbnail'
         ], [
@@ -23,5 +26,10 @@ class news_home {
 
         return $news;
     }
+
+    public function get_news_by_id($id)
+    {
+        $news = $this->website_connection->get("news", "*", ["id" => $id]);
+        return $news ? $news : null;
+    }
 }
-?>

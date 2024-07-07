@@ -7,7 +7,8 @@ class Store
     private $soap_password = "test";
     private $soap_port = "7878";
 
-    public function __construct() {
+    public function __construct()
+    {
         $database = new Database();
         $this->website_connection = $database->getConnection('website');
     }
@@ -48,7 +49,7 @@ class Store
                 'product_id' => $product_id,
                 'quantity' => $quantity
             ]);
-    
+
             if (!$result) {
                 // Fetch the last error information
                 $errorInfo = $this->website_connection->error();
@@ -58,7 +59,7 @@ class Store
             echo "Exception caught: " . $e->getMessage();
         }
     }
-    
+
 
     public function remove_from_cart($id)
     {
@@ -155,10 +156,9 @@ class Store
             $this->remove_from_cart_all($_SESSION['account_id']);
             $this->remove_donor_points($_SESSION['account_id'], $total);
             $_SESSION['success_message'] = "Your purchase was successful! You can find your items in your mailbox in-game.";
-            header("Location: ?page=store");
+            header("Location: store");
         } else {
             echo "Something went wrong! Errors: " . implode(", ", $soapErrors);
         }
     }
 }
-?>

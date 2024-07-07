@@ -32,32 +32,33 @@ class Registration
 
         if ($result) {
             $_SESSION['error'] = "Username already registered";
-            header("Location: " . BASE_DIR . "/?page=register");
+            header("Location: " . BASE_DIR . "/register");
             exit();
         }
 
         if (strlen($username) < 3 || strlen($username) > 16) {
             $_SESSION['error'] = "Username must be between 3 and 16 characters long";
-            header("Location: " . BASE_DIR . "/?page=register");
+            header("Location: " . BASE_DIR . "/register");
             exit();
         }
     }
 
     private function check_password($password)
     {
-        if (strlen($password) < 6 ||
+        if (
+            strlen($password) < 6 ||
             !preg_match("#[0-9]+#", $password) ||
             !preg_match("#[a-z]+#", $password) ||
             !preg_match("#[A-Z]+#", $password)
         ) {
             $_SESSION['error'] = "Password must be at least 6 characters long and contain at least one number, one uppercase letter, and one lowercase letter";
-            header("Location: " . BASE_DIR . "/?page=register");
+            header("Location: " . BASE_DIR . "/register");
             exit();
         }
 
         if ($password != $this->password_confirmation) {
             $_SESSION['error'] = "Passwords do not match";
-            header("Location: " . BASE_DIR . "/?page=register");
+            header("Location: " . BASE_DIR . "/register");
             exit();
         }
     }
@@ -66,7 +67,7 @@ class Registration
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['error'] = "Invalid email address";
-            header("Location: " . BASE_DIR . "/?page=register");
+            header("Location: " . BASE_DIR . "/register");
             exit();
         }
 
@@ -74,7 +75,7 @@ class Registration
 
         if ($result) {
             $_SESSION['error'] = "Email already registered";
-            header("Location: " . BASE_DIR . "/?page=register");
+            header("Location: " . BASE_DIR . "/register");
             exit();
         }
     }
@@ -93,8 +94,7 @@ class Registration
             'expansion' => $expansion
         ]);
 
-        header("Location: /?page=login");
+        header("Location: /login");
         exit();
     }
 }
-?>
