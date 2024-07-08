@@ -48,22 +48,17 @@ class TinyCMSSessionHandler implements \SessionHandlerInterface
         $encryptedData = $this->encrypt($data);
 
         try {
-            $this->database->insert('sessions', [
-                'sess_id' => $id,
-                'sess_data' => $encryptedData,
-                'sess_time' => time(),
-            ]);
+            if ($this->database->has('sessions', ['sess_id' => $id])) {
+                $this->database->update('sessions', ['sess_data' => $encryptedData, 'sess_time' => time()], ['sess_id' => $id]);
+            } else {
+                $this->database->insert('sessions', ['sess_id' => $id, 'sess_data' => $encryptedData, 'sess_time' => time()]);
+            }
+            return true;
         } catch (Exception $e) {
-            // If the insert fails due to duplicate key, try update
-            $this->database->update('sessions', [
-                'sess_data' => $encryptedData,
-                'sess_time' => time(),
-            ], [
-                'sess_id' => $id
-            ]);
+            // Log the error
+            error_log("Session write error: " . $e->getMessage());
+            return false;
         }
-
-        return true;
     }
 
     public function destroy($id): bool

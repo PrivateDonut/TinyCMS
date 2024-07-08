@@ -1,4 +1,20 @@
 <?php
+
+/*********************************************************************************
+ * DonutCMS is free software: you can redistribute it and/or modify              *        
+ * it under the terms of the GNU General Public License as published by          *      
+ * the Free Software Foundation, either version 3 of the License, or             *
+ * (at your option) any later version.                                           *
+ *                                                                               *
+ * DonutCMS is distributed in the hope that it will be useful,                   *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of                *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the                  *
+ * GNU General Public License for more details.                                  *
+ *                                                                               *
+ * You should have received a copy of the GNU General Public License             *
+ * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
+ * *******************************************************************************/
+
 class TrinityRegistrationPlugin extends BasePlugin
 {
     private $twig;
@@ -31,7 +47,8 @@ class TrinityRegistrationPlugin extends BasePlugin
         //echo "TrinityRegistrationPlugin addRoutes method called<br>";
         $routes['/register'] = [RegistrationController::class, 'index'];
         $routes['/register/submit'] = [RegistrationController::class, 'submit'];
-        print_r($routes);
+        // Debug message, remove in production
+        //print_r($routes);
         return $routes;
     }
 

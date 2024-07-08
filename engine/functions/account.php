@@ -1,12 +1,28 @@
 <?php
 
+/*********************************************************************************
+ * DonutCMS is free software: you can redistribute it and/or modify              *        
+ * it under the terms of the GNU General Public License as published by          *      
+ * the Free Software Foundation, either version 3 of the License, or             *
+ * (at your option) any later version.                                           *
+ *                                                                               *
+ * DonutCMS is distributed in the hope that it will be useful,                   *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of                *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the                  *
+ * GNU General Public License for more details.                                  *
+ *                                                                               *
+ * You should have received a copy of the GNU General Public License             *
+ * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
+ * *******************************************************************************/
+
 class Account
 {
     private $username;
     private $auth_connection;
     private $website_connection;
 
-    public function __construct($username) {
+    public function __construct($username)
+    {
         $this->username = $username;
         $database = new Database();
         $this->auth_connection = $database->getConnection('auth');
@@ -69,12 +85,12 @@ class Account
         $password_data = $this->get_password_data();
         $salt = $password_data['salt'];
         $verifier = $password_data['verifier'];
-    
+
         $global = new GlobalFunctions();
-    
+
         $old_verifier = $global->calculate_verifier($this->username, $old_password, $salt);
         $new_verifier = $global->calculate_verifier($this->username, $new_password, $salt);
-    
+
         if ($old_verifier == $verifier) {
             $this->auth_connection->update('account', [
                 'verifier' => $new_verifier
@@ -122,4 +138,3 @@ class Account
         return $account['last_login'];
     }
 }
-?>
