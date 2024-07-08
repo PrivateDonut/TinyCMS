@@ -3,6 +3,14 @@ require_once __DIR__ . '/BaseController.php';
 
 class AccountController extends BaseController
 {
+    private $session;
+
+    public function __construct($twig, $global, $config, $session)
+    {
+        parent::__construct($twig, $global, $config);
+        $this->session = $session;
+    }
+
     public function handle($action, $params)
     {
         switch ($action) {
@@ -18,9 +26,9 @@ class AccountController extends BaseController
     private function viewAccount()
     {
         $this->global->check_logged_in();
-        $account = new Account($_SESSION['username']);
+        $account = new Account($this->session->get('username'));
         $character = new Character();
-        $characters = $character->get_characters($_SESSION['account_id']);
+        $characters = $character->get_characters($this->session->get('account_id'));
 
         return $this->render('account.twig', [
             'account' => $account,
@@ -31,7 +39,7 @@ class AccountController extends BaseController
     private function changePassword()
     {
         $this->global->check_logged_in();
-        $account = new Account($_SESSION['username']);
+        $account = new Account($this->session->get('username'));
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($_POST['new_password'] == $_POST['confirm_password']) {

@@ -7,8 +7,9 @@ class Registration
     private $password;
     private $password_confirmation;
     private $connection;
+    private $session;
 
-    public function __construct($username, $email, $password, $password_confirmation)
+    public function __construct($username, $email, $password, $password_confirmation, \Symfony\Component\HttpFoundation\Session\Session $session)
     {
         $database = new Database();
         $this->connection = $database->getConnection('auth');
@@ -16,6 +17,7 @@ class Registration
         $this->email = $email;
         $this->password = $password;
         $this->password_confirmation = $password_confirmation;
+        $this->session = $session;
     }
 
     public function register_checks()
@@ -31,13 +33,13 @@ class Registration
         $result = $this->connection->has('account', ['username' => $username]);
 
         if ($result) {
-            $_SESSION['error'] = "Username already registered";
+            $this->session->set('error', "Username already registered");
             header("Location: " . BASE_DIR . "/register");
             exit();
         }
 
         if (strlen($username) < 3 || strlen($username) > 16) {
-            $_SESSION['error'] = "Username must be between 3 and 16 characters long";
+            $this->session->set('error', "Username must be between 3 and 16 characters long");
             header("Location: " . BASE_DIR . "/register");
             exit();
         }
@@ -51,13 +53,13 @@ class Registration
             !preg_match("#[a-z]+#", $password) ||
             !preg_match("#[A-Z]+#", $password)
         ) {
-            $_SESSION['error'] = "Password must be at least 6 characters long and contain at least one number, one uppercase letter, and one lowercase letter";
+            $this->session->set('error', "Password must be at least 6 characters long and contain at least one number, one uppercase letter, and one lowercase letter");
             header("Location: " . BASE_DIR . "/register");
             exit();
         }
 
         if ($password != $this->password_confirmation) {
-            $_SESSION['error'] = "Passwords do not match";
+            $this->session->set('error', "Passwords do not match. Please try again.");
             header("Location: " . BASE_DIR . "/register");
             exit();
         }
@@ -66,7 +68,7 @@ class Registration
     private function check_email($email)
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $_SESSION['error'] = "Invalid email address";
+            $this->session->set('error', "Invalid email address");
             header("Location: " . BASE_DIR . "/register");
             exit();
         }
@@ -74,7 +76,7 @@ class Registration
         $result = $this->connection->has('account', ['email' => $email]);
 
         if ($result) {
-            $_SESSION['error'] = "Email already registered";
+            $this->session->set('error', "Email already registered");
             header("Location: " . BASE_DIR . "/register");
             exit();
         }

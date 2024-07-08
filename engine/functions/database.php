@@ -10,23 +10,25 @@ require_once BASE_DIR . '/engine/configs/db_config.php';
 
 use Medoo\Medoo;
 
-class Database {
+class Database
+{
     private $instances = [];
     private $configuration;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->configuration = new Configuration();
     }
 
-    public function getConnection($name) {
+    public function getConnection($name)
+    {
         $dbConfig = $this->configuration->get_config('db');
-        // echo "Config array keys: " . implode(", ", array_keys($dbConfig)) . "<br>"; // Debug statement
 
         if (!isset($this->instances[$name])) {
             if (!$dbConfig) {
                 throw new Exception("Configuration not loaded properly. Config is null.");
             }
-            // echo "Loading configuration for '$name'...Config array keys: " . implode(", ", array_keys($dbConfig)) . "<br>"; // Debug statement
+
             if (isset($dbConfig[$name])) {
                 $this->instances[$name] = new Medoo($dbConfig[$name]);
             } else {
@@ -36,8 +38,3 @@ class Database {
         return $this->instances[$name];
     }
 }
-?>
-
-
-
-

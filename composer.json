@@ -4,7 +4,8 @@
     "type": "project",
     "require": {
         "catfan/medoo": "^2.1",
-        "twig/twig": "3.5"
+        "twig/twig": "3.5",
+        "symfony/http-foundation": "^7.1"
     },
     "autoload": {
         "psr-4": {

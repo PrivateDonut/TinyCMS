@@ -6,12 +6,14 @@ class Login
     private $password;
     private $auth_connection;
     private $website_connection;
+    private $session;
 
-    public function __construct($username, $password)
+    public function __construct($username, $password, \Symfony\Component\HttpFoundation\Session\Session $session)
     {
         $database = new Database();
         $this->username = $username;
         $this->password = $password;
+        $this->session = $session;
         $this->auth_connection = $database->getConnection('auth');
         $this->website_connection = $database->getConnection('website');
     }
@@ -19,7 +21,7 @@ class Login
     public function login_checks()
     {
         if (empty($this->username) || empty($this->password)) {
-            $_SESSION['error'] = "Please enter a username and password.";
+            $this->session->set('error', "Please enter a username and password.");
             header("Location: login");
             return false;
         }
@@ -33,7 +35,6 @@ class Login
     // Insert account ID into the website->users table if the account ID isn't found to avoid possibly errors.
     private function insert_account_id($id)
     {
-        // Check if account_id exists
         $account_id = $this->website_connection->get('users', 'account_id', ['account_id' => $id]);
 
         // If account_id doesn't exist, insert it
@@ -44,7 +45,6 @@ class Login
 
     public function login()
     {
-        // Fetch account details
         $account = $this->auth_connection->get('account', [
             'id', 'username', 'verifier', 'salt'
         ], [
@@ -55,19 +55,19 @@ class Login
             $global = new GlobalFunctions();
             $check_verifier = $global->calculate_verifier($account['username'], $this->password, $account['salt']);
             if ($check_verifier == $account['verifier']) {
-                $_SESSION['account_id'] = $account['id'];
-                $_SESSION['username'] = $account['username'];
-                $_SESSION['isAdmin'] = $this->get_rank($account['id']);
+                $this->session->set('account_id', $account['id']);
+                $this->session->set('username', $account['username']);
+                $this->session->set('isAdmin', $this->get_rank($account['id']));
                 $this->insert_account_id($account['id']);
                 header("Location: home");
                 return true;
             } else {
-                $_SESSION['error'] = "Incorrect username or password.";
+                $this->session->set('error', "Incorrect username or password.");
                 header("Location: login");
                 return false;
             }
         } else {
-            $_SESSION['error'] = "User not found.";
+            $this->session->set('error', "User not found.");
             header("Location: login");
             return false;
         }
