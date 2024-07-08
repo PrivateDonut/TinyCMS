@@ -152,6 +152,13 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Dumping data for table website.users: ~0 rows (approximately)
 
+CREATE TABLE IF NOT EXISTS `sessions` (
+    `sess_id` VARCHAR(128) NOT NULL,
+    `sess_data` TEXT NOT NULL,
+    `sess_time` INT(10) UNSIGNED NOT NULL,
+    PRIMARY KEY (`sess_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
