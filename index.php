@@ -14,6 +14,11 @@
  * You should have received a copy of the GNU General Public License             *
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  *********************************************************************************/
+// Check if install.lock
+if (!file_exists(__DIR__ . '/engine/install.lock')) {
+   header('Location: /install/index.php');
+   exit();
+}
 
 // Define the base directory
 define('BASE_DIR', __DIR__);
@@ -74,7 +79,7 @@ $routes = apply_filters('routes', []);
 foreach (glob(BASE_DIR . "/engine/functions/*.php") as $filename) {
    require_once $filename;
 }
-foreach (glob(BASE_DIR . "/controllers/*.php") as $filename) {
+foreach (glob(BASE_DIR . "/engine/controllers/*.php") as $filename) {
    require_once $filename;
 }
 
@@ -88,6 +93,12 @@ do_action('init');
 // Parse the URL
 $request_uri = $_SERVER['REQUEST_URI'];
 $path = parse_url($request_uri, PHP_URL_PATH);
+
+// Redirect to /home if the path is empty
+if ($path == '/' || $path == '') {
+   header('Location: /home');
+   exit();
+}
 
 // Check if the path exists in the plugin routes
 if (isset($routes[$path])) {

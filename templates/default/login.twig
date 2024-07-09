@@ -23,13 +23,17 @@
         <div class="card-body px-4 py-3">
             <h2 class="card-title text-center mb-3" style="color:var(--title-text);border-bottom: 1px solid var(--main-border);padding-bottom: 1rem;">Account Login</h2>
             
-            {% if session.error is defined %}
-                <div class='alert alert-danger text-center' role='alert'>{{ session.error }}</div>
-            {% endif %}
+            {% for type, messages in flash_messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ type }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
             
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <form method="post" action="/login">
+                    <form method="post" action="/login/authenticate">
                         <div class="form-group">
                             <label for="username" class="info-label">Username</label>
                             <input type="text" class="form-control input-small" id="username" name="username" placeholder="Enter username" required>

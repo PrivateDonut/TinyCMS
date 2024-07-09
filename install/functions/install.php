@@ -1,18 +1,18 @@
 <?php
 
 /*********************************************************************************
- * DonutCMS is free software: you can redistribute it and/or modify              *        
- * it under the terms of the GNU General Public License as published by          *      
+ * DonutCMS is free software: you can redistribute it and/or modify               *
+ * it under the terms of the GNU General Public License as published by          *
  * the Free Software Foundation, either version 3 of the License, or             *
  * (at your option) any later version.                                           *
  *                                                                               *
- * DonutCMS is distributed in the hope that it will be useful,                   *
+ * DonutCMS is distributed in the hope that it will be useful,                    *
  * but WITHOUT ANY WARRANTY; without even the implied warranty of                *
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the                  *
  * GNU General Public License for more details.                                  *
  *                                                                               *
  * You should have received a copy of the GNU General Public License             *
- * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
+ * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.              *
  * *******************************************************************************/
 
 class InstallTinyCMS
@@ -66,28 +66,36 @@ class InstallTinyCMS
             $db->close();
 
             // Generate configuration
-            $config = $this->generateConfig($host, $port, $username, $password, $auth, $characters, $website, $soap_username, $soap_password);
+            $encryption_key = bin2hex(random_bytes(32)); // Generate a secure random encryption key
+            $config = $this->generateConfig($host, $port, $username, $password, $auth, $characters, $website, $soap_username, $soap_password, $encryption_key);
 
             // Write configuration to file
             $configFile = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'engine' . DIRECTORY_SEPARATOR . 'configs' . DIRECTORY_SEPARATOR . 'db_config.php';
+
             if (file_put_contents($configFile, $config) === false) {
                 throw new Exception("Unable to write to config file: $configFile");
+            } else {
+                error_log("Config file created successfully: $configFile");
             }
 
             // Create install lock file
             $lockFile = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'engine' . DIRECTORY_SEPARATOR . 'install.lock';
+
             if (file_put_contents($lockFile, date('Y-m-d H:i:s')) === false) {
                 throw new Exception("Unable to create install lock file: $lockFile");
+            } else {
+                error_log("Install lock file created successfully: $lockFile");
             }
 
             return true; // Installation successful
 
         } catch (Exception $e) {
+            error_log("Installation error: " . $e->getMessage());
             return "Installation failed: " . $e->getMessage();
         }
     }
 
-    private function generateConfig($host, $port, $username, $password, $auth, $characters, $website, $soap_username, $soap_password)
+    private function generateConfig($host, $port, $username, $password, $auth, $characters, $website, $soap_username, $soap_password, $encryption_key)
     {
         $config = <<<EOT
 <?php
@@ -132,6 +140,9 @@ class Configuration {
             'soap' => [
                 'username' => '$soap_username',
                 'password' => '$soap_password'
+            ],
+            'session' => [
+                'encryption_key' => '$encryption_key'
             ]
         ];
     }
