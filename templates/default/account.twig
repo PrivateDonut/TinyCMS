@@ -1,21 +1,6 @@
-{#*********************************************************************************
-* DonutCMS is free software: you can redistribute it and/or modify              *        
-* it under the terms of the GNU General Public License as published by          *      
-* the Free Software Foundation, either version 3 of the License, or             *
-* (at your option) any later version.                                           *
-*                                                                               *
-* DonutCMS is distributed in the hope that it will be useful,                   *
-* but WITHOUT ANY WARRANTY; without even the implied warranty of                *
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the                  *
-* GNU General Public License for more details.                                  *
-*                                                                               *
-* You should have received a copy of the GNU General Public License             *
-* along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
-********************************************************************************#}
-
 {% extends "base.twig" %}
 
-{% block title %}Account - TinyCMS{% endblock %}
+{% block title %}Account - DonutCMS{% endblock %}
 
 {% block content %}
 <div class="custom-container">
@@ -30,27 +15,27 @@
       <div class="info-container">
          <div class="info-item">
             <span class="info-label">Username:</span>
-            <span class="info-value">{{ account.get_username() }}</span>
+            <span class="info-value">{{ account.username }}</span>
          </div>
          <div class="info-item">
             <span class="info-label">Email:</span>
-            <span class="info-value">{{ account.get_email() }}</span>
+            <span class="info-value">{{ account.email }}</span>
          </div>
          <div class="info-item">
             <span class="info-label">Last Login:</span>
-            <span class="info-value">{{ account.get_last_login() }}</span>
+            <span class="info-value">{{ account.last_login }}</span>
          </div>
          <div class="info-item">
             <span class="info-label">Account Status:</span>
-            <span class="info-value">{{ account.is_banned() }}</span>
+            <span class="info-value">{{ account.status }}</span>
          </div>
          <div class="info-item">
             <span class="info-label">Donation Points:</span>
-            <span class="info-value">{{ account.get_account_currency().donor_points }}</span>
+            <span class="info-value">{{ account.currency.donor_points }}</span>
          </div>
          <div class="info-item">
             <span class="info-label">Vote Points:</span>
-            <span class="info-value">{{ account.get_account_currency().vote_points }}</span>
+            <span class="info-value">{{ account.currency.vote_points }}</span>
          </div>
       </div>
    </div>

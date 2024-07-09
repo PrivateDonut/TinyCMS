@@ -4,12 +4,9 @@ require_once __DIR__ . '/BaseController.php';
 
 class LoginController extends BaseController
 {
-    private $session;
-
     public function __construct($twig, $global, $config, $session)
     {
-        parent::__construct($twig, $global, $config);
-        $this->session = $session;
+        parent::__construct($twig, $global, $config, $session);
     }
 
     public function handle($action, $params)
@@ -65,12 +62,15 @@ class LoginController extends BaseController
                 header("Location: home");
                 exit();
             } else {
-                error_log("Login failed for user: $username");
+                header("Location: login");
                 $this->session->getFlashBag()->add('error', "Invalid username or password.");
+                exit();
             }
         } catch (Exception $e) {
             error_log("Login error: " . $e->getMessage());
             $this->session->getFlashBag()->add('error', $e->getMessage());
+            header("Location: login");
+            exit();
         }
 
         error_log("Redirecting back to login page");

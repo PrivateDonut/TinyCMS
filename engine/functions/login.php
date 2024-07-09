@@ -117,11 +117,11 @@ class Login
 
             // Reset login attempts on successful login
             $this->website_connection->delete('login_attempts', ['ip' => $_SERVER['REMOTE_ADDR']]);
-            //header("Location: home");
+            header("Location: /home");
             exit();
         } catch (Exception $e) {
             $this->session->getFlashBag()->add('error', $e->getMessage());
-            //header("Location: login");
+            header("Location: /login");
             exit();
         }
     }

@@ -19,12 +19,14 @@ class GlobalFunctions
 {
     private $auth_connection;
     private $website_connection;
+    private $session;
 
     public function __construct()
     {
         $database = new Database();
         $this->auth_connection = $database->getConnection('auth');
         $this->website_connection = $database->getConnection('website');
+        $this->session = new Symfony\Component\HttpFoundation\Session\Session();
     }
 
     public function logout()
@@ -36,8 +38,10 @@ class GlobalFunctions
 
     public function check_logged_in()
     {
-        if (!isset($_SESSION['account_id'])) {
-            header("Location: login");
+        if ($this->session->get('account_id')) {
+            return true;
+        } else {
+            header("Location: /login");
             exit();
         }
     }

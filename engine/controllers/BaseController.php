@@ -20,12 +20,14 @@ abstract class BaseController
     protected $twig;
     protected $global;
     protected $config;
+    protected $session;
 
-    public function __construct($twig, $global, $config)
+    public function __construct($twig, $global, $config, $session)
     {
         $this->twig = $twig;
         $this->global = $global;
         $this->config = $config;
+        $this->session = $session;
     }
 
     abstract public function handle($action, $params);
@@ -33,7 +35,7 @@ abstract class BaseController
     protected function render($template, $data = [])
     {
         return $this->twig->render($template, array_merge([
-            'session' => $_SESSION,
+            'session' => $this->session->all(),
             'global' => $this->global,
             'config' => $this->config
         ], $data));

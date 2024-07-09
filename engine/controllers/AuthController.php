@@ -19,14 +19,6 @@ require_once __DIR__ . '/BaseController.php';
 
 class AccountController extends BaseController
 {
-    private $session;
-
-    public function __construct($twig, $global, $config, $session)
-    {
-        parent::__construct($twig, $global, $config);
-        $this->session = $session;
-    }
-
     public function handle($action, $params)
     {
         switch ($action) {
@@ -46,12 +38,19 @@ class AccountController extends BaseController
         $character = new Character();
         $characters = $character->get_characters($this->session->get('account_id'));
 
+        $accountData = [
+            'username' => $account->get_username(),
+            'email' => $account->get_email(),
+            'last_login' => $account->get_last_login(),
+            'status' => $account->is_banned(),
+            'currency' => $account->get_account_currency(),
+        ];
+
         return $this->render('account.twig', [
-            'account' => $account,
+            'account' => $accountData,
             'characters' => $characters
         ]);
     }
-
     private function changePassword()
     {
         $this->global->check_logged_in();

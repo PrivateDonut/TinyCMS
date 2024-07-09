@@ -35,6 +35,7 @@ class HomeController extends BaseController
         return $this->render('home.twig', [
             'latestNews' => $latestNews,
             'server' => $server
+
         ]);
     }
 }
