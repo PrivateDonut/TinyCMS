@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `news` (
 
 -- Dumping data for table website.news: ~1 rows (approximately)
 INSERT IGNORE INTO `news` (`id`, `title`, `content`, `author`, `edit_by`, `created_at`, `thumbnail`) VALUES
-	(1, 'Thank you for using tinyCMS!', 'Thank you for using TinyCMS, if you encounter any bugs please report them to the repo at https://github.com/PrivateDonut/TinyCMS . You can remove this post in the admin panel!', 'TinyCMS', NULL, '2024-06-27 16:59:45', NULL);
+	(1, 'Thank you for using DonutCMS!', 'Thank you for using DonutCMS, if you encounter any bugs please report them to the repo at https://github.com/PrivateDonut/DonutCMS . You can remove this post in the admin panel!', 'DonutCMS', NULL, '2024-06-27 16:59:45', NULL);
 
 -- Dumping structure for table website.orders
 CREATE TABLE IF NOT EXISTS `orders` (

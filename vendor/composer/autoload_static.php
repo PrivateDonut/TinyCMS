@@ -26,11 +26,15 @@ class ComposerStaticInit80fd073865d684043eb4e8d139160a1e
         ),
         'P' => 
         array (
-            'Privatedonut\\Tinycms\\' => 21,
+            'Plugins\\' => 8,
         ),
         'M' => 
         array (
             'Medoo\\' => 6,
+        ),
+        'D' => 
+        array (
+            'DonutCMS\\' => 9,
         ),
     );
 
@@ -55,13 +59,17 @@ class ComposerStaticInit80fd073865d684043eb4e8d139160a1e
         array (
             0 => __DIR__ . '/..' . '/symfony/http-foundation',
         ),
-        'Privatedonut\\Tinycms\\' => 
+        'Plugins\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src',
+            0 => __DIR__ . '/../..' . '/plugins',
         ),
         'Medoo\\' => 
         array (
             0 => __DIR__ . '/..' . '/catfan/medoo/src',
+        ),
+        'DonutCMS\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/engine',
         ),
     );
 

@@ -15,32 +15,34 @@
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
 
-require_once __DIR__ . '/PluginInterface.php';
+namespace DonutCMS\PluginSystem;
 
-abstract class BasePlugin implements PluginInterface
+class HookHelper
 {
-    public function register()
+    private static ?PluginManager $pluginManager = null;
+
+    public static function setPluginManager(PluginManager $manager): void
     {
-        // Registration logic
+        self::$pluginManager = $manager;
     }
 
-    public function activate()
+    public static function addAction(string $hookName, callable $callback, int $priority = 10): void
     {
-        // Activation logic
+        self::$pluginManager?->addHook($hookName, $callback, $priority);
     }
 
-    public function deactivate()
+    public static function addFilter(string $hookName, callable $callback, int $priority = 10): void
     {
-        // Deactivation logic
+        self::$pluginManager?->addHook($hookName, $callback, $priority);
     }
 
-    protected function addAction($hookName, $callback, $priority = 10)
+    public static function doAction(string $hookName, array $args = []): void
     {
-        HookHelper::addAction($hookName, $callback, $priority);
+        self::$pluginManager?->executeHook($hookName, $args);
     }
 
-    protected function addFilter($filterName, $callback, $priority = 10)
+    public static function applyFilters(string $filterName, mixed $value, array $args = []): mixed
     {
-        HookHelper::addFilter($filterName, $callback, $priority);
+        return self::$pluginManager ? self::$pluginManager->applyFilters($filterName, $value, $args) : $value;
     }
 }

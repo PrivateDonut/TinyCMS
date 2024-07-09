@@ -15,44 +15,33 @@
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
 
-class RegistrationController
+namespace DonutCMS\PluginSystem;
+
+require_once 'PluginInterface.php';
+abstract class BasePlugin implements PluginInterface
 {
-    private $twig;
-    private $session;
-
-    public function __construct($twig, $session)
+    public function register(): void
     {
-        $this->twig = $twig;
-        $this->session = $session;
+        // Registration logic
     }
 
-    public function index()
+    public function activate(): void
     {
-        return $this->twig->render('@trinity_registration/register.twig', [
-            'flash_messages' => $this->session->getFlashBag()->all()
-        ]);
+        // Activation logic
     }
 
-    public function submit()
+    public function deactivate(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $username = $_POST['username'] ?? '';
-            $email = $_POST['email'] ?? '';
-            $password = $_POST['password'] ?? '';
-            $confirm_password = $_POST['confirm_password'] ?? '';
+        // Deactivation logic
+    }
 
-            $registration = new Registration($username, $email, $password, $confirm_password, $this->session);
+    protected function addAction(string $hookName, callable $callback, int $priority = 10): void
+    {
+        HookHelper::addAction($hookName, $callback, $priority);
+    }
 
-            try {
-                $registration->register();
-                $this->session->getFlashBag()->add('success', 'Registration successful! You can now log in.');
-                header("Location: /login");
-                exit();
-            } catch (Exception $e) {
-                $this->session->getFlashBag()->add('error', $e->getMessage());
-                header("Location: /register");
-                exit();
-            }
-        }
+    protected function addFilter(string $filterName, callable $callback, int $priority = 10): void
+    {
+        HookHelper::addFilter($filterName, $callback, $priority);
     }
 }

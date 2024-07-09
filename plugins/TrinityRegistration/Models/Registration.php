@@ -15,6 +15,12 @@
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
 
+namespace Plugins\TrinityRegistration\Models;
+
+use Database;
+use Exception;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 class Registration
 {
     private $username;
@@ -37,10 +43,16 @@ class Registration
 
     public function register()
     {
-        $this->check_username($this->username);
-        $this->check_email($this->email);
-        $this->check_password($this->password);
-        $this->create_account($this->username, $this->email, $this->password);
+        try {
+            $this->check_username($this->username);
+            $this->check_email($this->email);
+            $this->check_password($this->password);
+            $this->create_account($this->username, $this->email, $this->password);
+            return true;
+        } catch (Exception $e) {
+            error_log("Registration failed: " . $e->getMessage());
+            throw $e;
+        }
     }
 
     private function check_username($username)
@@ -86,15 +98,18 @@ class Registration
         $verifier = $this->calculate_verifier($username, $password, $salt);
         $expansion = 2;
 
-        $this->connection->insert('account', [
+        $result = $this->connection->insert('account', [
             'username' => $username,
+            'email' => $email,
             'salt' => $salt,
             'verifier' => $verifier,
-            'email' => $email,
             'expansion' => $expansion
         ]);
-    }
 
+        if (!$result) {
+            throw new Exception("Failed to create account");
+        }
+    }
     private function calculate_verifier($username, $password, $salt)
     {
         $g = gmp_init(7);

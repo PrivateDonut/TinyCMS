@@ -15,9 +15,11 @@
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
 
+namespace DonutCMS\PluginSystem;
+
 interface PluginInterface
 {
-    public function register();
-    public function activate();
-    public function deactivate();
+    public function register(): void;
+    public function activate(): void;
+    public function deactivate(): void;
 }

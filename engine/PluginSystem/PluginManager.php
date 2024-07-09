@@ -15,33 +15,50 @@
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
 
+namespace DonutCMS\PluginSystem;
+
+use Exception;
+
 class PluginManager
 {
-    public $plugins = [];
-    public $hooks = [];
+    public array $plugins = [];
+    public array $hooks = [];
+    private array $config = [];
 
-    public function loadPlugins($pluginDirectory)
+    public function __construct(array $config = [])
     {
-        $pluginFiles = glob($pluginDirectory . '/*/*.php');
-        foreach ($pluginFiles as $pluginFile) {
-            // echo "Attempting to load: $pluginFile<br>";
-            require_once $pluginFile;
-            $pluginName = basename(dirname($pluginFile));
-            $pluginClass = $pluginName . 'Plugin';
-            if (class_exists($pluginClass)) {
-                // Debug message, remove in production
-                //echo "Loaded plugin: $pluginClass<br>";
-                $plugin = new $pluginClass();
-                $this->plugins[$pluginName] = $plugin;
-                $plugin->register();
-            } else {
-                // Debug message, remove in production
-                //echo "Failed to load plugin: $pluginClass<br>";
-            }
-        }
+        $this->config = $config;
     }
 
-    public function addHook($hookName, $callback, $priority = 10)
+    public function loadPlugins(string $pluginDirectory): void
+    {
+        error_log("Starting to load plugins from directory: $pluginDirectory");
+        $pluginFiles = glob($pluginDirectory . '/*/*.php');
+        error_log("Found " . count($pluginFiles) . " potential plugin files");
+        foreach ($pluginFiles as $pluginFile) {
+            error_log("Attempting to load plugin file: $pluginFile");
+            try {
+                require_once $pluginFile;
+                $pluginName = basename(dirname($pluginFile));
+                $pluginClass = "Plugins\\{$pluginName}\\{$pluginName}Plugin";
+                error_log("Looking for plugin class: $pluginClass");
+                if (class_exists($pluginClass)) {
+                    error_log("Plugin class $pluginClass found");
+                    $plugin = new $pluginClass();
+                    $this->plugins[$pluginName] = $plugin;
+                    $plugin->register();
+                    error_log("Plugin $pluginName registered successfully");
+                } else {
+                    error_log("Plugin class $pluginClass not found");
+                }
+            } catch (\Exception $e) {
+                error_log("Failed to load plugin from file $pluginFile: " . $e->getMessage());
+            }
+        }
+        error_log("Finished loading plugins. Total plugins loaded: " . count($this->plugins));
+    }
+
+    public function addHook(string $hookName, callable $callback, int $priority = 10): void
     {
         if (!isset($this->hooks[$hookName])) {
             $this->hooks[$hookName] = [];
@@ -50,25 +67,23 @@ class PluginManager
         usort($this->hooks[$hookName], function ($a, $b) {
             return $a['priority'] - $b['priority'];
         });
-        // Debug message, remove in production
-        //echo "Hook added: $hookName<br>";
     }
 
-    public function executeHook($hookName, $args = [])
+    public function executeHook(string $hookName, array $args = []): mixed
     {
         $result = null;
         if (isset($this->hooks[$hookName])) {
             foreach ($this->hooks[$hookName] as $hook) {
                 $result = call_user_func_array($hook['callback'], $args);
                 if ($result !== null) {
-                    break; // Stop execution if a hook returns a non-null value
+                    break;
                 }
             }
         }
         return $result;
     }
 
-    public function applyFilters($filterName, $value, $args = [])
+    public function applyFilters(string $filterName, mixed $value, array $args = []): mixed
     {
         if (isset($this->hooks[$filterName])) {
             foreach ($this->hooks[$filterName] as $hook) {
@@ -76,5 +91,10 @@ class PluginManager
             }
         }
         return $value;
+    }
+
+    private function isPluginEnabled(string $pluginName): bool
+    {
+        return !isset($this->config['disabled_plugins']) || !in_array($pluginName, $this->config['disabled_plugins']);
     }
 }

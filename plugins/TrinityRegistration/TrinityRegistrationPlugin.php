@@ -13,7 +13,15 @@
  *                                                                               *
  * You should have received a copy of the GNU General Public License             *
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
- * *******************************************************************************/
+ *********************************************************************************/
+
+namespace Plugins\TrinityRegistration;
+
+use DonutCMS\PluginSystem\BasePlugin;
+use DonutCMS\PluginSystem\HookHelper;
+use Plugins\TrinityRegistration\Controllers\RegistrationController;
+use Database;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class TrinityRegistrationPlugin extends BasePlugin
 {
@@ -21,42 +29,45 @@ class TrinityRegistrationPlugin extends BasePlugin
     private $database;
     private $session;
 
-    public function register()
+    public function register(): void
     {
-        // Debug message, remove in production
-        //echo "TrinityRegistrationPlugin register method called<br>";
-        add_action('init', [
-            $this, 'initPlugin'
-        ]);
-        add_filter('routes', [$this, 'addRoutes']);
-        add_filter('twig_loader', [$this, 'addTwigPath']);
+        $this->addAction('init', [$this, 'initPlugin']);
+        $this->addFilter('routes', [$this, 'addRoutes']);
+        $this->addFilter('twig_loader', [$this, 'addTwigPath']);
     }
 
-    public function initPlugin()
+    public function initPlugin(): void
     {
-        // Debug message, remove in production
-        //echo "TrinityRegistrationPlugin initPlugin method called<br>";
         $this->database = new Database();
-        $this->session = new Symfony\Component\HttpFoundation\Session\Session();
-        $this->twig = apply_filters('get_twig', null);
+        $this->session = new Session();
+        $this->twig = HookHelper::applyFilters('get_twig', null);
     }
 
-    public function addRoutes($routes)
+    public function addRoutes(array $routes): array
     {
-        // Debug message, remove in production
-        //echo "TrinityRegistrationPlugin addRoutes method called<br>";
+        // error_log("TrinityRegistration adding routes"); // Uncomment this line to debug
         $routes['/register'] = [RegistrationController::class, 'index'];
         $routes['/register/submit'] = [RegistrationController::class, 'submit'];
-        // Debug message, remove in production
-        //print_r($routes);
+        error_log("Routes after adding: " . print_r($routes, true));
         return $routes;
     }
 
     public function addTwigPath($loader)
     {
-        // Debug message, remove in production
-        //echo "TrinityRegistrationPlugin addTwigPath method called<br>";
-        $loader->addPath(__DIR__ . '/views', 'trinity_registration');
+        $fullPath = __DIR__ . '/views';
+        // error_log("Adding Twig path: " . $fullPath); // Uncomment this line to debug
+        $loader->addPath($fullPath, 'trinity_registration');
+        $loader->addPath(BASE_DIR . '/templates/default', 'main'); // Add the default template path
         return $loader;
+    }
+
+    public function activate(): void
+    {
+        // Activation logic (if needed)
+    }
+
+    public function deactivate(): void
+    {
+        // Deactivation logic (if needed)
     }
 }

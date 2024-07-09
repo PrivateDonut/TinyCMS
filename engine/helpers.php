@@ -15,17 +15,32 @@
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
 
-function add_action($hook, $callback, $priority = 10)
-{
-    HookHelper::addAction($hook, $callback, $priority);
+use DonutCMS\PluginSystem\HookHelper;
+
+if (!function_exists('add_action')) {
+    function add_action(string $hookName, callable $callback, int $priority = 10): void
+    {
+        HookHelper::addAction($hookName, $callback, $priority);
+    }
 }
 
-function add_filter($hook, $callback, $priority = 10)
-{
-    HookHelper::addFilter($hook, $callback, $priority);
+if (!function_exists('add_filter')) {
+    function add_filter(string $hookName, callable $callback, int $priority = 10): void
+    {
+        HookHelper::addFilter($hookName, $callback, $priority);
+    }
 }
 
-function apply_filters($hook, $value, ...$args)
-{
-    return HookHelper::applyFilters($hook, $value, $args);
+if (!function_exists('apply_filters')) {
+    function apply_filters(string $filterName, mixed $value, ...$args): mixed
+    {
+        return HookHelper::applyFilters($filterName, $value, $args);
+    }
+}
+
+if (!function_exists('do_action')) {
+    function do_action(string $hookName, ...$args): void
+    {
+        HookHelper::doAction($hookName, $args);
+    }
 }

@@ -1,21 +1,22 @@
 {
-    "name": "privatedonut/tinycms",
-    "description": "A World of Warcraft Content Management System",
-    "type": "project",
-    "require": {
-        "catfan/medoo": "^2.1",
-        "twig/twig": "3.5",
-        "symfony/http-foundation": "^7.1"
-    },
-    "autoload": {
-        "psr-4": {
-            "Privatedonut\\Tinycms\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "PrivateDonut"
-        }
-    ],
-    "minimum-stability": "stable"
+  "name": "privatedonut/tinycms",
+  "description": "A World of Warcraft Content Management System",
+  "type": "project",
+  "require": {
+    "catfan/medoo": "^2.1",
+    "twig/twig": "3.5",
+    "symfony/http-foundation": "^7.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "DonutCMS\\": "engine/",
+      "Plugins\\": "plugins/"
+    }
+  },
+  "authors": [
+    {
+      "name": "PrivateDonut"
+    }
+  ],
+  "minimum-stability": "stable"
 }

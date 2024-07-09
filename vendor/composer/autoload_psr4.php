@@ -11,6 +11,7 @@ return array(
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
     'Symfony\\Component\\HttpFoundation\\' => array($vendorDir . '/symfony/http-foundation'),
-    'Privatedonut\\Tinycms\\' => array($baseDir . '/src'),
+    'Plugins\\' => array($baseDir . '/plugins'),
     'Medoo\\' => array($vendorDir . '/catfan/medoo/src'),
+    'DonutCMS\\' => array($baseDir . '/engine'),
 );

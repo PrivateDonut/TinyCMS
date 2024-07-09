@@ -1,25 +1,39 @@
-{% extends "base.twig" %}
+{% extends "@main/base.twig" %}
+
+{% block title %}Register - TinyCMS{% endblock %}
 
 {% block content %}
-    <h2>Register</h2>
-    
-    {% if flash_messages.error is defined %}
-        <div class="error">{{ flash_messages.error[0] }}</div>
-    {% endif %}
+<div class="custom-container">
+    <div class="custom-card mx-auto mt-4">
+        <div class="card-body px-4 py-3">
+            <h2 class="text-center title text-white mb-4" style="color:var(--title-text)!important;">REGISTER ACCOUNT</h2>
+            <hr class="custom-hr mb-4" style="border-color: var(--main-border);">
+            <!-- Display flash messages -->
+            {% for type, messages in flash_messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ type == 'error' ? 'danger' : type }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
 
-    <form action="/register/submit" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br>
-
-        <label for="confirm_password">Confirm Password:</label>
-        <input type="password" id="confirm_password" name="confirm_password" required><br>
-
-        <input type="submit" value="Register">
-    </form>
+            <form method="post" action="/register/submit">
+                <div class="form-group mx-auto mt-2">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
+                </div>
+                <div class="form-group mx-auto mt-2">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+                </div>
+                <div class="form-group mx-auto mt-2">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                </div>
+                <div class="form-group mx-auto mt-2">
+                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm password" required>
+                </div>
+                <button type="submit" name="submit" class="btn btn-primary mx-auto d-block mt-3 change-password-button" style="width:43%;">Register Account</button>
+            </form>
+            <p class="text-center text-white mt-3">Already have an account? Login <a href="/login" style="color: var(--page-text)">Here</a></p>
+        </div>
+    </div>
+</div>
 {% endblock %}
