@@ -24,7 +24,7 @@ class AccountController extends BaseController
         switch ($action) {
             case 'view':
                 return $this->viewAccount();
-            case 'changePassword':
+            case 'changepassword':
                 return $this->changePassword();
             default:
                 return $this->viewAccount();
