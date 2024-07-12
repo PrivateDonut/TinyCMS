@@ -4,9 +4,11 @@ require_once __DIR__ . '/BaseController.php';
 
 class LoginController extends BaseController
 {
-    public function __construct($twig, $global, $config, $session)
+    use CSRFTrait;
+
+    public function __construct($twig, $global, $config, $session, $pluginManager)
     {
-        parent::__construct($twig, $global, $config, $session);
+        parent::__construct($twig, $global, $config, $session, $pluginManager);
     }
 
     public function handle($action, $params)
@@ -40,6 +42,13 @@ class LoginController extends BaseController
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->session->getFlashBag()->add('error', "Invalid request method.");
+            header("Location: login");
+            exit();
+        }
+        // Validate CSRF token
+        if (!$this->validateCsrfToken($_POST['csrf_token'] ?? '')) {
+            error_log("CSRF validation failed");
+            $this->session->getFlashBag()->add('error', "Invalid CSRF token.");
             header("Location: login");
             exit();
         }

@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License             *
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  *********************************************************************************/
+
 // Check if install.lock
 if (!file_exists(__DIR__ . '/engine/install.lock')) {
    header('Location: /install/index.php');
@@ -26,7 +27,7 @@ define('BASE_DIR', __DIR__);
 // Include required files
 require_once BASE_DIR . '/vendor/autoload.php';
 require_once BASE_DIR . '/engine/configs/db_config.php';
-require_once BASE_DIR . '/engine/functions/database.php';
+require_once BASE_DIR . '/engine/models/database.php';
 require_once BASE_DIR . '/engine/TinyCMSSessionHandler.php';
 require_once BASE_DIR . '/engine/PluginSystem/PluginManager.php';
 require_once BASE_DIR . '/engine/PluginSystem/HookHelper.php';
@@ -35,6 +36,8 @@ require_once BASE_DIR . '/engine/helpers.php';
 
 use DonutCMS\PluginSystem\PluginManager;
 use DonutCMS\PluginSystem\HookHelper;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 // Initialize database connection
 $database = new Database();
@@ -51,11 +54,24 @@ $twig = new \Twig\Environment($loader, [
 $config = new Configuration();
 $encryptionKey = trim($config->get_config('session')['encryption_key']);
 $handler = new TinyCMSSessionHandler($websiteDbConnection, $encryptionKey);
-$storage = new Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage([], $handler);
+$storage = new NativeSessionStorage([], $handler);
 
 // Start the Symfony session
-$session = new Symfony\Component\HttpFoundation\Session\Session($storage);
+$session = new Session($storage);
 $session->start();
+
+// Generate CSRF token
+$token = $session->get('_csrf/token');
+if (!$token) {
+   $token = bin2hex(random_bytes(32));
+   $session->set('_csrf/token', $token);
+}
+
+// Log the token
+error_log("CSRF token set in session: " . $token);
+
+// Add CSRF token to Twig global variables
+$twig->addGlobal('csrf_token', $token);
 
 // Initialize plugin manager
 $pluginManager = new PluginManager();
@@ -76,7 +92,7 @@ $twig->setLoader(apply_filters('twig_loader', $twig->getLoader()));
 $routes = apply_filters('routes', []);
 
 // Include functions and controllers
-foreach (glob(BASE_DIR . "/engine/functions/*.php") as $filename) {
+foreach (glob(BASE_DIR . "/engine/models/*.php") as $filename) {
    require_once $filename;
 }
 foreach (glob(BASE_DIR . "/engine/controllers/*.php") as $filename) {

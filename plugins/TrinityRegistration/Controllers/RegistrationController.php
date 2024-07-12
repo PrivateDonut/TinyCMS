@@ -21,9 +21,12 @@ use Twig\Environment;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Plugins\TrinityRegistration\Models\Registration;
 use Exception;
+use CSRFTrait;
 
 class RegistrationController
 {
+    use CSRFTrait;
+
     private Environment $twig;
     private Session $session;
 
@@ -50,48 +53,55 @@ class RegistrationController
 
     public function submit(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            error_log("Registration form submitted");
-            $username = trim($_POST['username'] ?? '');
-            $email = trim($_POST['email'] ?? '');
-            $password = $_POST['password'] ?? '';
-            $confirm_password = $_POST['password_confirmation'] ?? '';
-
-            if (empty($username) || empty($email) || empty($password) || empty($confirm_password)) {
-                $this->session->getFlashBag()->add('error', 'All fields are required.');
-                header("Location: /register");
-                exit();
-            }
-
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $this->session->getFlashBag()->add('error', 'Invalid email address.');
-                header("Location: /register");
-                exit();
-            }
-
-            if ($password !== $confirm_password) {
-                $this->session->getFlashBag()->add('error', 'Passwords do not match.');
-                header("Location: /register");
-                exit();
-            }
-
-            $registration = new Registration($username, $email, $password, $confirm_password, $this->session);
-
-            try {
-                $result = $registration->register();
-                error_log("Registration successful for user: $username");
-                $this->session->getFlashBag()->add('success', 'Registration successful! You can now log in.');
-                header("Location: /login");
-                exit();
-            } catch (Exception $e) {
-                error_log("Exception during registration: " . $e->getMessage());
-                $this->session->getFlashBag()->add('error', $e->getMessage());
-                header("Location: /register");
-                exit();
-            }
-        } else {
-            // Handle non-POST requests
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->session->getFlashBag()->add('error', 'Invalid request method.');
+            header("Location: /register");
+            exit();
+        }
+
+        error_log("Registration form submitted");
+
+        // Validate CSRF token using the trait method
+        if (!$this->validateCsrfToken($_POST['csrf_token'] ?? '')) {
+            $this->session->getFlashBag()->add('error', 'Invalid CSRF token.');
+            header("Location: /register");
+            exit();
+        }
+
+        $username = trim($_POST['username'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
+        $confirm_password = $_POST['password_confirmation'] ?? '';
+
+        if (empty($username) || empty($email) || empty($password) || empty($confirm_password)) {
+            $this->session->getFlashBag()->add('error', 'All fields are required.');
+            header("Location: /register");
+            exit();
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->session->getFlashBag()->add('error', 'Invalid email address.');
+            header("Location: /register");
+            exit();
+        }
+
+        if ($password !== $confirm_password) {
+            $this->session->getFlashBag()->add('error', 'Passwords do not match.');
+            header("Location: /register");
+            exit();
+        }
+
+        $registration = new Registration($username, $email, $password, $confirm_password, $this->session);
+
+        try {
+            $result = $registration->register();
+            error_log("Registration successful for user: $username");
+            $this->session->getFlashBag()->add('success', 'Registration successful! You can now log in.');
+            header("Location: /login");
+            exit();
+        } catch (Exception $e) {
+            error_log("Exception during registration: " . $e->getMessage());
+            $this->session->getFlashBag()->add('error', $e->getMessage());
             header("Location: /register");
             exit();
         }

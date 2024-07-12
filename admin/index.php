@@ -1,162 +1,71 @@
 <?php
-session_start();
-foreach (glob("engine/configs/*.php") as $filename) {
+// Define the base directory
+define('BASE_DIR', __DIR__ . '/..');
+
+// Include required files
+require_once BASE_DIR . '/vendor/autoload.php';
+require_once BASE_DIR . '/engine/configs/db_config.php';
+require_once BASE_DIR . '/engine/functions/database.php';
+require_once BASE_DIR . '/engine/TinyCMSSessionHandler.php';
+
+// Initialize Twig
+$loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/template/default');
+$twig = new \Twig\Environment($loader, [
+    'cache' => BASE_DIR . '/cache/twig',
+    'auto_reload' => true,
+]);
+
+// Initialize database connection
+$database = new Database();
+$websiteDbConnection = $database->getConnection('website');
+
+// Initialize custom session handler
+$config = new Configuration();
+$encryptionKey = trim($config->get_config('session')['encryption_key']);
+$handler = new TinyCMSSessionHandler($websiteDbConnection, $encryptionKey);
+$storage = new Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage([], $handler);
+
+// Start the Symfony session
+$session = new Symfony\Component\HttpFoundation\Session\Session($storage);
+$session->start();
+
+// Include functions, models, and controllers
+foreach (glob(BASE_DIR . '/engine/functions/*.php') as $filename) {
     require_once $filename;
 }
-foreach (glob("functions/*.php") as $filename) {
+foreach (glob(__DIR__ . '/models/*.php') as $filename) {
+    require_once $filename;
+}
+foreach (glob(__DIR__ . '/controllers/*.php') as $filename) {
     require_once $filename;
 }
 
-if (!isset($_GET['page']))
-    $page = 'dashboard';
-else {
-    if (preg_match('/[^a-zA-Z]/', $_GET['page']))
-        $page = 'dashboard';
-    else
-        $page = $_GET['page'];
+// Initialize global functions and config
+$global = new GlobalFunctions($session);
+$config_object = new gen_config();
+
+// Parse the URL
+$request_uri = $_SERVER['REQUEST_URI'];
+$path = trim(parse_url($request_uri, PHP_URL_PATH), '/');
+$segments = explode('/', $path);
+
+// Ensure the user is an admin before allowing access
+$global->check_is_admin();
+
+// Route the request to the appropriate controller
+$controllerName = ucfirst($segments[0] ?? 'Dashboard') . 'Controller';
+$action = $segments[1] ?? 'index';
+$params = array_slice($segments, 2);
+
+if (class_exists($controllerName)) {
+    $controller = new $controllerName($twig, $global, $config_object, $session);
+    echo $controller->handle($action, $params);
+} else {
+    // 404 handling
+    header("HTTP/1.0 404 Not Found");
+    echo $twig->render('404.twig', ['session' => $session->all(), 'global' => $global, 'config' => $config_object]);
 }
 
-require_once '../engine/functions/account.php';
-require_once '../engine/functions/database.php';
-$account = new Account($_SESSION['username']);
-$rank = $account->get_rank();
-
-if ($rank < 1) {
-    header("Location: /?page=home");
-    exit();
-}
-
-?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin Panel</title>
-    <link href="https://bootswatch.com/5/darkly/bootstrap.css" rel="stylesheet">
-    <link href="../assets/css/prism-okaidia.css" rel="stylesheet">
-    <style>
-        .admin-panel-wrapper {
-            display: flex;
-            height: 100vh;
-        }
-
-        .sidebar {
-            background-color: #212529;
-            width: 250px;
-        }
-
-        .sidebar .nav-link i {
-            margin-right: 10px;
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        .admin-panel-header {
-
-            padding: 1rem;
-            text-align: center;
-        }
-
-        .admin-panel-header h3 {
-            font-weight: bold;
-            margin: 0;
-        }
-
-        .nav-link {
-            color: #fff !important;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="admin-panel-wrapper">
-        <nav class="sidebar">
-            <div class="admin-panel-header">
-                <h3>Admin Panel</h3>
-            </div>
-
-            <div class="sidebar-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active text-white" href="/admin/?page=dashboard">
-                            <i class="fa fa-home"></i>
-                            Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/?page=accounts">
-                            <i class="fa fa-user"></i>
-                            Accounts
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/?page=news">
-                            <i class="fa fa-user"></i>
-                            News
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/?page=settings">
-                            <i class="fa fa-cog"></i>
-                            Settings
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <div class="content">
-            <?php
-
-            if (file_exists('pages/' . $page . '.php')) {
-                include 'pages/' . $page . '.php';
-            } else {
-                include 'pages/404.php';
-            }
-            ?>
-        </div>
-
-    </div>
-
-
-    <script src="//cdn.ckeditor.com/4.21.0/basic/ckeditor.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <!-- ADD NEWS -->
-    <script>
-        $(document).ready(function() {
-            $("#add-news-btn").click(function() {
-                $('#newsModal').modal('show');
-            });
-        });
-    </script>
-    <!-- CKEDITOR -->
-    <script>
-        CKEDITOR.replace('news-content');
-        CKEDITOR.replace('edit-news-content');
-    </script>
-
-    <!-- EDIT NEWS -->
-    <script>
-        $(document).ready(function() {
-            $(".edit-news-btn").click(function() {
-                var newsId = $(this).data('id');
-                var newsTitle = $(this).data('title');
-                var newsContent = $(this).data('content');
-
-                $("#edit-news-id").val(newsId);
-                $("#edit-news-title").val(newsTitle);
-                $("#edit-news-content").val(newsContent);
-
-                $('#editNewsModal').modal('show');
-            });
-        });
-    </script>
-
-
-
-</body>
+// Clear any one-time session messages
+$session->remove('success_message');
+$session->remove('error');

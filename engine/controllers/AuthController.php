@@ -21,6 +21,8 @@ class AccountController extends BaseController
 {
     public function handle($action, $params)
     {
+        $this->global->check_logged_in();
+
         switch ($action) {
             case 'view':
                 return $this->viewAccount();
@@ -33,7 +35,6 @@ class AccountController extends BaseController
 
     private function viewAccount()
     {
-        $this->global->check_logged_in();
         $account = new Account($this->session->get('username'));
         $character = new Character();
         $characters = $character->get_characters($this->session->get('account_id'));
@@ -51,21 +52,38 @@ class AccountController extends BaseController
             'characters' => $characters
         ]);
     }
+
     private function changePassword()
     {
-        $this->global->check_logged_in();
         $account = new Account($this->session->get('username'));
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($_POST['new_password'] == $_POST['confirm_password']) {
-                $change_password_status = $account->change_password($_POST['old_password'], $_POST['new_password']);
-                return $this->render('changepassword.twig', [
-                    'change_password_status' => $change_password_status
-                ]);
+            // Validate CSRF token
+            if (!$this->validateCsrfToken($_POST['csrf_token'] ?? '')) {
+                $this->session->getFlashBag()->add('error', "Invalid CSRF token.");
+                return $this->render('changepassword.twig');
+            }
+
+            $oldPassword = $_POST['old_password'] ?? '';
+            $newPassword = $_POST['new_password'] ?? '';
+            $confirmPassword = $_POST['confirm_password'] ?? '';
+
+            if (empty($oldPassword) || empty($newPassword) || empty($confirmPassword)) {
+                $this->session->getFlashBag()->add('error', "All fields are required.");
+                return $this->render('changepassword.twig');
+            }
+
+            if ($newPassword !== $confirmPassword) {
+                $this->session->getFlashBag()->add('error', "New passwords do not match.");
+                return $this->render('changepassword.twig');
+            }
+
+            $change_password_status = $account->change_password($oldPassword, $newPassword);
+
+            if ($change_password_status) {
+                $this->session->getFlashBag()->add('success', "Password changed successfully.");
             } else {
-                return $this->render('changepassword.twig', [
-                    'password_mismatch' => true
-                ]);
+                $this->session->getFlashBag()->add('error', "Failed to change password. Please check your old password.");
             }
         }
 

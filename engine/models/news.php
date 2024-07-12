@@ -15,35 +15,36 @@
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
 
-require_once __DIR__ . '/../CSRFTrait.php';
-
-abstract class BaseController
+class news_home
 {
-    use CSRFTrait;
+    private $website_connection;
 
-    protected $twig;
-    protected $global;
-    protected $config;
-    protected $session;
-    protected $pluginManager;
-
-    public function __construct($twig, $global, $config, $session, $pluginManager)
+    public function __construct()
     {
-        $this->twig = $twig;
-        $this->global = $global;
-        $this->config = $config;
-        $this->session = $session;
-        $this->pluginManager = $pluginManager;
+        $database = new Database();
+        $this->website_connection = $database->getConnection('website');
     }
 
-    abstract public function handle($action, $params);
-
-    protected function render($template, $data = [])
+    public function get_news()
     {
-        return $this->twig->render($template, array_merge([
-            'session' => $this->session->all(),
-            'global' => $this->global,
-            'config' => $this->config
-        ], $data));
+        $news = $this->website_connection->select('news', [
+            'id', 'title', 'content', 'author', 'created_at', 'thumbnail'
+        ], [
+            'ORDER' => ['id' => 'DESC'],
+            'LIMIT' => 4
+        ]);
+
+        // Optionally format the date if needed
+        foreach ($news as &$item) {
+            $item['date'] = $item['created_at']; // If you need to format the date, you can do it here
+        }
+
+        return $news;
+    }
+
+    public function get_news_by_id($id)
+    {
+        $news = $this->website_connection->get("news", "*", ["id" => $id]);
+        return $news ? $news : null;
     }
 }

@@ -15,35 +15,36 @@
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
 
-require_once __DIR__ . '/../CSRFTrait.php';
+require_once BASE_DIR . '/vendor/autoload.php';
+require_once BASE_DIR . '/engine/configs/db_config.php';
 
-abstract class BaseController
+use Medoo\Medoo;
+
+class Database
 {
-    use CSRFTrait;
+    private $instances = [];
+    private $configuration;
 
-    protected $twig;
-    protected $global;
-    protected $config;
-    protected $session;
-    protected $pluginManager;
-
-    public function __construct($twig, $global, $config, $session, $pluginManager)
+    public function __construct()
     {
-        $this->twig = $twig;
-        $this->global = $global;
-        $this->config = $config;
-        $this->session = $session;
-        $this->pluginManager = $pluginManager;
+        $this->configuration = new Configuration();
     }
 
-    abstract public function handle($action, $params);
-
-    protected function render($template, $data = [])
+    public function getConnection($name)
     {
-        return $this->twig->render($template, array_merge([
-            'session' => $this->session->all(),
-            'global' => $this->global,
-            'config' => $this->config
-        ], $data));
+        $dbConfig = $this->configuration->get_config('db');
+
+        if (!isset($this->instances[$name])) {
+            if (!$dbConfig) {
+                throw new Exception("Configuration not loaded properly. Config is null.");
+            }
+
+            if (isset($dbConfig[$name])) {
+                $this->instances[$name] = new Medoo($dbConfig[$name]);
+            } else {
+                throw new Exception("Database configuration for '$name' not found.");
+            }
+        }
+        return $this->instances[$name];
     }
 }

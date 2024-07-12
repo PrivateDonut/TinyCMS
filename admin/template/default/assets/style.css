@@ -1,0 +1,149 @@
+:root {
+    --bg-color: #2c2c2c;
+    --panel-color: #1c1c1c;
+    --panel-light-color: #3c3c3c;
+    --text-white: white;
+    --text-black: black;
+    --text-ascent: #ffbe4d;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-white);
+}
+
+/* Add styles for the sidebar */
+.sidebar {
+    background-color: var(--panel-color);
+    color: var(--text-white);
+    padding: 0.5rem;
+    border-radius: 0.15rem;
+    height: 100vh;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    z-index: 1;
+}
+
+.sidebar img {
+    width: 100%;
+    height: auto;
+}
+
+/* Add styles for the navigation */
+nav {
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    background-color: var(--bg-color);
+    padding: 0.25rem;
+    border-radius: 0.15rem;
+    cursor: pointer;
+    margin-bottom: 0.25rem;
+    padding: 0.5rem;
+    box-shadow: rgba(16, 16, 16, 0.4) 0px 2px 8px 0px;
+}
+
+nav ul li:hover, nav ul li.active{
+    background-color: var(--panel-light-color);
+}
+
+nav ul li:hover a, nav ul li.active a {
+    color: var(--text-ascent);
+}
+
+nav ul li a {
+    color: var(--text-white);
+    text-decoration: none;
+    margin-left: 0.5rem;
+}
+
+nav ul li a i {
+    margin-right: 0.5rem;
+}
+
+/* Add styles for the topbar */
+.topbar {   
+    background-color: var(--panel-color);
+    color: var(--text-white);
+    min-height: 50px;
+    max-height: 50px;
+    z-index: 0;
+}
+
+.topbar .info {
+    margin-top: 0.55rem;
+}
+
+.topbar .info i {
+    margin: 0.5rem;
+    color: var(--text-white);
+}
+
+/* Add styles for the main content */
+.content {
+    color: var(--text-white);
+    margin: 0.5rem;
+}
+
+/* Add styles for the widgets */
+.widget-container {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0.75rem;
+}
+
+.widget {
+    flex-basis: 23%;
+    background-color: var(--panel-color);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+.widget-3 {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0.5rem;
+    width: 100%;
+}
+
+.widget i {
+    margin-right: 0.5rem;
+    background-color: var(--panel-light-color);
+    padding: 1rem;
+    border-radius: 0.15rem;
+    flex-shrink: 0;
+}
+
+.widget p {
+    margin: 0;
+    flex-grow: 1;
+    text-align: center;
+    padding-right: 2.5rem;
+}
+
+/* Add styles for the panels */
+.panel-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.panel {
+    flex-basis: calc(50% - 0.5rem);
+    background-color: var(--panel-color);
+    color: var(--text-white);
+    padding: 1rem;
+    border-radius: 0.15rem;
+}

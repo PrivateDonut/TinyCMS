@@ -1,0 +1,56 @@
+{% extends "base.twig" %}
+
+{% block title %}Dashboard - Admin{% endblock %}
+
+{% set active_page = 'dashboard' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="row widget-container">
+            <div class="widget">
+                <div class="widget-3">
+                    <i class="fa-solid fa-user"></i>
+                    <p>Accounts Created: {{ accounts_created }}</p>
+                </div>
+            </div>
+            <div class="widget">
+                <div class="widget-3">
+                    <i class="fa-solid fa-users"></i>
+                    <p>Total Characters: {{ total_characters }}</p>
+                </div>
+            </div>
+            <div class="widget">
+                <div class="widget-3">
+                    <i class="fa-solid fa-newspaper"></i>
+                    <p>Total Posts: {{ total_posts }}</p>
+                </div>
+            </div>
+            <div class="widget">
+                <div class="widget-3">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <p>Online Players: {{ online_players }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row panel-container g-3">
+            <div class="col-6 panel">
+                <h5>Recent Activity</h5>
+                <!-- Add a list of recent activities -->
+                <ul>
+                    {% for activity in recent_activities %}
+                        <li>{{ activity.description }} - {{ activity.timestamp|date("F d, Y H:i") }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-6 panel">
+                <h5>System Status</h5>
+                <!-- Add system status information -->
+                <p>Server Uptime: {{ server_uptime }}</p>
+                <p>Database Status: {{ database_status }}</p>
+                <p>Last Backup: {{ last_backup|date("F d, Y H:i") }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
