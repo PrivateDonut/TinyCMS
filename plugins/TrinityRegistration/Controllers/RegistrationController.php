@@ -17,6 +17,8 @@
 
 namespace Plugins\TrinityRegistration\Controllers;
 
+use DonutCMS\XSSProtection;
+
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Plugins\TrinityRegistration\Models\Registration;
@@ -61,20 +63,36 @@ class RegistrationController
 
         error_log("Registration form submitted");
 
-        // Validate CSRF token using the trait method
+        // Validate CSRF token
         if (!$this->validateCsrfToken($_POST['csrf_token'] ?? '')) {
-            $this->session->getFlashBag()->add('error', 'Invalid CSRF token.');
+            error_log("CSRF validation failed");
+            $this->session->getFlashBag()->add('error', "Invalid CSRF token.");
             header("Location: /register");
             exit();
         }
 
-        $username = trim($_POST['username'] ?? '');
-        $email = trim($_POST['email'] ?? '');
+        $username = XSSProtection::clean(trim($_POST['username'] ?? ''));
+        $email = XSSProtection::clean(trim($_POST['email'] ?? ''));
         $password = $_POST['password'] ?? '';
         $confirm_password = $_POST['password_confirmation'] ?? '';
 
         if (empty($username) || empty($email) || empty($password) || empty($confirm_password)) {
             $this->session->getFlashBag()->add('error', 'All fields are required.');
+            header("Location: /register");
+            exit();
+        }
+
+        $username = XSSProtection::clean(trim($_POST['username'] ?? ''));
+        $password = $_POST['password'] ?? '';
+
+        $originalUsername = trim($_POST['username'] ?? '');
+        if ($username !== $originalUsername) {
+            $this->session->getFlashBag()->add('error', "Your username contained invalid characters and was modified for security reasons.");
+            header("Location: /register");
+        }
+
+        if (strlen($username) < 3 || strlen($username) > 32) {
+            $this->session->getFlashBag()->add('error', 'Username must be between 3 and 20 characters.');
             header("Location: /register");
             exit();
         }

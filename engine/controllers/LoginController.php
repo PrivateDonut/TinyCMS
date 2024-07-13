@@ -1,5 +1,7 @@
 <?php
 
+use DonutCMS\XSSProtection;
+
 require_once __DIR__ . '/BaseController.php';
 
 class LoginController extends BaseController
@@ -45,6 +47,7 @@ class LoginController extends BaseController
             header("Location: login");
             exit();
         }
+
         // Validate CSRF token
         if (!$this->validateCsrfToken($_POST['csrf_token'] ?? '')) {
             error_log("CSRF validation failed");
@@ -53,7 +56,7 @@ class LoginController extends BaseController
             exit();
         }
 
-        $username = trim($_POST['username'] ?? '');
+        $username = XSSProtection::clean(trim($_POST['username'] ?? ''));
         $password = $_POST['password'] ?? '';
 
         if (empty($username) || empty($password)) {

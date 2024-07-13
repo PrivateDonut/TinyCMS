@@ -19,6 +19,7 @@
 
             <form method="post" action="/register/submit">
                 <div class="form-group mx-auto mt-2">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                     <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
                 </div>
                 <div class="form-group mx-auto mt-2">

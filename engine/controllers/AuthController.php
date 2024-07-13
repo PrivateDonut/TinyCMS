@@ -17,6 +17,8 @@
 
 require_once __DIR__ . '/BaseController.php';
 
+use DonutCMS\XSSProtection;
+
 class AccountController extends BaseController
 {
     public function handle($action, $params)
@@ -64,9 +66,9 @@ class AccountController extends BaseController
                 return $this->render('changepassword.twig');
             }
 
-            $oldPassword = $_POST['old_password'] ?? '';
-            $newPassword = $_POST['new_password'] ?? '';
-            $confirmPassword = $_POST['confirm_password'] ?? '';
+            $oldPassword = XSSProtection::clean($_POST['old_password'] ?? '');
+            $newPassword = XSSProtection::clean($_POST['new_password'] ?? '');
+            $confirmPassword = XSSProtection::clean($_POST['confirm_password'] ?? '');
 
             if (empty($oldPassword) || empty($newPassword) || empty($confirmPassword)) {
                 $this->session->getFlashBag()->add('error', "All fields are required.");
