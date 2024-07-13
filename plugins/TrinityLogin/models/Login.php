@@ -15,6 +15,10 @@
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
 
+namespace Plugins\TrinityLogin\Models;
+
+use Database;
+use Exception;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class Login
@@ -35,6 +39,40 @@ class Login
         $this->auth_connection = $database->getConnection('auth');
         $this->website_connection = $database->getConnection('website');
         $this->session = $session;
+    }
+
+    public function login()
+    {
+        try {
+            $this->checkRateLimit();
+
+            $account = $this->auth_connection->get('account', [
+                'id', 'username', 'verifier', 'salt'
+            ], [
+                'username' => $this->username
+            ]);
+
+            if (!$account) {
+                throw new Exception('Invalid login credentials.');
+            }
+
+            $check_verifier = $this->calculateVerifier($account['username'], $this->password, $account['salt']);
+            if ($check_verifier != $account['verifier']) {
+                throw new Exception('Invalid login credentials.');
+            }
+
+            $this->session->set('account_id', $account['id']);
+            $this->session->set('username', $account['username']);
+            $this->session->set('isAdmin', $this->getRank($account['id']));
+            $this->insertAccountId($account['id']);
+
+            // Reset login attempts on successful login
+            $this->website_connection->delete('login_attempts', ['ip' => $_SERVER['REMOTE_ADDR']]);
+
+            return true;
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 
     private function checkRateLimit()
@@ -80,58 +118,26 @@ class Login
         }
     }
 
-    public function login()
+
+    private function calculateVerifier($username, $password, $salt)
     {
-        try {
-            $this->checkRateLimit();
-
-            if (empty($this->username) || empty($this->password)) {
-                throw new Exception('Please fill in all fields.');
-            }
-
-            // Fetch account details
-            $account = $this->auth_connection->get('account', [
-                'id', 'username', 'verifier', 'salt'
-            ], [
-                'username' => $this->username
-            ]);
-
-            if (!$account) {
-                throw new Exception('Invalid login credentials.');
-            }
-
-            $global = new GlobalFunctions();
-            $check_verifier = $global->calculate_verifier($account['username'], $this->password, $account['salt']);
-            $stored_verifier = hash('sha256', $account['verifier']);
-            $user_input_verifier = hash('sha256', $check_verifier);
-
-            if (!hash_equals($stored_verifier, $user_input_verifier)) {
-                throw new Exception('Invalid login credentials.');
-            }
-
-            $this->session->migrate(true); // Regenerate session ID
-            $this->session->set('account_id', $account['id']);
-            $this->session->set('username', $account['username']);
-            $this->session->set('isAdmin', $this->get_rank($account['id']));
-            $this->insert_account_id($account['id']);
-
-            // Reset login attempts on successful login
-            $this->website_connection->delete('login_attempts', ['ip' => $_SERVER['REMOTE_ADDR']]);
-            header("Location: /home");
-            exit();
-        } catch (Exception $e) {
-            $this->session->getFlashBag()->add('error', $e->getMessage());
-            header("Location: /login");
-            exit();
-        }
+        $g = gmp_init(7);
+        $N = gmp_init('894B645E89E1535BBDAD5B8B290650530801B18EBFBF5E8FAB3C82872A3E9BB7', 16);
+        $h1 = sha1(strtoupper($username . ':' . $password), TRUE);
+        $h2 = sha1($salt . $h1, TRUE);
+        $h2 = gmp_import($h2, 1, GMP_LSW_FIRST);
+        $verifier = gmp_powm($g, $h2, $N);
+        $verifier = gmp_export($verifier, 1, GMP_LSW_FIRST);
+        $verifier = str_pad($verifier, 32, chr(0), STR_PAD_RIGHT);
+        return $verifier;
     }
 
-    private function get_rank($id)
+    private function getRank($id)
     {
         return $this->website_connection->get('access', 'access_level', ['account_id' => $id]);
     }
 
-    private function insert_account_id($id)
+    private function insertAccountId($id)
     {
         $account_id = $this->website_connection->get('users', 'account_id', ['account_id' => $id]);
         if ($account_id === null) {
