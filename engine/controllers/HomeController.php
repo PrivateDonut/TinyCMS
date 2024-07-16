@@ -31,11 +31,13 @@ class HomeController extends BaseController
         $newsHome = new news_home();
         $latestNews = $newsHome->get_news();
         $server = new ServerInfo();
+        $sliderModel = new SliderModel();
+        $sliderItems = $sliderModel->getSliderItems();
 
         return $this->render('home.twig', [
+            'sliderItems' => $sliderItems,
             'latestNews' => $latestNews,
             'server' => $server
-
         ]);
     }
 }

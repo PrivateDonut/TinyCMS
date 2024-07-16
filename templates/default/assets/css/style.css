@@ -1,7 +1,186 @@
-@import url("global.css");
-@import url("custom.css");
-@import url("navbar.css");
-@import url("news.css");
-@import url("home.css");
-@import url("account.css");
-@import url("footer.css");
+/*
+	@Theme Name  : Heaven
+	@Theme URI   : -
+	@Author      : E. Darksider
+	@Author URI  : https://d4rksider.deviantart.com
+	@Description : LINEAGE II TEMPLATE
+	@Version     : 1.0.0
+	@License     : Proprietary software License
+	@License URI : https://en.wikipedia.org/wiki/Proprietary_software
+
+-------------------------------------------------------------------------
+
+	01. Import parts
+*/
+
+/*-------------------------------------------------------------------------*/
+/* 01. Import parts
+/*-------------------------------------------------------------------------*/
+@charset "UTF-8";
+
+/* Dependencies */
+@import url('../../node_modules/bootstrap/dist/css/bootstrap.min.css');
+@import url('../../node_modules/owl.carousel/dist/assets/owl.carousel.min.css');
+
+/* Theme fonts */
+@import url('./fonts/fonts.css');
+
+/* Theme globals */
+@import url('./global/form.css');
+@import url('./global/tables.css');
+@import url('./global/general.css');
+@import url('./global/utilities.css');
+
+/* Theme parts */
+@import url('./parts/wall.css');
+@import url('./parts/page.css');
+@import url('./parts/header.css');
+@import url('./parts/footer.css');
+@import url('./parts/sidebox.css');
+@import url('./parts/featured.css');
+
+/* Theme pages */
+@import url('./pages/ucp.css');
+@import url('./pages/news.css');
+@import url('./pages/register.css');
+
+/* Theme custom stylesheets */
+@import url('./custom.css');
+
+
+
+.store-container {
+    display: flex;
+    background-color: #11192c;
+    padding: 20px;
+}
+
+.store-sidebar {
+    width: 200px;
+    padding-right: 20px;
+    background-color: #0e1721;
+}
+
+.store-content {
+    flex: 1;
+    background-color: #0e1721;
+}
+
+.store-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a202e;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    flex: 3; /* Give more space to the search bar */
+    padding: 10px;
+    background-color: #262f3d;
+    border: 1px solid #2a2e37;
+    color: #fff;
+    margin-right: 10px; /* Add some space between elements */
+}
+
+.points-display {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-left: 20px;
+    color: #a3c74e;
+    flex: 1; /* Adjust to fit the flex layout */
+}
+
+.points-display span {
+    margin-bottom: 5px;
+}
+
+.player-select {
+    flex: 2; /* Constrain the width of the player select */
+    background-color: #262f3d;
+    border: 1px solid #2a2e37;
+    color: #fff;
+    padding: 10px;
+    margin-left: 10px; /* Add some space between elements */
+}
+
+.store-item {
+    background-color: #1a202e;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.item-image {
+    width: 64px;
+    height: 64px;
+    margin-right: 15px;
+}
+
+.item-details {
+    flex-grow: 1;
+}
+
+.item-title {
+    color: #4699fe;
+    margin: 0 0 5px 0;
+}
+
+.item-description a {
+    color: #e2c676;
+    text-decoration: none;
+}
+
+.item-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.store-sidebar .category {
+    color: #a3c74e;
+    font-size: 16px;
+    margin: 0;
+    text-transform: uppercase;
+    cursor: pointer;
+    background-color: #11192c;
+    padding: 10px;
+    border: 1px solid #2a2e37;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.store-sidebar .category .arrow {
+    transition: transform 0.3s ease;
+}
+
+.store-sidebar .category:hover {
+    background-color: #1a202e;
+}
+
+.store-sidebar .dropdown-menu {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+    display: none; /* Hidden by default */
+    background-color: #0e1721;
+    border-top: 1px solid #2a2e37;
+}
+
+.store-sidebar .dropdown-menu li {
+    color: #8288b5;
+    font-size: 14px;
+    padding: 10px;
+    border-bottom: 1px solid #2a2e37;
+}
+
+.store-sidebar .dropdown-menu li:hover {
+    color: #4699fe;
+}
+
+.store-sidebar .dropdown-menu li.active {
+    color: #4699fe;
+}

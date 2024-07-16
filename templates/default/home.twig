@@ -1,121 +1,168 @@
-{#*********************************************************************************
-* DonutCMS is free software: you can redistribute it and/or modify              *        
-* it under the terms of the GNU General Public License as published by          *      
-* the Free Software Foundation, either version 3 of the License, or             *
-* (at your option) any later version.                                           *
-*                                                                               *
-* DonutCMS is distributed in the hope that it will be useful,                   *
-* but WITHOUT ANY WARRANTY; without even the implied warranty of                *
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the                  *
-* GNU General Public License for more details.                                  *
-*                                                                               *
-* You should have received a copy of the GNU General Public License             *
-* along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
-********************************************************************************#}
-
 {% extends "base.twig" %}
 
-{% block title %}Home - TinyCMS{% endblock %}
-
-{% block additional_head %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+{% block title %}Heaven | Home
 {% endblock %}
 
 {% block content %}
-    {% if session.success_message is defined %}
-        <div class="text-center">
-            <div class="alert alert-dismissible alert-success">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <strong>Well done!</strong> {{ session.success_message }}
-            </div>
-        </div>
-    {% endif %}
+	<!-- Wall.Start -->
+	<section class="section section-wall" wall>
+		<div class="container d-flex flex-grow-1 align-items-center justify-content-center">
+			<div class="row w-100 justify-content-center">
+				<div class="col-sm-12">
+					<div class="wall-slider owl-carousel owl-theme" owl-carousel="main">
+						{% for item in sliderItems %}
+							<div class="slider-item">
+								<span class="item-title">{{ item.title }}</span>
+								<p class="item-desc">{{ item.description }}</p>
+								<a href="{{ item.button_url }}" class="btn-blue -round text-ellipsis" title="{{ item.button_text }}">{{ item.button_text }}</a>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
 
-    {% if session.error is defined %}
-        <div class="text-center">
-            <div class="alert alert-dismissible alert-danger">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <strong>Hey there!</strong> {{ session.error }}
-            </div>
-        </div>
-    {% endif %}
+				<div class="col-sm-12 mt-5">
+					<div class="wall-online" title="Players online 1538">Players online
+						<span>1538</span>
+					</div>
+				</div>
+				<div class="col-sm-12 mt-5">
+					<div class="wall-membership">
+						<a href="#" class="btn-big text-ellipsis" title="Play now">
+							<span>Play now</span>
+						</a>
+						<div class="membership-row mt-3">Already a member?
+							<a href="#">LOGIN</a>
+							or</div>
+						<div class="membership-row mt-3">
+							<a href="#" class="btn-blue -outline -noise text-ellipsis" title="Register">Register</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Wall.End -->
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 mx-auto">
-                <h2 class="title">
-                    <i class="fas fa-newspaper" style="color: var(--title-tex); font-size: 25px; margin-right: 0.2rem;"></i>
-                    Latest News
-                </h2>
-                <div class="row">
-                    {% for news in latestNews|batch(3) %}
-                        <div class="row">
-                            {% for item in news %}
-                                <div class="col-md-4 mb-2">
-                                    <div class="card custom-card">
-                                        {% if item.thumbnail %}
-                                            <div class="card-thumbnail">
-                                                <img src="{{ item.thumbnail }}" class="card-img-top" alt="...">
-                                            </div>
-                                        {% endif %}
-                                        <div class="card-body custom-card-body d-flex justify-content-between">
-                                            <div style="width:100%;">
-                                                <h5 class="card-title custom-card-title text-center">{{ item.title }}</h5>
-                                                <hr style="border-color: white; margin: 10px 0;">
-                                                <div class="card-body">
-                                                    <p class="card-text" style="color: white;">{{ item.content }}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
+	<!-- Page.Start -->
+	<section class="section section-page" page>
+		<div class="container">
+			<div
+				class="row g-3">
+				<!-- Featured banner.Start -->
+				{% for banner in featured_banners %}
+					<div class="col-md-12 col-lg-6" featured-banner>
+						<div class="featured-banner">
+							<h3 class="banner-title text-ellipsis" title="{{ banner.title }}">{{ banner.title|raw }}</h3>
+							<time class="banner-date" datetime="{{ banner.date|date('d.m.y') }}" title="{{ banner.date|date('d.m.y') }}">{{ banner.date|date('d.m.y') }}</time>
+							<p class="banner-desc">{{ banner.description }}</p>
+							<div class="banner-readmore">
+								<a href="{{ banner.link }}" class="btn-blue" title="Read more">Read more</a>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+				<!-- Featured banner.End -->
 
-    <div class="howto-section">
-        <div class="text-center title-connect">HOW TO CONNECT</div>
-        <p class="text-center realmlist">set realmlist logon.tinycms.com</p>
-        <p class="text-center">
-            <a class="howto-links" href="#">Download Client</a>
-            <span style="color:white;font-size:23px;">|</span>
-            <a class="howto-links" href="#">Connection Guide</a>
-        </p>
-    </div>
+				<!-- Main.Start -->
+				<div class="col-lg-12 col-xl-8 col-xxl-9" main>
+					<div class="page-head -type-home text-ellipsis" title="Latest news">Latest
+						<span>news</span>
+					</div>
+					<div class="news-container -flex">
+						<div class="news-row -full-h">
+							<div class="news-col -md">
+								{% if latestNews|length > 0 %}
+									<article class="news-post -lg">
+										<h2 hidden>{{ latestNews[0].title }}</h2>
+										<time class="post-date" datetime="{{ latestNews[0].created_at|date('Y-m-d') }}" title="{{ latestNews[0].created_at|date('d.m.y') }}">{{ latestNews[0].created_at|date('d.m.y') }}</time>
+										<a href="/news/{{ latestNews[0].id }}" class="post-title text-ellipsis" title="{{ latestNews[0].title }}">{{ latestNews[0].title }}</a>
+										<p class="post-summary">{{ latestNews[0].summary }}</p>
+										<div class="post-readmore">
+											<a href="/news/{{ latestNews[0].id }}" class="btn-blue" title="Read more">Read more</a>
+										</div>
+									</article>
+								{% endif %}
+							</div>
+							<div class="news-col -lg">
+								{% for news in latestNews|slice(1, 3) %}
+									<article class="news-post -md">
+										<div class="post-thumbnail" style="background-image: url('{{ news.thumbnail }}');"></div>
+										<div class="post-metadata">
+											<time class="post-date" datetime="{{ news.created_at|date('Y-m-d') }}" title="{{ news.created_at|date('d.m.y') }}">{{ news.created_at|date('d.m.y') }}</time>
+											<a href="/news/{{ news.id }}" class="post-title text-ellipsis" title="{{ news.title }}">{{ news.title }}</a>
+											<p class="post-summary">{{ news.summary }}</p>
+											<div class="post-readmore">
+												<a href="/news/{{ news.id }}" class="btn-blue" title="Read more">Read more</a>
+											</div>
+										</div>
+									</article>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+					<div class="news-row">
+						<a href="/news" class="btn-blue d-block">View more news</a>
+					</div>
+				</div>
+				<!-- Main.End -->
 
-    <div class="server-status" style="padding: 20px;">
-        <p class="title text-center" style="font-size: 22px;">
-            <i class="fas fa-server" style="top: -3px; position: relative; right: 5px; margin-right: 10px;"></i>
-            Server Status
-        </p>
-    </div>
+				<!-- Side.Start -->
+				<div class="col-lg-12 col-xl-4 col-xxl-3" side>
+					<div class="page-head -type-home text-center text-ellipsis" title="Player rating">Player
+						<span>rating</span>
+					</div>
+					<div class="sidebox sidebox-toppvp">
+						<h4 class="sidebox-head text-ellipsis" title="Top PK">Top
+							<span>PK</span>
+						</h4>
+						<div class="sidebox-body">
+							<div class="toppvp-player">
+								<table>
+									<thead>
+										<tr>
+											<th>NR</th>
+											<th>Player</th>
+											<th>Player kills</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for player in top_players %}
+											<tr {% if loop.index == 1 %} gold {% elseif loop.index == 2 %} silver {% elseif loop.index == 3 %} bronze {% endif %}>
+												<td>
+													<span class="player-rank">{{ loop.index }}</span>
+												</td>
+												<td>
+													<a href="/player" class="player-name">{{ player.name }}</a>
+												</td>
+												<td>
+													<span class="player-kills">{{ player.kills }}</span>
+												</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Side.End -->
+			</div>
+		</div>
+	</section>
+	<!-- Page.End -->
+{% endblock %}
 
-    <div class="server-status-inner mx-auto" style="padding: 20px;">
-        <div class="card-title custom-card-title text-center" style="margin-bottom: 20px; font-size:22px;">
-            <img src="/tinycms/assets/images/wotlk.png" style="width:25px; margin-right: 10px;" alt="">
-            <span>{{ server.get_realm_name() }}</span>
-        </div>
-        <p class="text-center" style="font-size: 18px;">
-            <i class="fas fa-exclamation-circle" style="font-size: 1.5em; margin-right: 10px;"></i>
-            Currently the realm is <span style="text-transform:uppercase; font-weight: bold;">Online</span>
-        </p>
-    </div>
-
-    <div class="community-section">
-        <div class="community-title text-center">become a part of the community</div>
-        <div class="discord-widget text-center">
-            <a href="#">
-                <img src="https://discordapp.com/api/guilds/938237660017872896/widget.png?style=banner2">
-            </a>
-        </div>
-        <div class="community-text text-center">
-            Join our <a href="#" style="color:var(--title-text);">Discord</a> or <a href="#" style="color:var(--title-text);">Community Forum.</a><br />
-            Remember to familiarize yourself with our <a href="#" style="color:var(--title-text);">Rules & Regulations.</a><br />
-            Thank you!
-        </div>
-    </div>
+{% block additional_scripts %}
+	<script src="templates/default/node_modules/owl.carousel/dist/owl.carousel.min.js"></script>
+	<script>
+		$(document).ready(function () {
+$(".wall-slider").owlCarousel({
+items: 1,
+loop: true,
+autoplay: true,
+autoplayTimeout: 5000,
+autoplayHoverPause: true
+});
+});
+	</script>
 {% endblock %}

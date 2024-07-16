@@ -28,18 +28,31 @@ class news_home
     public function get_news()
     {
         $news = $this->website_connection->select('news', [
-            'id', 'title', 'content', 'author', 'created_at', 'thumbnail'
+            'id',
+            'title',
+            'content',
+            'author',
+            'created_at',
+            'thumbnail'
         ], [
-            'ORDER' => ['id' => 'DESC'],
+            'ORDER' => ['created_at' => 'DESC'],
             'LIMIT' => 4
         ]);
 
-        // Optionally format the date if needed
         foreach ($news as &$item) {
-            $item['date'] = $item['created_at']; // If you need to format the date, you can do it here
+            $item['summary'] = $this->generateSummary($item['content']);
         }
 
         return $news;
+    }
+
+    private function generateSummary($content, $length = 200)
+    {
+        $summary = strip_tags($content);
+        if (strlen($summary) > $length) {
+            $summary = substr($summary, 0, $length) . '...';
+        }
+        return $summary;
     }
 
     public function get_news_by_id($id)

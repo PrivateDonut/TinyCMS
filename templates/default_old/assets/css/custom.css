@@ -1,0 +1,92 @@
+  
+  footer {
+      color: white;
+  }
+  
+  
+  /* Login form custom css */
+  @media (min-width: 768px) {
+    .info-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: -1px;
+        width: 2px;
+        background: white;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .info-section::before {
+        content: '';
+        position: relative;
+        display: block;
+        height: 2px;
+        background: white;
+        margin: 20px 0;
+    }
+  }
+  
+  .info-section {
+    position: relative;
+  }
+  
+  .input-small {
+    width: 80%;  /* adjust this to your liking */
+  }
+  
+  .card-title-divider::after {
+      content: '';
+      display: block;
+      width: 90%; /* Adjust this to change the line width */
+      height: 2px;
+      background: white;
+      margin: 20px auto;
+  }
+  .banner {
+    height: 500px;
+    width: 100%;
+    background-position:center;
+    overflow: hidden;
+    object-fit: cover;
+    border-bottom:1px solid var(--navbar-border);
+  }
+
+  .title {
+    color: var(--title-text);
+    font-size:25px !important;
+    font-weight:500;
+    margin: 2rem 0;
+  }
+  .svg-inline--fa {
+    display: inline-block;
+    font-size: inherit;
+    height: 1.3em;
+    overflow: visible;
+    vertical-align: -0.125em;
+    top: 8px;
+    position: relative;
+    color: var(--navbar-text);
+}
+    .read-more {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      color: gold;
+      text-decoration: none;
+    }
+  
+    .form-group {
+      width: 300px;
+  }
+  
+  .form-control {
+      background-color: white;
+      color: #424242;
+  }
+  
+  .btn-primary {
+      background-color: #424242;
+      border-color: #1a1a1a;
+  }
