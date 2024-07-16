@@ -3,13 +3,17 @@
     --panel-color: #1c1c1c;
     --panel-light-color: #3c3c3c;
     --text-white: white;
+    --text-dull-white: #878787;
     --text-black: black;
     --text-ascent: #ffbe4d;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 body {
     background-color: var(--bg-color);
     color: var(--text-white);
+    font-family: 'Roboto', sans-serif !important;
 }
 
 /* Add styles for the sidebar */
@@ -26,6 +30,10 @@ body {
 .sidebar img {
     width: 100%;
     height: auto;
+}
+
+#sidebarCollapse {
+    color: var(--text-white);
 }
 
 /* Add styles for the navigation */
@@ -47,6 +55,7 @@ nav ul li {
     margin-bottom: 0.25rem;
     padding: 0.5rem;
     box-shadow: rgba(16, 16, 16, 0.4) 0px 2px 8px 0px;
+    min-width: 120px;
 }
 
 nav ul li:hover, nav ul li.active{
@@ -76,6 +85,11 @@ nav ul li a i {
     z-index: 0;
 }
 
+.topbar img {
+    width: auto;
+    height: 50px;
+}
+
 .topbar .info {
     margin-top: 0.55rem;
 }
@@ -92,28 +106,13 @@ nav ul li a i {
 }
 
 /* Add styles for the widgets */
-.widget-container {
-    display: flex;
-    justify-content: space-evenly;
-    padding: 0.75rem;
-}
-
 .widget {
-    flex-basis: 23%;
     background-color: var(--panel-color);
     display: flex;
     justify-content: flex-start;
     align-items: center;
     padding: 0.5rem;
-}
-
-.widget-3 {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 0.5rem;
-    width: 100%;
+    margin-top: 0.5rem;
 }
 
 .widget i {
@@ -132,18 +131,139 @@ nav ul li a i {
 }
 
 /* Add styles for the panels */
-.panel-container {
+.panel {
+    background-color: var(--panel-color);
     display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    overflow: hidden;
 }
 
-.panel {
-    flex-basis: calc(50% - 0.5rem);
+/* Add styles for the breadcrumbs */
+.breadcrumb {
+    margin-top: 12px;
+}
+
+.breadcrumb-item {
+    color: var(--text-white) !important;
+}
+
+.breadcrumb-item::before {
+    color: var(--text-white) !important;
+}
+
+.breadcrumb .disable a {
+    color: var(--text-dull-white) !important;
+    text-decoration: none;
+}
+
+.breadcrumb-item a {
+    color: var(--text-white) !important;
+    text-decoration: none;
+}
+
+/* These need some cleanup */
+.form-control::placeholder {
+	color: var(--text-white);
+	opacity: 1;
+}
+
+.form-control:focus {
+    background-color: var(--panel-light-color);
+    color: var(--text-white);
+    box-shadow: 0 0 0 .25rem rgba(255, 199, 58, 0.25);
+}
+
+.form-control {
     background-color: var(--panel-color);
     color: var(--text-white);
-    padding: 1rem;
+    border: none;
     border-radius: 0.15rem;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.form-check-input {
+    background-color: var(--panel-color);
+    color: var(--text-white);
+    border: none;
+    border-radius: 0.15rem;
+    margin-top: 0;
+}
+
+.form-check-input:checked {
+    background-color: var(--panel-light-color);
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 .25rem rgba(255, 199, 58, 0.25);
+}
+
+.login {
+    margin-top: 0.5rem;
+}
+
+.login-logo {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+
+.login-check {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.login-submit {
+    margin: 0 auto;
+    width: 100%;
+    border-radius: 0.15rem;
+}
+
+.table > :not(caption) > * > * {
+    background-color: var(--panel-color);
+}
+
+td {
+    font-size: 1.15rem;
+}
+
+.btn {
+    --bs-btn-font-size: 0.75rem;
+}
+
+.page-link {
+    background-color: var(--panel-light-color);
+    color: var(--text-white);
+    border: none;
+    border-radius: 0.15rem;
+}
+
+.page-link:hover {
+    background-color: var(--panel-light-color);
+    color: var(--text-ascent);
+}
+
+/* Responsiveness */
+@media (max-width: 575.98px) {
+    #sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        height: 100vh;
+        z-index: 998;
+        transition: all 0.3s;
+        width: 100vw;
+    }
+
+    #sidebar.active {
+        left: 0;
+        display: block !important;
+    }
 }
