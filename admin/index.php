@@ -5,7 +5,7 @@ define('BASE_DIR', __DIR__ . '/..');
 // Include required files
 require_once BASE_DIR . '/vendor/autoload.php';
 require_once BASE_DIR . '/engine/configs/db_config.php';
-require_once BASE_DIR . '/engine/functions/database.php';
+require_once BASE_DIR . '/engine/models/database.php';
 require_once BASE_DIR . '/engine/TinyCMSSessionHandler.php';
 
 // Initialize Twig
@@ -30,7 +30,7 @@ $session = new Symfony\Component\HttpFoundation\Session\Session($storage);
 $session->start();
 
 // Include functions, models, and controllers
-foreach (glob(BASE_DIR . '/engine/functions/*.php') as $filename) {
+foreach (glob(BASE_DIR . '/engine/models/*.php') as $filename) {
     require_once $filename;
 }
 foreach (glob(__DIR__ . '/models/*.php') as $filename) {
@@ -52,13 +52,19 @@ $segments = explode('/', $path);
 // Ensure the user is an admin before allowing access
 $global->check_is_admin();
 
+// Redirect to /home if the path is empty
+if ($path == '' || $path == 'admin') {
+    header('Location: /admin/home');
+    exit();
+}
+
 // Route the request to the appropriate controller
-$controllerName = ucfirst($segments[0] ?? 'Dashboard') . 'Controller';
-$action = $segments[1] ?? 'index';
-$params = array_slice($segments, 2);
+$controllerName = ucfirst($segments[1] ?? 'Home') . 'Controller';
+$action = $segments[2] ?? 'index';
+$params = array_slice($segments, 3);
 
 if (class_exists($controllerName)) {
-    $controller = new $controllerName($twig, $global, $config_object, $session);
+    $controller = new $controllerName($twig, $global, $config_object);
     echo $controller->handle($action, $params);
 } else {
     // 404 handling
