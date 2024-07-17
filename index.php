@@ -34,10 +34,13 @@ require_once BASE_DIR . '/engine/PluginSystem/HookHelper.php';
 require_once BASE_DIR . '/engine/PluginSystem/BasePlugin.php';
 require_once BASE_DIR . '/engine/helpers.php';
 
+use DonutCMS\Models\Database;
+use DonutCMS\Models\GlobalFunctions;
 use DonutCMS\PluginSystem\PluginManager;
 use DonutCMS\PluginSystem\HookHelper;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
+use DonutCMS\Models\Configuration;
 
 // Initialize database connection
 $database = new Database();
@@ -100,7 +103,7 @@ foreach (glob(BASE_DIR . "/engine/controllers/*.php") as $filename) {
 }
 
 // Initialize global functions and config
-$global = new GlobalFunctions();
+$global = new GlobalFunctions($database, $session);
 $config_object = new gen_config();
 
 // Execute 'init' action for plugins

@@ -15,7 +15,10 @@
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
 
+use DonutCMS\Models\Database;
+
 class NavbarModel
+
 {
     private $database;
 

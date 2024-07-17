@@ -14,10 +14,11 @@
  * You should have received a copy of the GNU General Public License             *
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
-
+namespace DonutCMS\Models;
 require_once BASE_DIR . '/vendor/autoload.php';
 require_once BASE_DIR . '/engine/configs/db_config.php';
 
+use DonutCMS\Models\Configuration;
 use Medoo\Medoo;
 
 class Database

@@ -20,7 +20,7 @@ namespace Plugins\TrinityRegistration;
 use DonutCMS\PluginSystem\BasePlugin;
 use DonutCMS\PluginSystem\HookHelper;
 use Plugins\TrinityRegistration\Controllers\RegistrationController;
-use Database;
+use DonutCMS\Models\Database;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class TrinityRegistrationPlugin extends BasePlugin

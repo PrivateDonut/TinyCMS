@@ -15,18 +15,22 @@
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
 
+namespace DonutCMS\Models;
+
+use DonutCMS\Models\Database;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 class GlobalFunctions
 {
     private $auth_connection;
     private $website_connection;
     private $session;
 
-    public function __construct()
+    public function __construct(Database $database, Session $session)
     {
-        $database = new Database();
         $this->auth_connection = $database->getConnection('auth');
         $this->website_connection = $database->getConnection('website');
-        $this->session = new Symfony\Component\HttpFoundation\Session\Session();
+        $this->session = $session;
     }
 
     public function logout()
