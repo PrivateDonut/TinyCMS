@@ -16,6 +16,7 @@
  * *******************************************************************************/
 
 namespace Plugins\TrinityLogin\Controllers;
+use DonutCMS\Models\Database;
 
 use DonutCMS\XSSProtection;
 use Plugins\TrinityLogin\Models\Login;

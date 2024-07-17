@@ -2,6 +2,10 @@
 // Define the base directory
 define('BASE_DIR', __DIR__ . '/..');
 
+use DonutCMS\Models\Configuration;
+use DonutCMS\Models\Database;
+use DonutCMS\Models\GlobalFunctions;
+
 // Include required files
 require_once BASE_DIR . '/vendor/autoload.php';
 require_once BASE_DIR . '/engine/configs/db_config.php';
@@ -41,7 +45,7 @@ foreach (glob(__DIR__ . '/controllers/*.php') as $filename) {
 }
 
 // Initialize global functions and config
-$global = new GlobalFunctions($session);
+$global = new GlobalFunctions($database, $session);
 $config_object = new gen_config();
 
 // Parse the URL

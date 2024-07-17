@@ -15,38 +15,16 @@
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
 
-use DonutCMS\Models\Database;
-class HomeAdmin
+namespace Plugins\TrinityLogin\Interfaces;
+
+use Symfony\Component\HttpFoundation\Session\Session;
+
+interface LoginInterface
 {
-    private $websiteConnection;
-    private $authConnection;
-    private $charConnection;
-
-    public function __construct()
-    {
-        $database = new Database();
-        $this->websiteConnection = $database->getConnection('website');
-        $this->authConnection = $database->getConnection('auth');
-        $this->charConnection = $database->getConnection('characters');
-    }
-
-    public function getOnlinePlayers()
-    {
-        return $this->authConnection->count('account', ['online' => 1]);
-    }
-
-    public function getTotalCharacters()
-    {
-        return $this->charConnection->count('characters');
-    }
-
-    public function getTotalAccounts()
-    {
-        return $this->authConnection->count('account');
-    }
-
-    public function getTotalPosts()
-    {
-        return $this->websiteConnection->count('news');
-    }
+    public function __construct($username, $password, Session $session);
+    public function login();
+    public function checkRateLimit();
+    public function calculateVerifier($username, $password, $salt);
+    public function getRank($id);
+    public function insertAccountId($id);
 }
