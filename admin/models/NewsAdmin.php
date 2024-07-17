@@ -15,19 +15,19 @@
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
 
-class news_admin
+class NewsAdmin
 {
-    private $website_connection;
+    private $websiteConnection;
 
     public function __construct()
     {
         $database = new Database();
-        $this->website_connection = $database->getConnection('website');
+        $this->websiteConnection = $database->getConnection('website');
     }
 
-    public function get_news()
+    public function getNews()
     {
-        $news = $this->website_connection->select('news', [
+        $news = $this->websiteConnection->select('news', [
             'id', 'title', 'content', 'author', 'created_at', 'thumbnail'
         ], [
             'ORDER' => ['id' => 'DESC']
@@ -41,15 +41,15 @@ class news_admin
         return $news;
     }
 
-    public function get_news_by_id($id)
+    public function getNewsById($id)
     {
-        $news = $this->website_connection->get("news", "*", ["id" => $id]);
+        $news = $this->websiteConnection->get("news", "*", ["id" => $id]);
         return $news ? $news : null;
     }
 
-    public function add_news($title, $content, $author, $thumbnail)
+    public function addNews($title, $content, $author, $thumbnail)
     {
-        $this->website_connection->insert("news", [
+        $this->websiteConnection->insert("news", [
             "title" => $title,
             "content" => $content,
             "author" => $author,
@@ -58,9 +58,9 @@ class news_admin
         ]);
     }
 
-    public function update_news($id, $title, $content, $author, $thumbnail)
+    public function updateNews($id, $title, $content, $author, $thumbnail)
     {
-        $this->website_connection->update("news", [
+        $this->websiteConnection->update("news", [
             "title" => $title,
             "content" => $content,
             "author" => $author,
@@ -70,8 +70,8 @@ class news_admin
         ]);
     }
 
-    public function delete_news($id)
+    public function deleteNews($id)
     {
-        $this->website_connection->delete("news", ["id" => $id]);
+        $this->websiteConnection->delete("news", ["id" => $id]);
     }
 }

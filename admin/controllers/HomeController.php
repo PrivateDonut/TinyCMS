@@ -15,42 +15,31 @@
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
 
-require_once __DIR__ . '/../CSRFTrait.php';
+require_once __DIR__ . '/../../engine/controllers/BaseController.php';
 
-abstract class BaseController
+class HomeController extends BaseController
 {
-    use CSRFTrait;
-
-    protected $twig;
-    protected $global;
-    protected $config;
-    protected $navbarModel;
-    protected $breadcrumbs;
-
-    public function __construct($twig, $global, $config, $breadcrumbs)
+    public function handle($action, $params)
     {
-        $this->twig = $twig;
-        $this->global = $global;
-        $this->config = $config;
-        $this->breadcrumbs = $breadcrumbs;
-        $this->navbarModel = new NavbarModel();
+        switch ($action) {
+            case 'index':
+            default:
+                return $this->index();
+        }
     }
 
-    protected function render($template, $data = [])
+    private function index()
     {
-        $navbarModel = new NavbarModel();
-        $navbarItems = $navbarModel->getNavbarItems();
+        $homeModel = new HomeAdmin();
 
-        $socialMediaModel = new SocialMediaModel();
-        $socialMediaLinks = $socialMediaModel->getSocialMediaLinks();
+        $data = [
+            'title' => 'Dashboard - DonutCMS',
+            'total_accounts' => $homeModel->getTotalAccounts(),
+            'total_characters' => $homeModel->getTotalCharacters(),
+            'total_posts' => $homeModel->getTotalPosts(),
+            'online_players' => $homeModel->getOnlinePlayers(),
+        ];
 
-        return $this->twig->render($template, array_merge([
-            'session' => $_SESSION,
-            'global' => $this->global,
-            'config' => $this->config,
-            'navbar_items' => $navbarItems,
-            'social_media_links' => $socialMediaLinks,
-            'breadcrumbs' => $this->breadcrumbs
-        ], $data));
+        return $this->render('home.twig', $data);
     }
 }

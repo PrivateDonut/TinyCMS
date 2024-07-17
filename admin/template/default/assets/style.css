@@ -54,12 +54,13 @@ nav ul li {
     cursor: pointer;
     margin-bottom: 0.25rem;
     padding: 0.5rem;
-    box-shadow: rgba(16, 16, 16, 0.4) 0px 2px 8px 0px;
     min-width: 120px;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
 }
 
 nav ul li:hover, nav ul li.active{
     background-color: var(--panel-light-color);
+    border-bottom: 1px solid var(--text-ascent);
 }
 
 nav ul li:hover a, nav ul li.active a {
@@ -83,6 +84,7 @@ nav ul li a i {
     min-height: 50px;
     max-height: 50px;
     z-index: 0;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
 }
 
 .topbar img {
@@ -113,6 +115,7 @@ nav ul li a i {
     align-items: center;
     padding: 0.5rem;
     margin-top: 0.5rem;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
 }
 
 .widget i {
@@ -124,6 +127,7 @@ nav ul li a i {
 }
 
 .widget p {
+    color: var(--text-ascent);
     margin: 0;
     flex-grow: 1;
     text-align: center;
@@ -134,11 +138,22 @@ nav ul li a i {
 .panel {
     background-color: var(--panel-color);
     display: flex;
+    flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
-    padding: 0.5rem;
+    align-items: left;
     margin-top: 0.5rem;
     overflow: hidden;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+}
+
+.panel-title {
+    color: var(--text-ascent);
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--text-ascent);
+}
+
+.panel-content {
+    padding: 0.75rem;
 }
 
 /* Add styles for the breadcrumbs */
@@ -166,19 +181,19 @@ nav ul li a i {
 
 /* These need some cleanup */
 .form-control::placeholder {
-	color: var(--text-white);
+	color: var(--text-dull-white);
 	opacity: 1;
 }
 
 .form-control:focus {
     background-color: var(--panel-light-color);
-    color: var(--text-white);
-    box-shadow: 0 0 0 .25rem rgba(255, 199, 58, 0.25);
+    color: var(--text-dull-white);
+    box-shadow: none;
 }
 
 .form-control {
-    background-color: var(--panel-color);
-    color: var(--text-white);
+    background-color: var(--bg-color);
+    color: var(--text-dull-white);
     border: none;
     border-radius: 0.15rem;
     padding: 0.5rem;
@@ -186,8 +201,8 @@ nav ul li a i {
 }
 
 .form-check-input {
-    background-color: var(--panel-color);
-    color: var(--text-white);
+    background-color: var(--bg-color);
+    color: var(--text-dull-white);
     border: none;
     border-radius: 0.15rem;
     margin-top: 0;
@@ -198,7 +213,7 @@ nav ul li a i {
 }
 
 .form-check-input:focus {
-    box-shadow: 0 0 0 .25rem rgba(255, 199, 58, 0.25);
+    box-shadow: none;
 }
 
 .login {
@@ -226,6 +241,10 @@ nav ul li a i {
     border-radius: 0.15rem;
 }
 
+.table-custom {
+    padding: 1rem !important;
+}
+
 .table > :not(caption) > * > * {
     background-color: var(--panel-color);
 }
@@ -234,8 +253,13 @@ td {
     font-size: 1.15rem;
 }
 
+th {
+    color: var(--text-ascent) !important;
+}
+
 .btn {
     --bs-btn-font-size: 0.75rem;
+    --bs-btn-border-radius: 0.15rem;
 }
 
 .page-link {
@@ -248,6 +272,30 @@ td {
 .page-link:hover {
     background-color: var(--panel-light-color);
     color: var(--text-ascent);
+}
+
+.modal {
+    --bs-modal-bg: var(--panel-color);
+    --bs-modal-border-radius: 0.15rem;
+    --bs-modal-header-border-color: var(--panel-color);
+    --bs-modal-footer-border-color: var(--panel-color);
+}
+
+.modal-title {
+    color: var(--text-ascent);
+}
+
+.modal-body {
+    padding-bottom: 0;
+}
+
+.modal-body p {
+    margin-bottom: 0;
+}
+
+.btn-close {
+    background-color: var(--bg-color);
+    --bs-btn-close-color: var(--text-white);
 }
 
 /* Responsiveness */

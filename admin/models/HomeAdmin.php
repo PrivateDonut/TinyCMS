@@ -15,42 +15,37 @@
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
 
-require_once __DIR__ . '/../CSRFTrait.php';
-
-abstract class BaseController
+class HomeAdmin
 {
-    use CSRFTrait;
+    private $websiteConnection;
+    private $authConnection;
+    private $charConnection;
 
-    protected $twig;
-    protected $global;
-    protected $config;
-    protected $navbarModel;
-    protected $breadcrumbs;
-
-    public function __construct($twig, $global, $config, $breadcrumbs)
+    public function __construct()
     {
-        $this->twig = $twig;
-        $this->global = $global;
-        $this->config = $config;
-        $this->breadcrumbs = $breadcrumbs;
-        $this->navbarModel = new NavbarModel();
+        $database = new Database();
+        $this->websiteConnection = $database->getConnection('website');
+        $this->authConnection = $database->getConnection('auth');
+        $this->charConnection = $database->getConnection('characters');
     }
 
-    protected function render($template, $data = [])
+    public function getOnlinePlayers()
     {
-        $navbarModel = new NavbarModel();
-        $navbarItems = $navbarModel->getNavbarItems();
+        return $this->authConnection->count('account', ['online' => 1]);
+    }
 
-        $socialMediaModel = new SocialMediaModel();
-        $socialMediaLinks = $socialMediaModel->getSocialMediaLinks();
+    public function getTotalCharacters()
+    {
+        return $this->charConnection->count('characters');
+    }
 
-        return $this->twig->render($template, array_merge([
-            'session' => $_SESSION,
-            'global' => $this->global,
-            'config' => $this->config,
-            'navbar_items' => $navbarItems,
-            'social_media_links' => $socialMediaLinks,
-            'breadcrumbs' => $this->breadcrumbs
-        ], $data));
+    public function getTotalAccounts()
+    {
+        return $this->authConnection->count('account');
+    }
+
+    public function getTotalPosts()
+    {
+        return $this->websiteConnection->count('news');
     }
 }

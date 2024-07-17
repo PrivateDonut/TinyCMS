@@ -15,42 +15,13 @@
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
 
-require_once __DIR__ . '/../CSRFTrait.php';
-
-abstract class BaseController
+class ThemesAdmin
 {
-    use CSRFTrait;
+    private $authConnection;
 
-    protected $twig;
-    protected $global;
-    protected $config;
-    protected $navbarModel;
-    protected $breadcrumbs;
-
-    public function __construct($twig, $global, $config, $breadcrumbs)
+    public function __construct()
     {
-        $this->twig = $twig;
-        $this->global = $global;
-        $this->config = $config;
-        $this->breadcrumbs = $breadcrumbs;
-        $this->navbarModel = new NavbarModel();
-    }
-
-    protected function render($template, $data = [])
-    {
-        $navbarModel = new NavbarModel();
-        $navbarItems = $navbarModel->getNavbarItems();
-
-        $socialMediaModel = new SocialMediaModel();
-        $socialMediaLinks = $socialMediaModel->getSocialMediaLinks();
-
-        return $this->twig->render($template, array_merge([
-            'session' => $_SESSION,
-            'global' => $this->global,
-            'config' => $this->config,
-            'navbar_items' => $navbarItems,
-            'social_media_links' => $socialMediaLinks,
-            'breadcrumbs' => $this->breadcrumbs
-        ], $data));
+        $database = new Database();
+        $this->websiteConnection = $database->getConnection('website');
     }
 }

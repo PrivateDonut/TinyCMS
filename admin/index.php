@@ -49,6 +49,18 @@ $request_uri = $_SERVER['REQUEST_URI'];
 $path = trim(parse_url($request_uri, PHP_URL_PATH), '/');
 $segments = explode('/', $path);
 
+// Get Breadcrumb Data
+$uri_parts = explode('/', trim($request_uri, '/'));
+$breadcrumbs = [];
+$url_path = '';
+foreach ($uri_parts as $part) {
+    $url_path .= '/' . $part;
+    $breadcrumbs[] = [
+        'title' => ucfirst($part),
+        'url' => $url_path
+    ];
+}
+
 // Ensure the user is an admin before allowing access
 $global->check_is_admin();
 
@@ -64,12 +76,12 @@ $action = $segments[2] ?? 'index';
 $params = array_slice($segments, 3);
 
 if (class_exists($controllerName)) {
-    $controller = new $controllerName($twig, $global, $config_object);
+    $controller = new $controllerName($twig, $global, $config_object, $breadcrumbs);
     echo $controller->handle($action, $params);
 } else {
     // 404 handling
     header("HTTP/1.0 404 Not Found");
-    echo $twig->render('404.twig', ['session' => $session->all(), 'global' => $global, 'config' => $config_object]);
+    echo $twig->render('404.twig', ['session' => $session->all(), 'global' => $global, 'config' => $config_object, 'breadcrumbs' => $breadcrumbs]);
 }
 
 // Clear any one-time session messages

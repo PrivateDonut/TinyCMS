@@ -15,41 +15,13 @@
  * along with DonutCMS. If not, see <https://www.gnu.org/licenses/>.             *
  * *******************************************************************************/
 
-require_once __DIR__ . '/../../engine/controllers/BaseController.php';
-
-class HomeController extends BaseController
+class PluginsAdmin
 {
-    public function handle($action, $params)
-    {
-        switch ($action) {
-            case 'index':
-            default:
-                return $this->index();
-        }
-    }
+    private $authConnection;
 
-    private function index()
-    {
-        $data = [
-            'title' => 'Admin Dashboard',
-            'total_users' => $this->getTotalUsers(),
-            'total_posts' => $this->getTotalPosts(),
-        ];
-
-        return $this->render('home.twig', $data);
-    }
-
-    private function getTotalUsers()
+    public function __construct()
     {
         $database = new Database();
-        $authConnection = $database->getConnection('auth');
-        return $authConnection->count('account');
-    }
-
-    private function getTotalPosts()
-    {
-        $database = new Database();
-        $websiteConnection = $database->getConnection('website');
-        return $websiteConnection->count('news');
+        $this->websiteConnection = $database->getConnection('website');
     }
 }
