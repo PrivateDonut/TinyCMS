@@ -2,12 +2,12 @@
 // Define the base directory
 define('BASE_DIR', __DIR__ . '/..');
 
-use DonutCMS\Models\Configuration;
 use DonutCMS\Models\Database;
 use DonutCMS\Models\GlobalFunctions;
 
 // Include required files
 require_once BASE_DIR . '/vendor/autoload.php';
+require_once BASE_DIR . '/engine/models/database.php';
 require_once BASE_DIR . '/engine/configs/db_config.php';
 require_once BASE_DIR . '/engine/models/database.php';
 require_once BASE_DIR . '/engine/TinyCMSSessionHandler.php';

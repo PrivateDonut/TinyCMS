@@ -44,7 +44,7 @@ class InstallTinyCMS
             $db->select_db($website);
 
             // Import SQL file
-            $sqlFile = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'SQL' . DIRECTORY_SEPARATOR . 'website.sql';
+            $sqlFile = "sql" . DIRECTORY_SEPARATOR . "website.sql";
             if (!file_exists($sqlFile)) {
                 throw new Exception("SQL file not found: $sqlFile");
             }

@@ -18,7 +18,7 @@ namespace DonutCMS\Models;
 require_once BASE_DIR . '/vendor/autoload.php';
 require_once BASE_DIR . '/engine/configs/db_config.php';
 
-use DonutCMS\Models\Configuration;
+use Configuration;
 use Medoo\Medoo;
 
 class Database

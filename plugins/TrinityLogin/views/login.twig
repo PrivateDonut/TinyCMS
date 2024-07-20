@@ -14,48 +14,50 @@
 ********************************************************************************#}
 {% extends "base.twig" %}
 
-{% block title %}Login - Trinity Core{% endblock %}
+{% block title %}Login - DonutCMS{% endblock %}
 
 {% block content %}
-<div class="custom-container">
-    <div class="custom-card mx-auto mt-4">
-        <div class="card-body px-4 py-3">
-            <h2 class="card-title text-center mb-3" style="color:var(--title-text);border-bottom: 1px solid var(--main-border);padding-bottom: 1rem;">Account Login</h2>
-            
-            {% for type, messages in flash_messages %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ type }}">
-                        {{ message }}
+    <section class="section section-page" page>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="page-head -type-home text-ellipsis" title="Account Login">Account <span>Login</span></div>
+
+                    {% for type, messages in flash_messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ type }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+
+                    <div class="news-container -flex">
+                        <div class="news-row -full-h">
+                            <div class="news-col -md">
+                                <form method="post" action="/login/authenticate">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                    <div class="form-group">
+                                        <label for="username">Username</label>
+                                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Password</label>
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                                    </div>
+                                    <div class="post-readmore">
+                                        <button type="submit" name="submit" class="btn-blue">Login</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                {% endfor %}
-            {% endfor %}
-            
-            <div class="row">
-                <div class="col-12 col-md-6">
-                    <form method="post" action="/login/authenticate">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                        <div class="form-group">
-                            <label for="username" class="info-label">Username</label>
-                            <input type="text" class="form-control input-small" id="username" name="username" placeholder="Enter username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password" class="info-label">Password</label>
-                            <input type="password" class="form-control input-small" id="password" name="password" placeholder="Enter password" required>
-                        </div>
-                        <button type="submit" name="submit" class="btn btn-primary btn-block d-block mt-3 change-password-button" style="width:70%;">Login</button>
-                    </form>
-                </div>
-                <div class="col-12 col-md-6 info-section" style="border-left: 1px solid var(--main-border);">
-                    <div class="row">
-                        <div class="col">
-                            <p class="mb-0"><a class="link-opacity-100" href="/register" style="color: var(--page-text)">Create Account</a></p>
-                            <p class="mb-0"><a class="link-opacity-100" href="#" style="color: var(--page-text)">Forgot Password?</a></p>
-                            <p class="mb-0"><a class="link-opacity-100" href="#" style="color: var(--page-text)">Forgot Username?</a></p>
-                        </div>
+                    <div class="news-row mt-3">
+                        <a href="/register" class="btn-blue -outline -noise text-ellipsis">Create Account</a>
+                        <a href="#" class="btn-blue -outline -noise text-ellipsis">Forgot Password?</a>
+                        <a href="#" class="btn-blue -outline -noise text-ellipsis">Forgot Username?</a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 {% endblock %}

@@ -17,7 +17,8 @@
 
 namespace Plugins\TrinityRegistration\Models;
 
-use Database;
+
+use DonutCMS\Models\Database;
 use Exception;
 use Symfony\Component\HttpFoundation\Session\Session;
 

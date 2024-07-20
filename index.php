@@ -40,7 +40,6 @@ use DonutCMS\PluginSystem\PluginManager;
 use DonutCMS\PluginSystem\HookHelper;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
-use DonutCMS\Models\Configuration;
 
 // Initialize database connection
 $database = new Database();

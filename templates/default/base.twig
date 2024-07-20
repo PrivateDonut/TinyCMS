@@ -81,9 +81,24 @@
 
 							<div class="navbar-collapse collapse-secondary collapse">
 								<ul class="navbar-nav ms-auto">
-									<li class="nav-item">
-										<a href="/home" class="btn-blue -outline -noise text-ellipsis" title="Download launcher">Download launcher</a>
-									</li>
+									{% if session.account_id %}
+										<li class="nav-item dropdown">
+											<a href="#" class="btn-blue -outline -noise text-ellipsis dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+												{{ session.username }}
+											</a>
+											<ul class="dropdown-menu" aria-labelledby="userDropdown">
+												<li><a class="dropdown-item" href="/account">Account Settings</a></li>
+												<li><a class="dropdown-item" href="/logout">Logout</a></li>
+											</ul>
+										</li>
+									{% else %}
+										<li class="nav-item">
+											<a href="/login" class="btn-blue -outline -noise text-ellipsis" title="Login">Login</a>
+										</li>
+										<li class="nav-item ms-2">
+											<a href="/register" class="btn-blue -outline -noise text-ellipsis" title="Register">Register</a>
+										</li>
+									{% endif %}
 								</ul>
 							</div>
 							<!-- Collapse.End -->
