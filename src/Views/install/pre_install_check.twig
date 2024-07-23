@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body { background-color: #212121; color: #ffffff; }
+        .container { max-width: 600px; }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">DonutCMS Setup Check</h1>
+    <p class="text-center mb-4">World of Warcraft Content Management System</p>
+    <hr style="border-color: white; width: 50%;">
+
+    <h4 class="text-center mb-3">PHP Extensions</h4>
+    <p class="text-center"><small>All the following extensions must be enabled for DonutCMS to work properly.</small></p>
+
+    {% for extension, status in extensionStatus %}
+        <p class="text-center">
+            {{ extension|capitalize }}:
+            <span class="{% if status == 'Enabled' %}text-success{% else %}text-danger{% endif %}">
+                    {{ status }}
+                </span>
+        </p>
+    {% endfor %}
+
+    <div class="text-center mt-4">
+        {% if allExtensionsEnabled %}
+            <a href="/install" class="btn btn-success">Proceed to Install</a>
+        {% else %}
+            <button class="btn btn-danger" disabled>Cannot Proceed - Missing Extensions</button>
+        {% endif %}
+    </div>
+</div>
+
+<footer class="footer mt-5 py-3">
+    <div class="container">
+        <p class="text-center">&copy; {{ "now"|date("Y") }} DonutCMS. All rights reserved.</p>
+    </div>
+</footer>
+</body>
+</html>

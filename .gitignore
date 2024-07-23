@@ -1,3 +1,4 @@
-engine/install.lock
-engine/configs/db_config.php
-cache/*
+.idea
+/src/Config/config.php
+/src/install.lock
+/src/Install/logs/install.log

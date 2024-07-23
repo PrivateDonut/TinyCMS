@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body { background-color: #212121; color: #ffffff; }
+        .container { max-width: 800px; }
+        .form-control { background-color: #333; color: #fff; border: 1px solid #555; }
+        .form-control::placeholder { color: #aaa; }
+        .btn-primary { background-color: #007bff; border-color: #007bff; }
+        .btn-primary:hover { background-color: #0056b3; border-color: #0056b3; }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">DonutCMS Installation</h1>
+    <p class="text-center mb-4">World of Warcraft Content Management System</p>
+    <hr style="border-color: white; width: 50%;">
+
+    {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+            {{ error_message }}
+        </div>
+    {% endif %}
+
+    {% if success_message %}
+        <div class="alert alert-success" role="alert">
+            {{ success_message }}
+        </div>
+    {% else %}
+        <form action="/install" method="post" id="install-form">
+            <h4 class="text-center mb-3">Website Database Information</h4>
+            <div class="form-group">
+                <label for="website_db_host">Website Database Hostname</label>
+                <input type="text" class="form-control" name="website_db_host" id="website_db_host" placeholder="localhost" required>
+            </div>
+            <div class="form-group">
+                <label for="website_db_port">Website Database Port</label>
+                <input type="number" class="form-control" name="website_db_port" id="website_db_port" placeholder="3306" required>
+            </div>
+            <div class="form-group">
+                <label for="website_db_username">Website Database Username</label>
+                <input type="text" class="form-control" name="website_db_username" id="website_db_username" placeholder="username" required>
+            </div>
+            <div class="form-group">
+                <label for="website_db_password">Website Database Password</label>
+                <input type="password" class="form-control" name="website_db_password" id="website_db_password" placeholder="password" required>
+            </div>
+            <div class="form-group">
+                <label for="website_db_name">Website Database Name</label>
+                <input type="text" class="form-control" name="website_db_name" id="website_db_name" placeholder="donutcms_website" required>
+            </div>
+
+            <h4 class="text-center mt-4 mb-3">Auth Database Information</h4>
+            <div class="form-group">
+                <label for="auth_db_host">Auth Database Host</label>
+                <input type="text" class="form-control" name="auth_db_host" id="auth_db_host" placeholder="localhost" required>
+            </div>
+            <div class="form-group">
+                <label for="auth_db_port">Auth Database Port</label>
+                <input type="number" class="form-control" name="auth_db_port" id="auth_db_port" placeholder="3306" required>
+            </div>
+            <div class="form-group">
+                <label for="auth_db_username">Auth Database Username</label>
+                <input type="text" class="form-control" name="auth_db_username" id="auth_db_username" placeholder="username" required>
+            </div>
+            <div class="form-group">
+                <label for="auth_db_password">Auth Database Password</label>
+                <input type="password" class="form-control" name="auth_db_password" id="auth_db_password" placeholder="password" required>
+            </div>
+            <div class="form-group">
+                <label for="auth_db_name">Auth Database Name</label>
+                <input type="text" class="form-control" name="auth_db_name" id="auth_db_name" placeholder="auth" required>
+            </div>
+
+            <h4 class="text-center mt-4 mb-3">Character Database Information</h4>
+            <div class="form-group">
+                <label for="char_db_host">Character Database Host</label>
+                <input type="text" class="form-control" name="char_db_host" id="char_db_host" placeholder="localhost" required>
+            </div>
+            <div class="form-group">
+                <label for="char_db_port">Character Database Port</label>
+                <input type="number" class="form-control" name="char_db_port" id="char_db_port" placeholder="3306" required>
+            </div>
+            <div class="form-group">
+                <label for="char_db_username">Character Database Username</label>
+                <input type="text" class="form-control" name="char_db_username" id="char_db_username" placeholder="username" required>
+            </div>
+            <div class="form-group">
+                <label for="char_db_password">Character Database Password</label>
+                <input type="password" class="form-control" name="char_db_password" id="char_db_password" placeholder="password" required>
+            </div>
+            <div class="form-group">
+                <label for="char_db_name">Character Database Name</label>
+                <input type="text" class="form-control" name="char_db_name" id="char_db_name" placeholder="characters" required>
+            </div>
+
+            <div class="form-group text-center mt-4">
+                <button type="submit" class="btn btn-primary" name="install">Install DonutCMS</button>
+            </div>
+        </form>
+    {% endif %}
+</div>
+
+<footer class="footer mt-5 py-3">
+    <div class="container">
+        <p class="text-center">&copy; {{ "now"|date("Y") }} DonutCMS. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script>
+    document.getElementById('install-form').addEventListener('submit', function(event) {
+        var inputs = this.getElementsByTagName('input');
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].hasAttribute('required') && inputs[i].value.trim() === '') {
+                alert('Please fill all required fields');
+                event.preventDefault();
+                return;
+            }
+        }
+    });
+</script>
+</body>
+</html>
